@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(DISTINCT cl.Language)\nFROM country c\nJOIN countrylanguage cl ON cl.CountryCode = c.Code\nWHERE c.IndepYear < 1930\n  AND cl.IsOfficial = 'T';\n```", "model": "deepseek-chat"}

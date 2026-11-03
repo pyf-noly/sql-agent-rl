@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT t.series_name, t.Country\nFROM TV_Channel t\nJOIN Cartoon c ON c.Channel = t.id\nWHERE c.Directed_by IN ('Ben Jones', 'Michael Chang')\nGROUP BY t.id, t.series_name, t.Country\nHAVING COUNT(DISTINCT c.Directed_by) = 2\n```", "model": "deepseek-chat"}

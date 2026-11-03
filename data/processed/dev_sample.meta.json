@@ -1,0 +1,19 @@
+{
+ "seed": 42,
+ "n": 300,
+ "allocated": {
+  "easy": 73,
+  "medium": 132,
+  "hard": 58,
+  "extra": 37
+ },
+ "actual": {
+  "easy": 73,
+  "medium": 132,
+  "hard": 58,
+  "extra": 37
+ },
+ "source": "data/raw/spider/dev.json",
+ "created_at": "2026-11-03T15:20:42",
+ "note": "difficulty 由 envs/difficulty.py 按 SQL 结构自动打标，非官方标注"
+}

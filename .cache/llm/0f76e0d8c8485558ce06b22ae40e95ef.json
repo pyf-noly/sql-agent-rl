@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT dp.degree_program_id, dp.degree_summary_name\nFROM Degree_Programs dp\nJOIN Student_Enrolment se ON se.degree_program_id = dp.degree_program_id\nGROUP BY dp.degree_program_id, dp.degree_summary_name\nORDER BY COUNT(DISTINCT se.student_id) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

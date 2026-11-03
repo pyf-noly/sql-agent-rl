@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT p.first_name, p.last_name\nFROM Professionals p\nJOIN Treatments t ON p.professional_id = t.professional_id\nWHERE t.cost_of_treatment < (SELECT AVG(cost_of_treatment) FROM Treatments)\n```", "model": "deepseek-chat"}

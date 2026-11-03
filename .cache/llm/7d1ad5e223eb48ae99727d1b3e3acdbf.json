@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT e.Name\nFROM employee e\nWHERE e.Employee_ID NOT IN (SELECT Employee_ID FROM evaluation);\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT CountryName FROM countries WHERE CountryId NOT IN (SELECT Country FROM car_makers)\n```", "model": "deepseek-chat"}

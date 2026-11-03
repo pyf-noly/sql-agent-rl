@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(*) FROM Highschooler WHERE grade IN (9, 10);\n```", "model": "deepseek-chat"}

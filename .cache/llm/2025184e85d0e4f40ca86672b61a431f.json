@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Package_Option, series_name FROM TV_Channel WHERE Hight_definition_TV = 'Yes';\n```", "model": "deepseek-chat"}

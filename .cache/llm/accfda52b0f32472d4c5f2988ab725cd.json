@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT a.Airline\nFROM airlines a\nJOIN flights f ON a.Abbreviation = f.Airline\nWHERE f.SourceAirport = 'AHD';\n```", "model": "deepseek-chat"}

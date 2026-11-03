@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(*) FROM model_list WHERE Maker = (SELECT Id FROM car_makers WHERE FullName = 'American Motor Company');\n```", "model": "deepseek-chat"}

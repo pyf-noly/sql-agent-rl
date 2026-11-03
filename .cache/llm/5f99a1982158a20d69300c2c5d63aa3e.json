@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT d.department_name, d.department_id\nFROM Departments d\nJOIN Degree_Programs dp ON d.department_id = dp.department_id\nGROUP BY d.department_id, d.department_name\nORDER BY COUNT(dp.degree_program_id) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

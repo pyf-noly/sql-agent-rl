@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT r.property_type_description\nFROM Ref_Property_Types r\nJOIN Properties p ON p.property_type_code = r.property_type_code;\n```", "model": "deepseek-chat"}

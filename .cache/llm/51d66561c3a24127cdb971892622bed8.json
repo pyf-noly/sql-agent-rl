@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT d.Document_ID, d.Document_Name\nFROM Documents d\nJOIN Paragraphs p ON p.Document_ID = d.Document_ID\nGROUP BY d.Document_ID, d.Document_Name\nORDER BY COUNT(p.Paragraph_ID) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(DISTINCT series_name) AS series_name_count, COUNT(DISTINCT Content) AS content_count FROM TV_Channel;\n```", "model": "deepseek-chat"}

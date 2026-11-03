@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT * FROM Paragraphs WHERE Paragraph_Text LIKE '%Korea %';\n```", "model": "deepseek-chat"}

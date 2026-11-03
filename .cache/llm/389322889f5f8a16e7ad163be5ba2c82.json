@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Major_Record_Format, COUNT(*) AS Frequency\nFROM orchestra\nGROUP BY Major_Record_Format\nORDER BY Frequency DESC, Major_Record_Format ASC;\n```", "model": "deepseek-chat"}

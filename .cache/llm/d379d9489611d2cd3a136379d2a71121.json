@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT c.Name\nFROM city c\nJOIN country co ON c.CountryCode = co.Code\nJOIN countrylanguage cl ON cl.CountryCode = co.Code\nWHERE co.Continent = 'Asia'\n  AND cl.Language = 'Chinese'\n  AND cl.IsOfficial = 'T'\n```", "model": "deepseek-chat"}

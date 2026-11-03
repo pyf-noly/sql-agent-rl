@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT Year\nFROM cars_data\nWHERE Year IN (SELECT Year FROM cars_data WHERE Weight < 4000)\n  AND Year IN (SELECT Year FROM cars_data WHERE Weight > 3000)\nORDER BY Year;\n```", "model": "deepseek-chat"}

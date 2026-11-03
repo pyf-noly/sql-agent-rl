@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT h.name\nFROM Highschooler h\nJOIN Likes l ON h.ID = l.liked_id\nGROUP BY h.ID, h.name\nHAVING COUNT(DISTINCT l.student_id) >= 2;\n```", "model": "deepseek-chat"}

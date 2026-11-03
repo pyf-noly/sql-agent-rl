@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT CountryCode\nFROM countrylanguage\nWHERE Language = 'Spanish'\n  AND Percentage = (\n    SELECT MAX(Percentage)\n    FROM countrylanguage\n    WHERE Language = 'Spanish'\n  );\n```", "model": "deepseek-chat"}

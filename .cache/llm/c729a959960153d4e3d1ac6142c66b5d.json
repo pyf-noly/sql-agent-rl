@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Name FROM stadium WHERE Stadium_ID NOT IN (SELECT Stadium_ID FROM concert);\n```", "model": "deepseek-chat"}

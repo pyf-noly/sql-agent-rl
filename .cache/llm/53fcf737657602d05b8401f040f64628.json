@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Country, COUNT(*) AS singer_count\nFROM singer\nGROUP BY Country;\n```", "model": "deepseek-chat"}

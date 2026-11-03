@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Name FROM museum WHERE Num_of_Staff > (SELECT MIN(Num_of_Staff) FROM museum WHERE Open_Year > 2010);\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT m.Museum_ID, m.Name\nFROM museum m\nJOIN visit v ON m.Museum_ID = v.Museum_ID\nGROUP BY m.Museum_ID, m.Name\nORDER BY COUNT(*) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

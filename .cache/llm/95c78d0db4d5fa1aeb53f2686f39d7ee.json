@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(DISTINCT d.Document_ID) AS document_count\nFROM Documents d\nJOIN Templates t ON d.Template_ID = t.Template_ID\nWHERE t.Template_Type_Code = 'PPT';\n```", "model": "deepseek-chat"}

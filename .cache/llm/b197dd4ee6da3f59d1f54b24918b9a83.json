@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT AVG(d.age) AS average_age\nFROM Dogs d\nWHERE d.dog_id IN (SELECT dog_id FROM Treatments);\n```", "model": "deepseek-chat"}

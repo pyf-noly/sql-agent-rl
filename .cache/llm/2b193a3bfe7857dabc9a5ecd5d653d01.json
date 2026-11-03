@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT PetType, AVG(weight) AS average_weight\nFROM Pets\nGROUP BY PetType;\n```", "model": "deepseek-chat"}

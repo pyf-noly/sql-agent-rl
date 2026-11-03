@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT cl.Language\nFROM countrylanguage cl\nJOIN country c ON c.Code = cl.CountryCode\nWHERE c.Continent = 'Asia'\nGROUP BY cl.Language\nORDER BY SUM(cl.Percentage) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

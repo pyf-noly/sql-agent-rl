@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(*) FROM orchestra WHERE Major_Record_Format IN ('CD', 'DVD');\n```", "model": "deepseek-chat"}

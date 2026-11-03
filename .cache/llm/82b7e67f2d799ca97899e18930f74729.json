@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT c.Accelerate\nFROM cars_data c\nJOIN car_names cn ON c.Id = cn.MakeId\nWHERE LOWER(cn.Make) LIKE '%hornet sportabout%'\n```", "model": "deepseek-chat"}

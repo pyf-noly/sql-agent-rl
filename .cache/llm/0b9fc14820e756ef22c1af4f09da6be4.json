@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT note FROM death WHERE note LIKE '%East%';\n```", "model": "deepseek-chat"}

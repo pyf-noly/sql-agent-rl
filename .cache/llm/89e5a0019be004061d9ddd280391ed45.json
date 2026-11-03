@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT s.Fname, s.Age\nFROM Student s\nWHERE s.StuID IN (\n    SELECT hp.StuID\n    FROM Has_Pet hp\n    JOIN Pets p ON hp.PetID = p.PetID\n    WHERE p.PetType = 'dog'\n)\nAND s.StuID NOT IN (\n    SELECT hp.StuID\n    FROM Has_Pet hp\n    JOIN Pets p ON hp.PetID = p.PetID\n    WHERE p.PetType = 'cat'\n);\n```", "model": "deepseek-chat"}

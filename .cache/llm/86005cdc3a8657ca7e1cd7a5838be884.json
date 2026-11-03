@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT CountryCode\nFROM countrylanguage\nWHERE Language = 'Spanish'\nORDER BY Percentage DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

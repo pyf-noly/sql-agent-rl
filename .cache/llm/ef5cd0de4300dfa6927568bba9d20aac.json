@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Record_Company\nFROM orchestra\nWHERE Year_of_Founded < 2003\nINTERSECT\nSELECT Record_Company\nFROM orchestra\nWHERE Year_of_Founded > 2003\n```", "model": "deepseek-chat"}

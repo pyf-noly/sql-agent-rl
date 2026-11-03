@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT d.date_arrived, d.date_departed\nFROM Dogs d\nJOIN Treatments t ON d.dog_id = t.dog_id;\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT student_enrolment_id, COUNT(DISTINCT transcript_id) AS transcript_count\nFROM Transcript_Contents\nJOIN Student_Enrolment_Courses USING (student_course_id)\nGROUP BY student_enrolment_id\nORDER BY transcript_count DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

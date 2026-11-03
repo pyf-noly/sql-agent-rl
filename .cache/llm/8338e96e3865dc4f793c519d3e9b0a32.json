@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Name, Population, HeadOfState\nFROM country\nORDER BY SurfaceArea DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

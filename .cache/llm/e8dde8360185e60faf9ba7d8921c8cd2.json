@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT cn.MakeId, cn.Make\nFROM car_names cn\nJOIN cars_data cd ON cn.MakeId = cd.Id\nWHERE cd.Horsepower > (SELECT MIN(Horsepower) FROM cars_data)\n  AND cd.Cylinders <= 3\n```", "model": "deepseek-chat"}

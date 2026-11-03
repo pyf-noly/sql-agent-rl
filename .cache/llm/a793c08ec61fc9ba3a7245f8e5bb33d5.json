@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT SUM(SurfaceArea) AS TotalSurfaceArea\nFROM country\nWHERE Region = 'Caribbean';\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT p.Paragraph_ID, p.Paragraph_Text\nFROM Paragraphs p\nJOIN Documents d ON p.Document_ID = d.Document_ID\nWHERE d.Document_Name = 'Welcome to NY';\n```", "model": "deepseek-chat"}

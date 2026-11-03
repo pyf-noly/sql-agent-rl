@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Citizenship\nFROM singer\nWHERE Birth_Year < 1945\nINTERSECT\nSELECT Citizenship\nFROM singer\nWHERE Birth_Year > 1955\n```", "model": "deepseek-chat"}

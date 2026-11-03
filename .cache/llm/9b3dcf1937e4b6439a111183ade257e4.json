@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT r.Template_Type_Description\nFROM Ref_Template_Types r\nJOIN Templates t ON t.Template_Type_Code = r.Template_Type_Code\nJOIN Documents d ON d.Template_ID = t.Template_ID;\n```", "model": "deepseek-chat"}

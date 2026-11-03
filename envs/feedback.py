@@ -144,7 +144,9 @@ class FeedbackFormatter:
         return msg
 
     def _no_such_column(self, c: ClassifiedError, columns: dict[str, list[str]] | None) -> str:
-        msg = f"Column `{c.offender}` does not exist."
+        # 保留数据库原话：模型对 "no such column: x" 这种措辞的先验很强，
+        # 只给"Column x 不存在"会弱化信号。
+        msg = f"Database says: {c.raw_message.strip()}"
         if self.cfg.include_schema_hint and columns:
             # 找出 offender 里可能的表前缀，只列相关表的列，省 token
             owner = c.offender.split(".")[0] if c.offender and "." in c.offender else None

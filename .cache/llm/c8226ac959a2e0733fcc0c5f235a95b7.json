@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT first_name, middle_name, last_name\nFROM Students\nWHERE date_left IS NOT NULL\nORDER BY date_left ASC\nLIMIT 1;\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT o.last_name\nFROM Owners o\nJOIN Dogs d ON o.owner_id = d.owner_id\nORDER BY d.date_of_birth DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

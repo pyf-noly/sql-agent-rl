@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT h.name, COUNT(f.friend_id) AS num_friends\nFROM Highschooler h\nLEFT JOIN Friend f ON h.ID = f.student_id\nGROUP BY h.ID, h.name;\n```", "model": "deepseek-chat"}

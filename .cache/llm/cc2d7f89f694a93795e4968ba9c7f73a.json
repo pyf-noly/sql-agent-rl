@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Template_Type_Code, COUNT(*) AS Number_of_Templates\nFROM Templates\nGROUP BY Template_Type_Code;\n```", "model": "deepseek-chat"}

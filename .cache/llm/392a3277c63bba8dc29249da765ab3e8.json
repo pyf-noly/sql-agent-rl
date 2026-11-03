@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(*) FROM Paragraphs p JOIN Documents d ON p.Document_ID = d.Document_ID WHERE d.Document_Name = 'Summer Show';\n```", "model": "deepseek-chat"}

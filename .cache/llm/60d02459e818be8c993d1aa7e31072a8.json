@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Manager_name, District\nFROM shop\nORDER BY Number_products DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Name FROM country WHERE Continent = 'Europe' AND Population = 80000;\n```", "model": "deepseek-chat"}

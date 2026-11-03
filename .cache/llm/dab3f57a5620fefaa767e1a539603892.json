@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT c.ContId, c.Continent, COUNT(co.CountryId) AS NumberOfCountries\nFROM continents c\nLEFT JOIN countries co ON co.Continent = c.ContId\nGROUP BY c.ContId, c.Continent;\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Final_Table_Made, Best_Finish FROM poker_player;\n```", "model": "deepseek-chat"}

@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT h.name\nFROM Highschooler h\nJOIN Friend f ON h.ID = f.student_id\nWHERE h.grade > 5\nGROUP BY h.ID, h.name\nHAVING COUNT(f.friend_id) >= 2;\n```", "model": "deepseek-chat"}

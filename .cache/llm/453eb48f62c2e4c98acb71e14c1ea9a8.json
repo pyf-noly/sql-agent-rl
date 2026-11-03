@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT s.Name\nFROM singer AS s\nJOIN singer_in_concert AS sic ON s.Singer_ID = sic.Singer_ID\nJOIN concert AS c ON sic.concert_ID = c.concert_ID\nWHERE c.Year = 2014\n```", "model": "deepseek-chat"}

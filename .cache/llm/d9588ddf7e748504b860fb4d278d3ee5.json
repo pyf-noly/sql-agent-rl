@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT Template_Type_Code FROM Templates;\n```", "model": "deepseek-chat"}

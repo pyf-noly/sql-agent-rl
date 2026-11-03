@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT p.first_name, AVG(r.ranking) AS avg_ranking\nFROM players p\nJOIN rankings r ON p.player_id = r.player_id\nGROUP BY p.first_name;\n```", "model": "deepseek-chat"}

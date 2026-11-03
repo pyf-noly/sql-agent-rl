@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT first_name FROM Students WHERE permanent_address_id <> current_address_id;\n```", "model": "deepseek-chat"}

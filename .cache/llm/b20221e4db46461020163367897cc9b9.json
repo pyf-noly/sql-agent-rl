@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT TV_Channel.series_name, TV_Channel.Country\nFROM TV_Channel\nJOIN Cartoon ON Cartoon.Channel = TV_Channel.id\nWHERE Cartoon.Directed_by IN ('Ben Jones', 'Michael Chang')\n```", "model": "deepseek-chat"}

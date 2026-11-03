@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT * FROM city WHERE Population >= 160000 AND Population <= 900000;\n```", "model": "deepseek-chat"}

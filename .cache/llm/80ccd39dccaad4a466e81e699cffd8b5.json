@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT b.breed_name\nFROM Breeds b\nJOIN Dogs d ON d.breed_code = b.breed_code\nGROUP BY b.breed_code, b.breed_name\nORDER BY COUNT(*) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

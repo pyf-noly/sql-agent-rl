@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT c.Name\nFROM country c\nJOIN countrylanguage cl1 ON cl1.CountryCode = c.Code\nJOIN countrylanguage cl2 ON cl2.CountryCode = c.Code\nWHERE cl1.Language = 'English' AND cl1.IsOfficial = 'T'\n  AND cl2.Language = 'French' AND cl2.IsOfficial = 'T'\n```", "model": "deepseek-chat"}

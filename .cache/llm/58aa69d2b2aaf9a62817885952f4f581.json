@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(*) FROM flights f JOIN airports a ON f.DestAirport = a.AirportCode WHERE f.Airline = 'United Airlines' AND a.City = 'Aberdeen';\n```", "model": "deepseek-chat"}

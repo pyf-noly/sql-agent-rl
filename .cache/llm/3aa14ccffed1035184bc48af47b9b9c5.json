@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(DISTINCT Location) FROM shop;\n```", "model": "deepseek-chat"}

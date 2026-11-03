@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Document_ID\nFROM Paragraphs\nGROUP BY Document_ID\nORDER BY COUNT(*) ASC, Document_ID ASC\nLIMIT 1;\n```", "model": "deepseek-chat"}

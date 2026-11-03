@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT Birth_Year, Citizenship FROM singer;\n```", "model": "deepseek-chat"}

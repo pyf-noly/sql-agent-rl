@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT p.Name\nFROM people AS p\nJOIN poker_player AS pp ON p.People_ID = pp.People_ID\nORDER BY pp.Final_Table_Made ASC;\n```", "model": "deepseek-chat"}

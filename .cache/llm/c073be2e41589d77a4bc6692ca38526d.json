@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT zip_postcode FROM Addresses WHERE city = 'Port Chelsea';\n```", "model": "deepseek-chat"}

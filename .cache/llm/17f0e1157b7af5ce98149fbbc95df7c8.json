@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT AVG(c.Edispl)\nFROM cars_data c\nJOIN car_names n ON c.Id = n.MakeId\nWHERE LOWER(n.Model) = 'volvo';\n```", "model": "deepseek-chat"}

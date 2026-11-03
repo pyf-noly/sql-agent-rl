@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT t.Template_ID, t.Template_Type_Code\nFROM Templates t\nJOIN Documents d ON d.Template_ID = t.Template_ID\nGROUP BY t.Template_ID, t.Template_Type_Code\nORDER BY COUNT(d.Document_ID) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

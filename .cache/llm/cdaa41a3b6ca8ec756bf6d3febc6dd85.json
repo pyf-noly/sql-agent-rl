@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT DISTINCT h.name\nFROM Highschooler h\nWHERE EXISTS (SELECT 1 FROM Friend f WHERE f.student_id = h.ID)\n  AND EXISTS (SELECT 1 FROM Likes l WHERE l.liked_id = h.ID);\n```", "model": "deepseek-chat"}

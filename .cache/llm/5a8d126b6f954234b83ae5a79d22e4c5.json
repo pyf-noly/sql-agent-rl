@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT c.Continent\nFROM country c\nJOIN countrylanguage cl ON cl.CountryCode = c.Code\nGROUP BY c.Continent\nORDER BY COUNT(DISTINCT cl.Language) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

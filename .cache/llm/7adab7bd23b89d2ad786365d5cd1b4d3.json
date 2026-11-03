@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT COUNT(*) FROM flights WHERE DestAirport = 'ABZ';\n```", "model": "deepseek-chat"}

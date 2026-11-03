@@ -1,0 +1,1 @@
+{"text": "```sql\nSELECT a.Airline\nFROM airlines a\nLEFT JOIN flights f ON a.Abbreviation = f.Airline\nGROUP BY a.uid, a.Airline\nHAVING COUNT(f.FlightNo) < 200;\n```", "model": "deepseek-chat"}
