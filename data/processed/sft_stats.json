@@ -1,0 +1,30 @@
+{
+ "created_at": "2026-11-03T16:09:38",
+ "n_total": 2574,
+ "n_train": 2369,
+ "n_val": 205,
+ "n_unique_db": 140,
+ "turns": {
+  "1": 2412,
+  "2": 121,
+  "3": 41
+ },
+ "multi_turn_ratio": 0.0629,
+ "difficulty": {
+  "medium": 1249,
+  "easy": 719,
+  "extra": 253,
+  "hard": 353
+ },
+ "difficulty_multi_turn": {
+  "medium": 63,
+  "easy": 30,
+  "extra": 27,
+  "hard": 42
+ },
+ "est_total_tokens": 133160,
+ "est_avg_tokens_per_sample": 51,
+ "source_episodes": "data/synthetic/episodes.jsonl",
+ "seed": 42,
+ "val_ratio": 0.08
+}

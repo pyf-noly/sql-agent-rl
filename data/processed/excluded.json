@@ -1,0 +1,23 @@
+[
+ {
+  "db_id": "assets_maintenance",
+  "question": "What is the description of the type of the company who concluded its contracts most recently?",
+  "query": "SELECT T1.company_name FROM Third_Party_Companies AS T1 JOIN Maintenance_Contracts AS T2 ON T1.company_id  =  T2.maintenance_contract_company_id JOIN Ref_Company_Types AS T3 ON T1.company_type_code  =  T3.company_type_code ORDER BY T2.contract_end_date DESC LIMIT 1",
+  "exclude_reason": "no such table: Ref_Company_Types",
+  "exclude_class": "db_error"
+ },
+ {
+  "db_id": "document_management",
+  "question": "Find the list of documents that are both in the most three popular type and have the most three popular structure.",
+  "query": "SELECT document_name FROM documents GROUP BY document_type_code ORDER BY count(*) DESC LIMIT 3 INTERSECT SELECT document_name FROM documents GROUP BY document_structure_code ORDER BY count(*) DESC LIMIT 3",
+  "exclude_reason": "ORDER BY clause should come after INTERSECT not before",
+  "exclude_class": "db_error"
+ },
+ {
+  "db_id": "document_management",
+  "question": "What are the names of documents that have both one of the three most common types and one of three most common structures?",
+  "query": "SELECT document_name FROM documents GROUP BY document_type_code ORDER BY count(*) DESC LIMIT 3 INTERSECT SELECT document_name FROM documents GROUP BY document_structure_code ORDER BY count(*) DESC LIMIT 3",
+  "exclude_reason": "ORDER BY clause should come after INTERSECT not before",
+  "exclude_class": "db_error"
+ }
+]

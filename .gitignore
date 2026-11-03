@@ -1,4 +1,4 @@
-# 数据与产物（不进版本库）
+# ===== 数据与产物（不进版本库）=====
 data/raw/
 data/synthetic/
 runs/
@@ -6,14 +6,34 @@ results/*.json
 *.sqlite
 *.db
 
-# 密钥（最重要，绝对不能提交）
+# ---- data/processed/ 按白名单收 ----
+# 先全部忽略，再逐个放行。这样新增数据文件默认不进库，
+# 必须显式加一条 ! 才会被提交——避免再出现"几千个缓存文件混进来"。
+data/processed/*
+# 可复现的证据（几 KB）
+!data/processed/sft_stats.json
+!data/processed/p3_data.meta.json
+!data/processed/dev_sample.meta.json
+!data/processed/dev_sample.json
+!data/processed/excluded.json
+# RL 阶段的输入契约（216 KB，不含答案，下游直接要用）
+!data/processed/rl_prompts.json
+# 注意：sft_final.jsonl / sft_coldstart.jsonl / sft_seeds.json 故意不放开，
+#      它们可由 prep_p3_data.py + synthesize_sft.py 重生成（见 docs/p3_summary.md）
+
+# ===== LLM 调用缓存 =====
+# 这是按 prompt 哈希缓存的 API 响应，几千个小文件，只对本地省钱有用，
+# 对别人没有任何价值。绝对不要提交。
+.cache/
+
+# ===== 密钥（最重要，绝对不能提交）=====
 .env
 .env.*
 !.env.example
 *.key
 secrets/
 
-# Python
+# ===== Python =====
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -22,7 +42,7 @@ venv/
 .pytest_cache/
 .ipynb_checkpoints/
 
-# 编辑器 / 系统
+# ===== 编辑器 / 系统 =====
 .vscode/
 .idea/
 .DS_Store

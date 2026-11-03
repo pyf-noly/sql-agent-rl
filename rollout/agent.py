@@ -56,7 +56,12 @@ class Episode:
         """最后一轮是否执行成功（不代表答案对，只代表 SQL 能跑）。"""
         return bool(self.turns) and self.turns[-1].success
 
-    def to_dict(self) -> dict:
+    def to_dict(self, *, truncate_feedback: bool = True) -> dict:
+        """序列化。
+
+        ``truncate_feedback=True`` 用于日志与人工检查（省体积）；
+        合成 SFT 轨迹时必须传 False——否则模型学到的反馈是截断的。
+        """
         return {
             "db_id": self.db_id,
             "question": self.question,
@@ -74,7 +79,7 @@ class Episode:
                     "error_message": t.error_message[:500],
                     "row_count": t.row_count,
                     "parse_source": t.parse_source,
-                    "feedback": t.feedback[:500],
+                    "feedback": (t.feedback[:500] if truncate_feedback else t.feedback),
                     "correct": t.correct,
                 }
                 for t in self.turns

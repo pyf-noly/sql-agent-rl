@@ -1,0 +1,23 @@
+{
+ "seed": 42,
+ "created_at": "2026-11-03T15:42:06",
+ "source": "data/raw/spider/train_spider.json",
+ "n_source": 7000,
+ "n_usable": 6997,
+ "n_excluded": 3,
+ "n_rl": 1500,
+ "n_sft": 3000,
+ "rl_diff": {
+  "easy": 390,
+  "medium": 714,
+  "hard": 242,
+  "extra": 154
+ },
+ "sft_diff": {
+  "easy": 778,
+  "medium": 1427,
+  "hard": 486,
+  "extra": 309
+ },
+ "note": "rl_prompts 不含 gold 答案；sft_seeds 含 gold 供合成时校验"
+}
