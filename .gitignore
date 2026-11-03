@@ -1,0 +1,29 @@
+# 数据与产物（不进版本库）
+data/raw/
+data/synthetic/
+runs/
+results/*.json
+*.sqlite
+*.db
+
+# 密钥（最重要，绝对不能提交）
+.env
+.env.*
+!.env.example
+*.key
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
