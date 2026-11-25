@@ -1,0 +1,6 @@
+# CI 只装跑单测需要的依赖（不装 torch/transformers，它们很大且单测不需要）
+pytest>=8.0
+numpy>=1.26
+sqlparse>=0.5
+openai>=1.40
+python-dotenv>=1.0

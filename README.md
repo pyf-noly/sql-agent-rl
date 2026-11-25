@@ -1,5 +1,9 @@
 # sql-agent-rl
 
+[![tests](https://github.com/pyf-noly/sql-agent-rl/actions/workflows/tests.yml/badge.svg)](https://github.com/pyf-noly/sql-agent-rl/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](requirements-train.txt)
+
 **面向 Text-to-SQL 的多轮自我修复 Agent：环境、数据、SFT / GRPO 训练与轮级信用分配。**
 
 一个 4B 模型（Qwen3-4B-Instruct-2507 + LoRA）在只读 SQLite 沙箱里"写 SQL → 看执行反馈 → 改 SQL"，
