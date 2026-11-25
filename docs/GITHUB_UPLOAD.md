@@ -185,8 +185,10 @@ cd E:\deepseek工作区\sql-agent-rl
 
 ## 11. 可选加分项
 
+- **Actions（已加好）**：`.github/workflows/tests.yml` 会在每次 push 时用 Ubuntu + Python 3.12
+  跑 227 个单测（只装 `requirements-ci.txt` 里的 5 个依赖，不装 torch）。
+  第一次 push 后去仓库 **Actions** 标签页看结果；README 顶部的 tests 徽章在第一次跑完后才会变绿。
 - **Releases**：把 `dist/train_bundle.zip` 作为 Release 附件（不进 git 历史，适合大文件）；
-- **Actions**：加 `.github/workflows/tests.yml`，每次 push 自动跑 227 个单测——面试很加分；
 - **About**：一句英文描述 + topics，别人搜得到；
 - **Pin**：在个人主页把这仓库置顶。
 
