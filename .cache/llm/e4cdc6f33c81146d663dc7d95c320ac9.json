@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Cylinders, MAX(Accelerate) AS MaxAccelerate\nFROM cars_data\nGROUP BY Cylinders;\n```", "model": "deepseek-chat"}

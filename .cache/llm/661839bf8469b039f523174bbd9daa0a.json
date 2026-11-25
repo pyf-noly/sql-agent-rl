@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT id FROM TV_Channel WHERE id IN (SELECT Channel FROM Cartoon GROUP BY Channel HAVING COUNT(*) > 2);\n```", "model": "deepseek-chat"}

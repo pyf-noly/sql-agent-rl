@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT AVG(winner_rank) AS avg_winner_rank FROM matches;\n```", "model": "deepseek-chat"}

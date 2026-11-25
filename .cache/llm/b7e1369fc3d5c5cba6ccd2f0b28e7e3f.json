@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT a.Airline\nFROM flights f\nJOIN airlines a ON a.uid = f.Airline\nGROUP BY f.Airline\nORDER BY COUNT(*) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

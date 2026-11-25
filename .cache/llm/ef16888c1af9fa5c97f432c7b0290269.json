@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT s.Fname, s.Sex\nFROM Student s\nJOIN Has_Pet hp ON s.StuID = hp.StuID\nGROUP BY s.StuID, s.Fname, s.Sex\nHAVING COUNT(hp.PetID) > 1;\n```", "model": "deepseek-chat"}

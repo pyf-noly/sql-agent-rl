@@ -1,0 +1,78 @@
+{
+ "created_at": "2026-11-05T12:22:19",
+ "prompt": {
+  "include_column_types": true,
+  "include_fk": true,
+  "include_evidence": true,
+  "quote_identifiers": true,
+  "max_schema_cols": 400
+ },
+ "dev": {
+  "n": 1534,
+  "n_db": 11,
+  "dbs": [
+   "california_schools",
+   "card_games",
+   "codebase_community",
+   "debit_card_specializing",
+   "european_football_2",
+   "financial",
+   "formula_1",
+   "student_club",
+   "superhero",
+   "thrombosis_prediction",
+   "toxicology"
+  ],
+  "difficulty": {
+   "easy": 925,
+   "medium": 464,
+   "hard": 145
+  },
+  "n_evidence": 1386,
+  "gold_ok": 0,
+  "gold_timeout": 0,
+  "prompt_len": {
+   "n": 1534,
+   "chars_mean": 2738.4,
+   "chars_p95": 6526,
+   "est_tokens_mean": 782.4,
+   "est_tokens_p95": 1864.6
+  }
+ },
+ "train": {
+  "n": 9428,
+  "n_db": 69,
+  "n_sft_dbs": 54,
+  "n_rl_dbs": 15,
+  "n_sft_train": 3920,
+  "n_sft_val": 80,
+  "n_rl": 1976,
+  "sft_difficulty": {
+   "unknown": 3920
+  },
+  "rl_difficulty": {
+   "unknown": 1976
+  },
+  "sft_prompt_len": {
+   "n": 3920,
+   "chars_mean": 2706.4,
+   "chars_p95": 6704,
+   "est_tokens_mean": 773.2,
+   "est_tokens_p95": 1915.4
+  },
+  "rl_prompt_len": {
+   "n": 1976,
+   "chars_mean": 2198.9,
+   "chars_p95": 3208,
+   "est_tokens_mean": 628.3,
+   "est_tokens_p95": 916.6
+  },
+  "train_dev_db_overlap": 0,
+  "sft_rl_prompt_overlap": 0,
+  "difficulty_note": "BIRD 只有 dev.json 带 difficulty；train 的难度记为 unknown"
+ },
+ "checks": {
+  "ok": true,
+  "failures": []
+ }
+}

@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT DISTINCT s.first_name, s.middle_name, s.last_name\nFROM Students s\nJOIN Student_Enrolment se ON s.student_id = se.student_id\nJOIN Degree_Programs dp ON se.degree_program_id = dp.degree_program_id\nWHERE dp.degree_summary_name LIKE '%Bachelor%';\n```", "model": "deepseek-chat"}

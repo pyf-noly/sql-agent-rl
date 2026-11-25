@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT h2.name\nFROM Highschooler h1\nJOIN Friend f ON h1.ID = f.student_id\nJOIN Highschooler h2 ON f.friend_id = h2.ID\nWHERE h1.name = 'Kyle';\n```", "model": "deepseek-chat"}

@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT DISTINCT p.country_code, p.first_name\nFROM players p\nJOIN matches m ON p.player_id = m.winner_id\nWHERE m.tourney_name IN ('WTA Championships', 'Australian Open')\nGROUP BY p.player_id, p.country_code, p.first_name\nHAVING COUNT(DISTINCT m.tourney_name) = 2\n```", "model": "deepseek-chat"}

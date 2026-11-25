@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT f.FlightNo\nFROM flights f\nJOIN airlines a ON f.Airline = a.uid\nWHERE a.Airline = 'United Airlines';\n```", "model": "deepseek-chat"}

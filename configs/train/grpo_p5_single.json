@@ -1,0 +1,33 @@
+{
+ "model": {
+  "name": "/root/autodl-tmp/qwen3-4b",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "grad_checkpointing": true
+ },
+ "data_dir": "data/train",
+ "rl_file": "rl_dbhold.jsonl",
+ "out_dir": "runs/p5_single",
+ "steps": 150,
+ "group_size": 4,
+ "micro_batch": 2,
+ "lr": 0.000005,
+ "kl_beta": 0.0,
+ "clip_eps": 0.2,
+ "max_new_tokens": 192,
+ "temperature": 1.0,
+ "top_p": 1.0,
+ "max_turns": 1,
+ "sql_timeout": 2.0,
+ "reward_correct": 1.0,
+ "reward_wrong": 0.0,
+ "reward_parse_error": -0.2,
+ "eval_every": 0,
+ "eval_limit": 60,
+ "max_len": 2048,
+ "save_every": 50,
+ "logging_steps": 1,
+ "seed": 7
+}

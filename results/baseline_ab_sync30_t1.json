@@ -1,0 +1,4380 @@
+{
+ "config": {
+  "dataset": "bird",
+  "split": "bird_dev1534",
+  "n": 154,
+  "max_turns": 1,
+  "stride": 10,
+  "temperature": 0.0,
+  "workers": 1,
+  "until_correct": false,
+  "timeout": 10.0,
+  "max_rows": 20000,
+  "compare": "bird",
+  "value_check": true,
+  "prompt": {
+   "include_column_types": true,
+   "include_fk": true,
+   "include_evidence": true,
+   "max_schema_cols": 400
+  },
+  "model": "/root/autodl-tmp/qwen3-4b",
+  "base_url": "local",
+  "tag": "ab_sync30_t1",
+  "finished_at": "2026-11-17T23:07:38",
+  "elapsed_sec": 327.8
+ },
+ "usage": {
+  "prompt_tokens": 105175,
+  "completion_tokens": 6320,
+  "calls": 154,
+  "cost_cny": 0.0
+ },
+ "metrics": {
+  "total": 154,
+  "correct": 88,
+  "accuracy": 0.5714,
+  "gold_error": 0,
+  "pred_error": 9,
+  "row_mismatch": 0,
+  "value_mismatch": 57,
+  "by_difficulty": {
+   "easy": {
+    "total": 90,
+    "correct": 54,
+    "accuracy": 0.6
+   },
+   "hard": {
+    "total": 12,
+    "correct": 7,
+    "accuracy": 0.5833
+   },
+   "medium": {
+    "total": 52,
+    "correct": 27,
+    "accuracy": 0.5192
+   }
+  },
+  "by_turns": {
+   "1": {
+    "total": 154,
+    "correct": 88,
+    "accuracy": 0.5714
+   }
+  }
+ },
+ "episodes": [
+  {
+   "db_id": "california_schools",
+   "question": "What is the highest eligible free rate for K-12 students in the schools in Alameda County?",
+   "gold_sql": "SELECT `Free Meal Count (K-12)` / `Enrollment (K-12)` FROM frpm WHERE `County Name` = 'Alameda' ORDER BY (CAST(`Free Meal Count (K-12)` AS REAL) / `Enrollment (K-12)`) DESC LIMIT 1",
+   "final_sql": "SELECT MAX(T1.\"Percent (%) Eligible Free (K-12)\") FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.County = 'Alameda County'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT MAX(T1.\"Percent (%) Eligible Free (K-12)\") FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.County = 'Alameda County'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: MAX(T1.\"Percent (%) Eligible Free (K-12)\")\n  (NULL)\nValue check: a literal in your query does not exist in the database.\n- `Alameda County` is not found in column `County`. Closest existing values: 'Alameda'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 0,
+   "difficulty": "easy",
+   "elapsed_sec": 3.57,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "california_schools",
+   "question": "For the school with the highest average score in Reading in the SAT test, what is its FRPM count for students aged 5-17?",
+   "gold_sql": "SELECT T2.`FRPM Count (Ages 5-17)` FROM satscores AS T1 INNER JOIN frpm AS T2 ON T1.cds = T2.CDSCode ORDER BY T1.AvgScrRead DESC LIMIT 1",
+   "final_sql": "SELECT T1.\"FRPM Count (Ages 5-17)\" FROM frpm AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T2.AvgScrRead = ( SELECT MAX(AvgScrRead) FROM satscores )",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.\"FRPM Count (Ages 5-17)\" FROM frpm AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T2.AvgScrRead = ( SELECT MAX(AvgScrRead) FROM satscores )",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.",
+     "correct": null
+    }
+   ],
+   "idx": 1,
+   "difficulty": "easy",
+   "elapsed_sec": 3.32,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "california_schools",
+   "question": "How many schools in Amador which the Low Grade is 9 and the High Grade is 12?",
+   "gold_sql": "SELECT COUNT(T1.`School Name`) FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.County = 'Amador' AND T1.`Low Grade` = 9 AND T1.`High Grade` = 12",
+   "final_sql": "SELECT COUNT(CDSCode) FROM frpm WHERE `Low Grade` = 9 AND `High Grade` = 12 AND `County Name` = 'Amador'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(CDSCode) FROM frpm WHERE `Low Grade` = 9 AND `High Grade` = 12 AND `County Name` = 'Amador'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(CDSCode)\n  (3)",
+     "correct": null
+    }
+   ],
+   "idx": 2,
+   "difficulty": "easy",
+   "elapsed_sec": 1.78,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "california_schools",
+   "question": "Which cities have the top 5 lowest enrollment number for students in grades 1 through 12?",
+   "gold_sql": "SELECT T2.City FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode GROUP BY T2.City ORDER BY SUM(T1.`Enrollment (K-12)`) ASC LIMIT 5",
+   "final_sql": "SELECT DISTINCT T2.City FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T1.`Enrollment (K-12)` ASC LIMIT 5",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT T2.City FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T1.`Enrollment (K-12)` ASC LIMIT 5",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: City\n  (Kettleman City)\n  (Burbank)\n  (Tiburon)",
+     "correct": null
+    }
+   ],
+   "idx": 3,
+   "difficulty": "easy",
+   "elapsed_sec": 1.93,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "california_schools",
+   "question": "What is the telephone number for the school with the lowest average score in reading in Fresno Unified?",
+   "gold_sql": "SELECT T2.Phone FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.District = 'Fresno Unified' AND T1.AvgScrRead IS NOT NULL ORDER BY T1.AvgScrRead ASC LIMIT 1",
+   "final_sql": "SELECT T2.Phone FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.District = 'Fresno Unified' ORDER BY T1.AvgScrRead ASC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.Phone FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.District = 'Fresno Unified' ORDER BY T1.AvgScrRead ASC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Phone\n  ((559) 490-4290)",
+     "correct": null
+    }
+   ],
+   "idx": 4,
+   "difficulty": "medium",
+   "elapsed_sec": 2.13,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "california_schools",
+   "question": "What is the postal street address for the school with the 7th highest Math average? Indicate the school's name.",
+   "gold_sql": "SELECT T2.MailStreet, T2.School FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode ORDER BY T1.AvgScrMath DESC LIMIT 6, 1",
+   "final_sql": "SELECT T1.Street, T1.School FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T2.AvgScrMath = ( SELECT AvgScrMath FROM satscores ORDER BY AvgScrMath DESC LIMIT 7, 1 ) ORDER BY T2.AvgScrMath DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.Street, T1.School FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T2.AvgScrMath = ( SELECT AvgScrMath FROM satscores ORDER BY AvgScrMath DESC LIMIT 7, 1 ) ORDER BY T2.AvgScrMath DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Street, School\n  (5172 Orange Avenue, Oxford Academy)",
+     "correct": null
+    }
+   ],
+   "idx": 5,
+   "difficulty": "easy",
+   "elapsed_sec": 3.0,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "california_schools",
+   "question": "What are the websites for all the partially virtual chartered schools located in San Joaquin?",
+   "gold_sql": "SELECT Website FROM schools WHERE County = 'San Joaquin' AND Virtual = 'P' AND Charter = 1",
+   "final_sql": "SELECT Website FROM schools WHERE Virtual = 'P' AND Charter = 1 AND County = 'San Joaquin'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Website FROM schools WHERE Virtual = 'P' AND Charter = 1 AND County = 'San Joaquin'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 2,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 2 rows.\nColumns: Website\n  (www.riovalley.org)\n  (www.mantecausd.net)",
+     "correct": null
+    }
+   ],
+   "idx": 6,
+   "difficulty": "easy",
+   "elapsed_sec": 1.09,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "california_schools",
+   "question": "How many active and closed District Community Day Schools are there in the county of Alpine?",
+   "gold_sql": "SELECT COUNT(School) FROM schools WHERE (StatusType = 'Closed' OR StatusType = 'Active') AND SOC = 69 AND County = 'Alpine'",
+   "final_sql": "SELECT COUNT(CDSCode) FROM schools WHERE County = 'Alpine' AND StatusType IN ('Active', 'Closed')",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(CDSCode) FROM schools WHERE County = 'Alpine' AND StatusType IN ('Active', 'Closed')",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(CDSCode)\n  (16)",
+     "correct": null
+    }
+   ],
+   "idx": 7,
+   "difficulty": "easy",
+   "elapsed_sec": 1.09,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "california_schools",
+   "question": "What is the school type of the school with the highest latitude? Indicate the name of the school as well as the latitude coordinates.",
+   "gold_sql": "SELECT T1.`School Type`, T1.`School Name`, T2.Latitude FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T2.Latitude DESC LIMIT 1",
+   "final_sql": "SELECT T1.SchoolType, T1.SchoolName, T1.Latitude FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T1.Latitude DESC LIMIT 1",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.SchoolType, T1.SchoolName, T1.Latitude FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T1.Latitude DESC LIMIT 1",
+     "success": false,
+     "error_class": "db_error",
+     "error_message": "no such column: T1.SchoolType",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Database says: no such column: T1.SchoolType\nAvailable columns: frpm.CDSCode, frpm.Academic Year, frpm.County Code, frpm.District Code, frpm.School Code, frpm.County Name, frpm.District Name, frpm.School Name, frpm.District Type, frpm.School Type, frpm.Educational Option Type, frpm.NSLP Provision Status, frpm.Charter School (Y/N), frpm.Charter School Number, frpm.Charter Funding Type, frpm.IRC, frpm.Low Grade, frpm.High Grade, frpm.Enrollment (K-12), frpm.Free Meal Count (K-12), ... (+69 more)\nU",
+     "correct": null
+    }
+   ],
+   "idx": 8,
+   "difficulty": "easy",
+   "elapsed_sec": 2.09,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "db_error"
+  },
+  {
+   "db_id": "financial",
+   "question": "How many accounts who have region in Prague are eligible for loans?",
+   "gold_sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN loan AS T2 ON T1.account_id = T2.account_id INNER JOIN district AS T3 ON T1.district_id = T3.district_id WHERE T3.A3 = 'Prague'",
+   "final_sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A3 = 'Prague'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A3 = 'Prague'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.account_id)\n  (554)",
+     "correct": null
+    }
+   ],
+   "idx": 9,
+   "difficulty": "easy",
+   "elapsed_sec": 1.64,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "Among the account opened, how many female customers who were born before 1950 and stayed in Sokolov?",
+   "gold_sql": "SELECT COUNT(T2.client_id) FROM district AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id WHERE T2.gender = 'F' AND STRFTIME('%Y', T2.birth_date) < '1950' AND T1.A2 = 'Sokolov'",
+   "final_sql": "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'F' AND T1.birth_date < '1950-01-01' AND T2.A2 = 'Sokolov'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'F' AND T1.birth_date < '1950-01-01' AND T2.A2 = 'Sokolov'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.client_id)\n  (8)",
+     "correct": null
+    }
+   ],
+   "idx": 10,
+   "difficulty": "medium",
+   "elapsed_sec": 3.59,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "What is the disposition id of the client who made 5100 USD transaction in 1998/9/2?",
+   "gold_sql": "SELECT T1.disp_id FROM disp AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id INNER JOIN trans AS T3 ON T2.account_id = T3.account_id WHERE T3.date='1997-08-20' AND T3.amount = 5100",
+   "final_sql": "SELECT T2.disp_id FROM trans AS T1 INNER JOIN disp AS T2 ON T1.account_id = T2.account_id WHERE T1.amount = 5100 AND T1.date LIKE '1998-09-02%'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.disp_id FROM trans AS T1 INNER JOIN disp AS T2 ON T1.account_id = T2.account_id WHERE T1.amount = 5100 AND T1.date LIKE '1998-09-02%'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 4,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 4 rows.\nColumns: disp_id\n  (1719)\n  (4474)\n  (4942)",
+     "correct": null
+    }
+   ],
+   "idx": 11,
+   "difficulty": "easy",
+   "elapsed_sec": 2.25,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "From Year 1995 to 2000, who are the accounts holders from 'east Bohemia'. State the account ID the frequency of statement issuance.",
+   "gold_sql": "SELECT T1.account_id, T1.frequency FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A3 = 'east Bohemia' AND STRFTIME('%Y', T1.date) BETWEEN '1995' AND '2000'",
+   "final_sql": "SELECT T1.account_id, T1.frequency FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A2 = 'east Bohemia' AND STRFTIME('%Y', T1.date) BETWEEN '1995' AND '2000'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.account_id, T1.frequency FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A2 = 'east Bohemia' AND STRFTIME('%Y', T1.date) BETWEEN '1995' AND '2000'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `east Bohemia` is not found in column `A2`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 12,
+   "difficulty": "medium",
+   "elapsed_sec": 2.74,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "How many of the account holders in South Bohemia still do not own credit cards?",
+   "gold_sql": "SELECT COUNT(T3.account_id) FROM district AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id INNER JOIN disp AS T3 ON T2.client_id = T3.client_id WHERE T1.A3 = 'south Bohemia' AND T3.type != 'OWNER'",
+   "final_sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id WHERE T2.A3 = 'South Bohemia' AND T1.account_id NOT IN ( SELECT DISTINCT T3.account_id FROM card AS T3 INNER JOIN disp AS T4 ON T3.disp_id = T4.disp_id )",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id WHERE T2.A3 = 'South Bohemia' AND T1.account_id NOT IN ( SELECT DISTINCT T3.account_id FROM card AS T3 INNER JOIN disp AS T4 ON T3.disp_id = T4.disp_id )",
+     "success": false,
+     "error_class": "db_error",
+     "error_message": "no such column: T2.A3",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Database says: no such column: T2.A3\nAvailable columns: account.account_id, account.district_id, account.frequency, account.date, card.card_id, card.disp_id, card.type, card.issued, client.client_id, client.gender, client.birth_date, client.district_id, disp.disp_id, disp.client_id, disp.account_id, disp.type, district.district_id, district.A2, district.A3, district.A4, ... (+35 more)\nUse the exact column names (case-sensitive names in SQLite may need quoting).",
+     "correct": null
+    }
+   ],
+   "idx": 13,
+   "difficulty": "medium",
+   "elapsed_sec": 3.15,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "db_error"
+  },
+  {
+   "db_id": "financial",
+   "question": "How many accounts are there in the district of \"Pisek\"?",
+   "gold_sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A2 = 'Pisek'",
+   "final_sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A2 = 'Pisek'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A2 = 'Pisek'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.account_id)\n  (46)",
+     "correct": null
+    }
+   ],
+   "idx": 14,
+   "difficulty": "easy",
+   "elapsed_sec": 1.69,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "How many accounts in North Bohemia has made a transaction with the partner's bank being AB?",
+   "gold_sql": "SELECT COUNT(T2.account_id) FROM district AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id INNER JOIN trans AS T3 ON T2.account_id = T3.account_id WHERE T3.bank = 'AB' AND T1.A3 = 'north Bohemia'",
+   "final_sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN trans AS T2 ON T1.account_id = T2.account_id INNER JOIN district AS T3 ON T1.district_id = T3.district_id WHERE T3.A3 = 'North Bohemia' AND T2.bank = 'AB'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN trans AS T2 ON T1.account_id = T2.account_id INNER JOIN district AS T3 ON T1.district_id = T3.district_id WHERE T3.A3 = 'North Bohemia' AND T2.bank = 'AB'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.account_id)\n  (0)\nValue check: a literal in your query does not exist in the database.\n- `North Bohemia` is not found in column `A3`. Closest existing values: 'north Bohemia', 'south Bohemia', 'west Bohemia'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 15,
+   "difficulty": "medium",
+   "elapsed_sec": 2.65,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "Among the weekly issuance accounts, how many have a loan of under 200000?",
+   "gold_sql": "SELECT COUNT(T1.account_id) FROM loan AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id WHERE T2.frequency = 'POPLATEK TYDNE' AND T1.amount < 200000",
+   "final_sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN loan AS T2 ON T1.account_id = T2.account_id WHERE T1.frequency = 'POPLATEK TYDNE' AND T2.amount < 200000",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN loan AS T2 ON T1.account_id = T2.account_id WHERE T1.frequency = 'POPLATEK TYDNE' AND T2.amount < 200000",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.account_id)\n  (58)",
+     "correct": null
+    }
+   ],
+   "idx": 16,
+   "difficulty": "easy",
+   "elapsed_sec": 2.24,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "How many credit card withdrawals were recorded after 1995?",
+   "gold_sql": "SELECT COUNT(account_id) FROM trans WHERE STRFTIME('%Y', date) > '1995' AND operation = 'VYBER KARTOU'",
+   "final_sql": "SELECT COUNT(*) FROM trans WHERE operation = 'VYBER KARTOU' AND SUBSTR(date, 1, 4) > '1995'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM trans WHERE operation = 'VYBER KARTOU' AND SUBSTR(date, 1, 4) > '1995'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (7652)",
+     "correct": null
+    }
+   ],
+   "idx": 17,
+   "difficulty": "easy",
+   "elapsed_sec": 1.51,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "Please provide a list of clients who were born between 1983 and 1987 and whose account branch is in East Bohemia, along with their IDs.",
+   "gold_sql": "SELECT T1.client_id, T3.account_id FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id INNER JOIN disp AS T4 ON T1.client_id = T4.client_id INNER JOIN account AS T3 ON T2.district_id = T3.district_id and T4.account_id = T3.account_id WHERE T2.A3 = 'east Bohemia' AND STRFTIME('%Y', T1.birth_date) BETWEEN '1983' AND '1987'",
+   "final_sql": "SELECT T1.client_id FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A2 = 'East Bohemia' AND T1.birth_date BETWEEN '1983-01-01' AND '1987-12-31'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.client_id FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A2 = 'East Bohemia' AND T1.birth_date BETWEEN '1983-01-01' AND '1987-12-31'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `East Bohemia` is not found in column `A2`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 18,
+   "difficulty": "medium",
+   "elapsed_sec": 3.19,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "financial",
+   "question": "How many clients who were born in 1920 stay in east Bohemia?",
+   "gold_sql": "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE STRFTIME('%Y', T1.birth_date) = '1920' AND T2.A3 = 'east Bohemia'",
+   "final_sql": "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A3 = 'East Bohemia' AND STRFTIME('%Y', T1.birth_date) = '1920'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A3 = 'East Bohemia' AND STRFTIME('%Y', T1.birth_date) = '1920'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.client_id)\n  (0)\nValue check: a literal in your query does not exist in the database.\n- `East Bohemia` is not found in column `A3`. Closest existing values: 'east Bohemia', 'west Bohemia', 'south Bohemia'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 19,
+   "difficulty": "easy",
+   "elapsed_sec": 3.42,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "Find the triple-bonded molecules which are carcinogenic.",
+   "gold_sql": "SELECT DISTINCT T2.molecule_id FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = '#' AND T2.label = '+'",
+   "final_sql": "SELECT T1.molecule_id FROM molecule AS T1 INNER JOIN bond AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.bond_type = '#' AND T1.label = '+'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.molecule_id FROM molecule AS T1 INNER JOIN bond AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.bond_type = '#' AND T1.label = '+'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 3,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 3 rows.\nColumns: molecule_id\n  (TR041)\n  (TR041)\n  (TR499)",
+     "correct": null
+    }
+   ],
+   "idx": 20,
+   "difficulty": "easy",
+   "elapsed_sec": 1.91,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "What atoms are connected in single type bonds?",
+   "gold_sql": "SELECT T2.atom_id, T2.atom_id2 FROM bond AS T1 INNER JOIN connected AS T2 ON T1.bond_id = T2.bond_id WHERE T1.bond_type = '-'",
+   "final_sql": "SELECT T1.atom_id, T1.atom_id2 FROM connected AS T1 INNER JOIN bond AS T2 ON T1.bond_id = T2.bond_id WHERE T2.bond_type = '-'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.atom_id, T1.atom_id2 FROM connected AS T1 INNER JOIN bond AS T2 ON T1.bond_id = T2.bond_id WHERE T2.bond_type = '-'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 20000,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 20000 rows (truncated at 3 for preview).\nColumns: atom_id, atom_id2\n  (TR000_1, TR000_2)\n  (TR000_2, TR000_1)\n  (TR000_2, TR000_3)",
+     "correct": null
+    }
+   ],
+   "idx": 21,
+   "difficulty": "easy",
+   "elapsed_sec": 1.75,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "Please list top three elements of the toxicology of the molecule TR000 in alphabetical order.",
+   "gold_sql": "SELECT DISTINCT T.element FROM atom AS T WHERE T.molecule_id = 'TR000' ORDER BY T.element LIMIT 3",
+   "final_sql": "SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR000' ORDER BY T1.element LIMIT 3",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR000' ORDER BY T1.element LIMIT 3",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 3,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 3 rows.\nColumns: element\n  (c)\n  (cl)\n  (cl)",
+     "correct": null
+    }
+   ],
+   "idx": 22,
+   "difficulty": "hard",
+   "elapsed_sec": 2.13,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "What are the elements of the toxicology and label of molecule TR060?",
+   "gold_sql": "SELECT DISTINCT T1.element, T2.label FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR060'",
+   "final_sql": "SELECT T1.element, T2.label FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR060'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.element, T2.label FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR060'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 103,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 103 rows.\nColumns: element, label\n  (c, -)\n  (c, -)\n  (h, -)",
+     "correct": null
+    }
+   ],
+   "idx": 23,
+   "difficulty": "hard",
+   "elapsed_sec": 1.77,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "List all the elements of the toxicology of the molecule \"TR004\".",
+   "gold_sql": "SELECT DISTINCT T.element FROM atom AS T WHERE T.molecule_id = 'TR004'",
+   "final_sql": "SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR004'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR004'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 24,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 24 rows.\nColumns: element\n  (s)\n  (n)\n  (o)",
+     "correct": null
+    }
+   ],
+   "idx": 24,
+   "difficulty": "hard",
+   "elapsed_sec": 1.66,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "Of all the carcinogenic molecules, which one has the most double bonds?",
+   "gold_sql": "SELECT T.molecule_id FROM ( SELECT T3.molecule_id, COUNT(T1.bond_type) FROM bond AS T1 INNER JOIN molecule AS T3 ON T1.molecule_id = T3.molecule_id WHERE T3.label = '+' AND T1.bond_type = '=' GROUP BY T3.molecule_id ORDER BY COUNT(T1.bond_type) DESC LIMIT 1 ) AS T",
+   "final_sql": "SELECT T1.molecule_id FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.label = '+' AND T1.bond_type = ' = ' GROUP BY T1.molecule_id ORDER BY COUNT(T1.bond_id) DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.molecule_id FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.label = '+' AND T1.bond_type = ' = ' GROUP BY T1.molecule_id ORDER BY COUNT(T1.bond_id) DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- ` = ` is not found in column `bond_type`. Closest existing values: '='\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 25,
+   "difficulty": "medium",
+   "elapsed_sec": 2.68,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "Calculate the total atoms with triple-bond molecules containing the element phosphorus or bromine.",
+   "gold_sql": "SELECT COUNT(T1.atom_id) FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN bond AS T3 ON T2.molecule_id = T3.molecule_id WHERE T3.bond_type = '#' AND T1.element IN ('p', 'br')",
+   "final_sql": "SELECT COUNT(T1.atom_id) FROM atom AS T1 INNER JOIN bond AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.bond_type = '#' AND (T1.element = 'p' OR T1.element = 'br')",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.atom_id) FROM atom AS T1 INNER JOIN bond AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.bond_type = '#' AND (T1.element = 'p' OR T1.element = 'br')",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.atom_id)\n  (1)",
+     "correct": null
+    }
+   ],
+   "idx": 26,
+   "difficulty": "medium",
+   "elapsed_sec": 2.22,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "Among the molecules with element Calcium, are they mostly carcinogenic or non carcinogenic?",
+   "gold_sql": "SELECT T2.label FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.element = 'ca' GROUP BY T2.label ORDER BY COUNT(T2.label) DESC LIMIT 1",
+   "final_sql": "SELECT label FROM molecule WHERE molecule_id IN ( SELECT molecule_id FROM atom WHERE element = 'ca' ) GROUP BY label ORDER BY COUNT(label) DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT label FROM molecule WHERE molecule_id IN ( SELECT molecule_id FROM atom WHERE element = 'ca' ) GROUP BY label ORDER BY COUNT(label) DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: label\n  (-)\nValue check: a literal in your query does not exist in the database.\n- `ca` is not found in column `molecule_id`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 27,
+   "difficulty": "medium",
+   "elapsed_sec": 1.45,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "Enumerate the bond ID of triple bond type molecules and tell me if they are carcinogenic or not.",
+   "gold_sql": "SELECT DISTINCT T1.bond_id, T2.label FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = '#'",
+   "final_sql": "SELECT T1.bond_id, T2.label FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = '#'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.bond_id, T2.label FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = '#'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: bond_id, label\n  (TR041_7_10, +)\n  (TR041_8_9, +)\n  (TR377_3_5, -)",
+     "correct": null
+    }
+   ],
+   "idx": 28,
+   "difficulty": "medium",
+   "elapsed_sec": 1.74,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "Which toxic element can be found in the molecule TR151?",
+   "gold_sql": "SELECT DISTINCT T.element FROM atom AS T WHERE T.molecule_id = 'TR151'",
+   "final_sql": "SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.label = 'toxic' AND T1.element IN ('cl', 'c', 'h', 'o', 's', 'n', 'p', 'na', 'br', 'f', 'i', 'sn', 'pb', 'te', 'ca')",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.label = 'toxic' AND T1.element IN ('cl', 'c', 'h', 'o', 's', 'n', 'p', 'na', 'br', 'f', 'i', 'sn', 'pb', 'te', 'ca')",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `toxic` is not found in column `label`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 29,
+   "difficulty": "hard",
+   "elapsed_sec": 3.35,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "What atoms comprise TR186?",
+   "gold_sql": "SELECT T.atom_id FROM atom AS T WHERE T.molecule_id = 'TR186'",
+   "final_sql": "SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR186'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.molecule_id = 'TR186'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 41,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 41 rows.\nColumns: element\n  (c)\n  (c)\n  (c)",
+     "correct": null
+    }
+   ],
+   "idx": 30,
+   "difficulty": "easy",
+   "elapsed_sec": 1.63,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "How many molecules have a double bond type and among these molecule, how many are labeled as carcinogenic compound?",
+   "gold_sql": "SELECT COUNT(DISTINCT T2.molecule_id), SUM(CASE WHEN T2.label = '+' THEN 1 ELSE 0 END) FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = '='",
+   "final_sql": "SELECT COUNT(T1.molecule_id) FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = ' = ' AND T2.label = '+'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.molecule_id) FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = ' = ' AND T2.label = '+'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.molecule_id)\n  (0)\nValue check: a literal in your query does not exist in the database.\n- ` = ` is not found in column `bond_type`. Closest existing values: '='\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 31,
+   "difficulty": "medium",
+   "elapsed_sec": 1.88,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "What is the type of the bond which is presenting the connection between two atoms TR000_1 and TR000_2?",
+   "gold_sql": "SELECT T1.bond_type FROM bond AS T1 INNER JOIN connected AS T2 ON T1.bond_id = T2.bond_id WHERE T2.atom_id = 'TR000_1' AND T2.atom_id2 = 'TR000_2'",
+   "final_sql": "SELECT T2.bond_type FROM connected AS T1 INNER JOIN bond AS T2 ON T1.bond_id = T2.bond_id WHERE T1.atom_id = 'TR000_1' AND T1.atom_id2 = 'TR000_2'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.bond_type FROM connected AS T1 INNER JOIN bond AS T2 ON T1.bond_id = T2.bond_id WHERE T1.atom_id = 'TR000_1' AND T1.atom_id2 = 'TR000_2'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: bond_type\n  (-)",
+     "correct": null
+    }
+   ],
+   "idx": 32,
+   "difficulty": "medium",
+   "elapsed_sec": 2.29,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "toxicology",
+   "question": "Calculate the percentage of carcinogenic molecules with triple bonded Hidrogen atoms.",
+   "gold_sql": "SELECT CAST(SUM(CASE WHEN T1.label = '+' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(DISTINCT T1.molecule_id) FROM molecule AS T1 INNER JOIN atom AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN bond AS T3 ON T1.molecule_id = T3.molecule_id WHERE T3.bond_type = '#' AND T2.element = 'h'",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN T1.label = '+' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.molecule_id) FROM molecule AS T1 INNER JOIN atom AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN bond AS T3 ON T3.molecule_id = T1.molecule_id INNER JOIN connected AS T4 ON T4.bond_id = T3.bond_id WHERE T2.element = 'h' AND T3.bond_type = '#'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN T1.label = '+' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.molecule_id) FROM molecule AS T1 INNER JOIN atom AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN bond AS T3 ON T3.molecule_id = T1.molecule_id INNER JOIN connected AS T4 ON T4.bond_id = T3.bond_id WHERE T2.element = 'h' AND T3.bond_type = '#'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN T1.label = '+' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.molecule_id)\n  (16.666666666666668)",
+     "correct": null
+    }
+   ],
+   "idx": 33,
+   "difficulty": "hard",
+   "elapsed_sec": 4.29,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Which are the cards that have incredibly powerful foils.",
+   "gold_sql": "SELECT id FROM cards WHERE cardKingdomFoilId IS NOT NULL AND cardKingdomId IS NOT NULL",
+   "final_sql": "SELECT name FROM cards WHERE cardKingdomFoilId IS NOT NULL AND cardKingdomId IS NOT NULL",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT name FROM cards WHERE cardKingdomFoilId IS NOT NULL AND cardKingdomId IS NOT NULL",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 20000,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 20000 rows (truncated at 3 for preview).\nColumns: name\n  (Ballista Squad)\n  (Bandage)\n  (Beacon of Immortality)",
+     "correct": null
+    }
+   ],
+   "idx": 34,
+   "difficulty": "easy",
+   "elapsed_sec": 1.58,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "State the alternative languages available for card named Annul numbered 29.",
+   "gold_sql": "SELECT T2.language FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T1.name = 'Annul' AND T1.number = 29",
+   "final_sql": "SELECT T2.language FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T1.name = 'Annul' AND T1.number = '29'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.language FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T1.name = 'Annul' AND T1.number = '29'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 6,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 6 rows.\nColumns: language\n  (German)\n  (Spanish)\n  (French)",
+     "correct": null
+    }
+   ],
+   "idx": 35,
+   "difficulty": "easy",
+   "elapsed_sec": 2.9,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "cards are not directly linked to language but through table 'set'. you need to add set in covered table & rephrase your question\nWhat are the languages available for the set that card 'Angel of Mercy' is in?",
+   "gold_sql": "SELECT language FROM set_translations WHERE id IN ( SELECT id FROM cards WHERE name = 'Angel of Mercy' )",
+   "final_sql": "SELECT T2.language FROM cards AS T1 INNER JOIN set_translations AS T2 ON T2.setCode = T1.setCode WHERE T1.name = 'Angel of Mercy'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.language FROM cards AS T1 INNER JOIN set_translations AS T2 ON T2.setCode = T1.setCode WHERE T1.name = 'Angel of Mercy'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 50,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 50 rows.\nColumns: language\n  (Chinese Simplified)\n  (Chinese Traditional)\n  (French)",
+     "correct": null
+    }
+   ],
+   "idx": 36,
+   "difficulty": "medium",
+   "elapsed_sec": 1.57,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "How many borderless cards are illustrated in Russian?",
+   "gold_sql": "SELECT COUNT(T1.id) FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T1.borderColor = 'borderless' AND T2.language = 'Russian'",
+   "final_sql": "SELECT COUNT(T1.id) FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T2.language = 'Russian' AND T1.borderColor = 'borderless'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.id) FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T2.language = 'Russian' AND T1.borderColor = 'borderless'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.id)\n  (29)",
+     "correct": null
+    }
+   ],
+   "idx": 37,
+   "difficulty": "easy",
+   "elapsed_sec": 1.8,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "List the edhrecRank for cards with frame version 2015.",
+   "gold_sql": "SELECT edhrecRank FROM cards WHERE frameVersion = 2015",
+   "final_sql": "SELECT edhrecRank FROM cards WHERE frameVersion = '2015'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT edhrecRank FROM cards WHERE frameVersion = '2015'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 20000,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 20000 rows (truncated at 3 for preview).\nColumns: edhrecRank\n  (1813)\n  (14236)\n  (6575)",
+     "correct": null
+    }
+   ],
+   "idx": 38,
+   "difficulty": "easy",
+   "elapsed_sec": 0.84,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "What are the colors of cards from ID 1-20? What are the format of these cards?",
+   "gold_sql": "SELECT T1.colors, T2.format FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T1.id BETWEEN 1 AND 20",
+   "final_sql": "SELECT T1.colors, T2.format FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.id = T2.uuid WHERE T1.id BETWEEN 1 AND 20",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.colors, T2.format FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.id = T2.uuid WHERE T1.id BETWEEN 1 AND 20",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.",
+     "correct": null
+    }
+   ],
+   "idx": 39,
+   "difficulty": "easy",
+   "elapsed_sec": 2.19,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Lists the set code of all cards translated into Spanish.",
+   "gold_sql": "SELECT setCode FROM set_translations WHERE language = 'Spanish'",
+   "final_sql": "SELECT DISTINCT T1.setCode FROM set_translations AS T1 INNER JOIN cards AS T2 ON T1.id = T2.id WHERE T1.language = 'es'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT T1.setCode FROM set_translations AS T1 INNER JOIN cards AS T2 ON T1.id = T2.id WHERE T1.language = 'es'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `es` is not found in column `language`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 40,
+   "difficulty": "easy",
+   "elapsed_sec": 1.5,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Is there any card from Erica Yang artist in pauper format and available in paper? If so, indicate its ID.",
+   "gold_sql": "SELECT T1.id FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T1.artist = 'Erica Yang' AND T2.format = 'pauper' AND T1.availability = 'paper'",
+   "final_sql": "SELECT T1.id FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T1.artist = 'Erica Yang' AND T2.format = 'pauper' AND T1.availability = 'paper'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.id FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T1.artist = 'Erica Yang' AND T2.format = 'pauper' AND T1.availability = 'paper'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: id\n  (15594)\n  (15943)\n  (30953)",
+     "correct": null
+    }
+   ],
+   "idx": 41,
+   "difficulty": "easy",
+   "elapsed_sec": 2.14,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "How many cards are oversized, reprinted, and printed for promotions?",
+   "gold_sql": "SELECT COUNT(id) FROM cards WHERE isOversized = 1 AND isReprint = 1 AND isPromo = 1",
+   "final_sql": "SELECT COUNT(id) FROM cards WHERE isOversized = 1 AND isReprint = 1 AND isPromo = 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(id) FROM cards WHERE isOversized = 1 AND isReprint = 1 AND isPromo = 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(id)\n  (17)",
+     "correct": null
+    }
+   ],
+   "idx": 42,
+   "difficulty": "easy",
+   "elapsed_sec": 1.3,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Please list top two sets of cards with their IDs that have Italian-language cards and are located in the Shadowmoor block in alphabetical order.",
+   "gold_sql": "SELECT T1.name, T1.id FROM sets AS T1 INNER JOIN set_translations AS T2 ON T1.code = T2.setCode WHERE T1.block = 'Shadowmoor' AND T2.language = 'Italian' ORDER BY T1.id LIMIT 2",
+   "final_sql": "SELECT T1.id, T1.name FROM sets AS T1 INNER JOIN set_translations AS T2 ON T1.code = T2.setCode WHERE T2.language = 'Italian' AND T1.block = 'Shadowmoor' ORDER BY T1.name ASC LIMIT 2",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.id, T1.name FROM sets AS T1 INNER JOIN set_translations AS T2 ON T1.code = T2.setCode WHERE T2.language = 'Italian' AND T1.block = 'Shadowmoor' ORDER BY T1.name ASC LIMIT 2",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 2,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 2 rows.\nColumns: id, name\n  (101, Eventide)\n  (485, Shadowmoor)",
+     "correct": null
+    }
+   ],
+   "idx": 43,
+   "difficulty": "easy",
+   "elapsed_sec": 2.23,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Which foreign language used by \"A Pedra Fellwar\"?",
+   "gold_sql": "SELECT DISTINCT language FROM foreign_data WHERE name = 'A Pedra Fellwar'",
+   "final_sql": "SELECT T2.language FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T1.name = 'A Pedra Fellwar'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.language FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T1.name = 'A Pedra Fellwar'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.",
+     "correct": null
+    }
+   ],
+   "idx": 44,
+   "difficulty": "easy",
+   "elapsed_sec": 1.68,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Of all the cards that are designed by Aaron Miller, how many of them are incredibly powerful?",
+   "gold_sql": "SELECT SUM(CASE WHEN artist = 'Aaron Miller' AND cardKingdomFoilId IS NOT NULL AND cardKingdomId IS NOT NULL THEN 1 ELSE 0 END) FROM cards",
+   "final_sql": "SELECT COUNT(id) FROM cards WHERE artist = 'Aaron Miller' AND cardKingdomFoilId IS NOT NULL AND cardKingdomId IS NOT NULL",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(id) FROM cards WHERE artist = 'Aaron Miller' AND cardKingdomFoilId IS NOT NULL AND cardKingdomId IS NOT NULL",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(id)\n  (87)",
+     "correct": null
+    }
+   ],
+   "idx": 45,
+   "difficulty": "medium",
+   "elapsed_sec": 1.41,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Which artist designed the card whose promotional name is \"Battra, Dark Destroyer\"?",
+   "gold_sql": "SELECT artist FROM cards WHERE flavorName = 'Battra, Dark Destroyer'",
+   "final_sql": "SELECT artist FROM cards WHERE flavorName = 'Battra, Dark Destroyer'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT artist FROM cards WHERE flavorName = 'Battra, Dark Destroyer'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: artist\n  (羽山晃平)",
+     "correct": null
+    }
+   ],
+   "idx": 46,
+   "difficulty": "easy",
+   "elapsed_sec": 0.8,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "When was the set of cards with \"Ancestor's Chosen\" released?",
+   "gold_sql": "SELECT DISTINCT T2.releaseDate FROM cards AS T1 INNER JOIN sets AS T2 ON T2.code = T1.setCode WHERE T1.name = 'Ancestor''s Chosen'",
+   "final_sql": "SELECT releaseDate FROM sets WHERE name = 'Ancestor''s Chosen'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT releaseDate FROM sets WHERE name = 'Ancestor''s Chosen'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.",
+     "correct": null
+    }
+   ],
+   "idx": 47,
+   "difficulty": "easy",
+   "elapsed_sec": 0.79,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "What is the Italian flavor text of the card \"Ancestor's Chosen\"?",
+   "gold_sql": "SELECT T2.flavorText FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T2.uuid = T1.uuid WHERE T1.name = 'Ancestor''s Chosen' AND T2.language = 'Italian'",
+   "final_sql": "SELECT T2.flavorText FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T2.language = 'Italian' AND T1.name = 'Ancestor''s Chosen'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.flavorText FROM cards AS T1 INNER JOIN foreign_data AS T2 ON T1.uuid = T2.uuid WHERE T2.language = 'Italian' AND T1.name = 'Ancestor''s Chosen'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 2,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 2 rows.\nColumns: flavorText\n  (\"La volontà di tutti, esegu...)\n  (Sancito da generazioni di f...)",
+     "correct": null
+    }
+   ],
+   "idx": 48,
+   "difficulty": "medium",
+   "elapsed_sec": 1.99,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "For the set which had 'SS2' as the code, what is its magic card market id?",
+   "gold_sql": "SELECT mcmId FROM sets WHERE code = 'SS2'",
+   "final_sql": "SELECT T1.mcmId FROM sets AS T1 INNER JOIN cards AS T2 ON T1.code = T2.setCode WHERE T1.code = 'SS2'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.mcmId FROM sets AS T1 INNER JOIN cards AS T2 ON T1.code = T2.setCode WHERE T1.code = 'SS2'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 8,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 8 rows.\nColumns: mcmId\n  (2460)\n  (2460)\n  (2460)",
+     "correct": null
+    }
+   ],
+   "idx": 49,
+   "difficulty": "easy",
+   "elapsed_sec": 1.5,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Tell the Japanese name of the set which card \"Fellwar Stone\" is in it.",
+   "gold_sql": "SELECT T2.translation FROM cards AS T1 INNER JOIN set_translations AS T2 ON T2.setCode = T1.setCode WHERE T1.name = 'Fellwar Stone' AND T2.language = 'Japanese' AND T2.translation IS NOT NULL",
+   "final_sql": "SELECT T2.language FROM cards AS T1 INNER JOIN set_translations AS T2 ON T1.setCode = T2.setCode WHERE T1.name = 'Fellwar Stone' AND T2.language = 'Japanese'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.language FROM cards AS T1 INNER JOIN set_translations AS T2 ON T1.setCode = T2.setCode WHERE T1.name = 'Fellwar Stone' AND T2.language = 'Japanese'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 7,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 7 rows.\nColumns: language\n  (Japanese)\n  (Japanese)\n  (Japanese)",
+     "correct": null
+    }
+   ],
+   "idx": 50,
+   "difficulty": "medium",
+   "elapsed_sec": 1.84,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Among the cards that doesn't have multiple faces on the same card, who is the illustrator of the card art that has the highest cost of converted mana?",
+   "gold_sql": "SELECT artist FROM cards WHERE side IS NULL ORDER BY convertedManaCost DESC LIMIT 1",
+   "final_sql": "SELECT T1.artist FROM cards AS T1 INNER JOIN ( SELECT MAX(convertedManaCost) AS maxCost FROM cards WHERE side IS NULL ) AS T2 ON T1.convertedManaCost = T2.maxCost",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.artist FROM cards AS T1 INNER JOIN ( SELECT MAX(convertedManaCost) AS maxCost FROM cards WHERE side IS NULL ) AS T2 ON T1.convertedManaCost = T2.maxCost",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 2,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 2 rows.\nColumns: artist\n  (Richard Thomas)\n  (Richard Thomas)",
+     "correct": null
+    }
+   ],
+   "idx": 51,
+   "difficulty": "easy",
+   "elapsed_sec": 1.88,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "Who is the illustrator that illustrated the least amount of cards? List the format of play of the cards that he/she illustrated.",
+   "gold_sql": "SELECT T1.artist, T2.format FROM cards AS T1 INNER JOIN legalities AS T2 ON T2.uuid = T1.uuid GROUP BY T1.artist ORDER BY COUNT(T1.id) ASC LIMIT 1",
+   "final_sql": "SELECT T1.artist, T2.format FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid GROUP BY T1.artist, T2.format ORDER BY COUNT(T1.artist) ASC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.artist, T2.format FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid GROUP BY T1.artist, T2.format ORDER BY COUNT(T1.artist) ASC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: artist, format\n  (NULL, commander)",
+     "correct": null
+    }
+   ],
+   "idx": 52,
+   "difficulty": "medium",
+   "elapsed_sec": 2.45,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "card_games",
+   "question": "List all the frame styles and cards Allen Williams worked on and find any banned cards if there are any.",
+   "gold_sql": "SELECT DISTINCT T1.frameVersion, T1.name , IIF(T2.status = 'Banned', T1.name, 'NO') FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T1.artist = 'Allen Williams'",
+   "final_sql": "SELECT DISTINCT T1.frameVersion, T1.name, T2.status FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T1.artist = 'Allen Williams' AND T2.status = 'Banned'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT T1.frameVersion, T1.name, T2.status FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T1.artist = 'Allen Williams' AND T2.status = 'Banned'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.",
+     "correct": null
+    }
+   ],
+   "idx": 53,
+   "difficulty": "medium",
+   "elapsed_sec": 2.18,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "What is the title of the post that is owned by csgillespie and has the highest popularity?",
+   "gold_sql": "SELECT T1.Title FROM posts AS T1 INNER JOIN users AS T2 ON T1.OwnerUserId = T2.Id WHERE T2.DisplayName = 'csgillespie' ORDER BY T1.ViewCount DESC LIMIT 1",
+   "final_sql": "SELECT T1.Title FROM posts AS T1 INNER JOIN users AS T2 ON T1.OwnerUserId = T2.Id WHERE T2.DisplayName = 'csgillespie' ORDER BY T1.ViewCount DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.Title FROM posts AS T1 INNER JOIN users AS T2 ON T1.OwnerUserId = T2.Id WHERE T2.DisplayName = 'csgillespie' ORDER BY T1.ViewCount DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Title\n  (Examples for teaching: Corr...)",
+     "correct": null
+    }
+   ],
+   "idx": 54,
+   "difficulty": "easy",
+   "elapsed_sec": 2.17,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "From which post is the most popular tag excerpted from? Please give the body of the post.",
+   "gold_sql": "SELECT Body FROM posts WHERE id = ( SELECT ExcerptPostId FROM tags ORDER BY Count DESC LIMIT 1 )",
+   "final_sql": "SELECT T2.Body FROM tags AS T1 INNER JOIN posts AS T2 ON T1.ExcerptPostId = T2.Id ORDER BY T1.Count DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.Body FROM tags AS T1 INNER JOIN posts AS T2 ON T1.ExcerptPostId = T2.Id ORDER BY T1.Count DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Body\n  (Use this tag for any *on-to...)",
+     "correct": null
+    }
+   ],
+   "idx": 55,
+   "difficulty": "easy",
+   "elapsed_sec": 1.53,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "Give the number of \"Revival\" badges.",
+   "gold_sql": "SELECT COUNT(Id) FROM badges WHERE Name = 'Revival'",
+   "final_sql": "SELECT COUNT(Id) FROM badges WHERE Name = 'Revival'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(Id) FROM badges WHERE Name = 'Revival'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(Id)\n  (1018)",
+     "correct": null
+    }
+   ],
+   "idx": 56,
+   "difficulty": "easy",
+   "elapsed_sec": 0.7,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "For the user whose display name is \"DatEpicCoderGuyWhoPrograms\", what is his/her badge's name?",
+   "gold_sql": "SELECT T2.Name FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId WHERE T1.DisplayName = 'DatEpicCoderGuyWhoPrograms'",
+   "final_sql": "SELECT T2.Name FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId WHERE T1.DisplayName = 'DatEpicCoderGuyWhoPrograms'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.Name FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId WHERE T1.DisplayName = 'DatEpicCoderGuyWhoPrograms'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Name\n  (Autobiographer)",
+     "correct": null
+    }
+   ],
+   "idx": 57,
+   "difficulty": "easy",
+   "elapsed_sec": 1.64,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "Name 10 users with the badge name 'Necromancer.'",
+   "gold_sql": "SELECT T1.DisplayName FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId WHERE T2.Name = 'Necromancer' LIMIT 10",
+   "final_sql": "SELECT T2.DisplayName FROM badges AS T1 INNER JOIN users AS T2 ON T1.UserId = T2.Id WHERE T1.Name = 'Necromancer' LIMIT 10",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.DisplayName FROM badges AS T1 INNER JOIN users AS T2 ON T1.UserId = T2.Id WHERE T1.Name = 'Necromancer' LIMIT 10",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 10,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 10 rows.\nColumns: DisplayName\n  (whuber)\n  (whuber)\n  (conjugateprior)",
+     "correct": null
+    }
+   ],
+   "idx": 58,
+   "difficulty": "easy",
+   "elapsed_sec": 1.61,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "Which user ID has the lowest view?",
+   "gold_sql": "SELECT Id FROM users WHERE Views = ( SELECT MIN(Views) FROM users )",
+   "final_sql": "SELECT Id FROM users ORDER BY Views ASC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Id FROM users ORDER BY Views ASC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Id\n  (-1)",
+     "correct": null
+    }
+   ],
+   "idx": 59,
+   "difficulty": "easy",
+   "elapsed_sec": 0.64,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "List out all post that are related to post ID 61217 and what is the popularity of this post?",
+   "gold_sql": "SELECT T1.ViewCount FROM posts AS T1 INNER JOIN postLinks AS T2 ON T1.Id = T2.PostId WHERE T2.PostId = 61217",
+   "final_sql": "SELECT T2.RelatedPostId, T1.ViewCount FROM posts AS T1 INNER JOIN postLinks AS T2 ON T1.Id = T2.PostId WHERE T2.PostId = 61217",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.RelatedPostId, T1.ViewCount FROM posts AS T1 INNER JOIN postLinks AS T2 ON T1.Id = T2.PostId WHERE T2.PostId = 61217",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 10,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 10 rows.\nColumns: RelatedPostId, ViewCount\n  (33392, 4949)\n  (43930, 4949)\n  (60828, 4949)",
+     "correct": null
+    }
+   ],
+   "idx": 60,
+   "difficulty": "easy",
+   "elapsed_sec": 1.95,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "What are the name of badge that users who have the highest reputation obtained?",
+   "gold_sql": "SELECT T2.name FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId ORDER BY T1.Reputation DESC LIMIT 1",
+   "final_sql": "SELECT T2.Name FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId ORDER BY T1.Reputation DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.Name FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId ORDER BY T1.Reputation DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Name\n  (Autobiographer)",
+     "correct": null
+    }
+   ],
+   "idx": 61,
+   "difficulty": "easy",
+   "elapsed_sec": 1.47,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "State the number of views of users who obtained the badge on 7/19/2010 7:39:08 PM.",
+   "gold_sql": "SELECT T1.Views FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId WHERE T2.Date = '2010-07-19 19:39:08.0'",
+   "final_sql": "SELECT T2.Views FROM badges AS T1 INNER JOIN users AS T2 ON T1.UserId = T2.Id WHERE T1.Date = '2010-07-19 19:39:08.0'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.Views FROM badges AS T1 INNER JOIN users AS T2 ON T1.UserId = T2.Id WHERE T1.Date = '2010-07-19 19:39:08.0'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 13,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 13 rows.\nColumns: Views\n  (178)\n  (8)\n  (52)",
+     "correct": null
+    }
+   ],
+   "idx": 62,
+   "difficulty": "easy",
+   "elapsed_sec": 2.07,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "What is the name of tags used by John Salvatier's?",
+   "gold_sql": "SELECT T3.Tags FROM users AS T1 INNER JOIN postHistory AS T2 ON T1.Id = T2.UserId INNER JOIN posts AS T3 ON T2.PostId = T3.Id WHERE T1.DisplayName = 'John Salvatier'",
+   "final_sql": "SELECT T3.TagName FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId INNER JOIN tags AS T3 ON T3.Id = T2.TagName WHERE T1.DisplayName = 'John Salvatier'",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T3.TagName FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId INNER JOIN tags AS T3 ON T3.Id = T2.TagName WHERE T1.DisplayName = 'John Salvatier'",
+     "success": false,
+     "error_class": "db_error",
+     "error_message": "no such column: T2.TagName",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Database says: no such column: T2.TagName\nAvailable columns: badges.Id, badges.UserId, badges.Name, badges.Date, comments.Id, comments.PostId, comments.Score, comments.Text, comments.CreationDate, comments.UserId, comments.UserDisplayName, postHistory.Id, postHistory.PostHistoryTypeId, postHistory.PostId, postHistory.RevisionGUID, postHistory.CreationDate, postHistory.UserId, postHistory.Text, postHistory.Comment, postHistory.UserDisplayName, ... (+51 more)\nUse the exact column names (case-sensi",
+     "correct": null
+    }
+   ],
+   "idx": 63,
+   "difficulty": "easy",
+   "elapsed_sec": 2.06,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "db_error"
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "Calculate the difference in view count from post posted by Mornington and view count from posts posted by Amos.",
+   "gold_sql": "SELECT SUM(IIF(T1.DisplayName = 'Mornington', T3.ViewCount, 0)) - SUM(IIF(T1.DisplayName = 'Amos', T3.ViewCount, 0)) AS diff FROM users AS T1 INNER JOIN postHistory AS T2 ON T1.Id = T2.UserId INNER JOIN posts AS T3 ON T3.Id = T2.PostId",
+   "final_sql": "SELECT SUM(CASE WHEN T1.DisplayName = 'Mornington' THEN T2.ViewCount ELSE 0 END) - SUM(CASE WHEN T1.DisplayName = 'Amos' THEN T2.ViewCount ELSE 0 END) FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT SUM(CASE WHEN T1.DisplayName = 'Mornington' THEN T2.ViewCount ELSE 0 END) - SUM(CASE WHEN T1.DisplayName = 'Amos' THEN T2.ViewCount ELSE 0 END) FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: SUM(CASE WHEN T1.DisplayName = 'Mornington' THEN T2.ViewCount ELSE 0 END) - SUM(CASE WHEN T1.DisplayName = 'Amos' THEN T2.ViewCount ELSE 0 END)\n  (-497)\nValue check: a literal in your query does not exist in the database.\n- `Mornington` is not found in column `DisplayName`. Closest existing values: 'mornington', 'Graviton', 'Menno'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 64,
+   "difficulty": "medium",
+   "elapsed_sec": 2.73,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "Describe the last accessed date and location of the users who received the outliers badge.",
+   "gold_sql": "SELECT T1.LastAccessDate, T1.Location FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId WHERE T2.Name = 'outliers'",
+   "final_sql": "SELECT T2.LastAccessDate, T2.Location FROM badges AS T1 INNER JOIN users AS T2 ON T1.UserId = T2.Id WHERE T1.Name = 'Outliers'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.LastAccessDate, T2.Location FROM badges AS T1 INNER JOIN users AS T2 ON T1.UserId = T2.Id WHERE T1.Name = 'Outliers'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `Outliers` is not found in column `Name`. Closest existing values: 'outliers', 'likert', 'time-series'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 65,
+   "difficulty": "easy",
+   "elapsed_sec": 1.65,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "What is the owner user id of the most valuable post?",
+   "gold_sql": "SELECT OwnerUserId FROM posts WHERE FavoriteCount = ( SELECT MAX(FavoriteCount) FROM posts )",
+   "final_sql": "SELECT OwnerUserId FROM posts ORDER BY FavoriteCount DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT OwnerUserId FROM posts ORDER BY FavoriteCount DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: OwnerUserId\n  (890)",
+     "correct": null
+    }
+   ],
+   "idx": 66,
+   "difficulty": "easy",
+   "elapsed_sec": 0.75,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "What is the date when the youngest user made his or her first post?",
+   "gold_sql": "SELECT T2.CreaionDate FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId WHERE T1.Age IS NOT NULL ORDER BY T1.Age, T2.CreaionDate LIMIT 1",
+   "final_sql": "SELECT MIN(T2.CreaionDate) FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT MIN(T2.CreaionDate) FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: MIN(T2.CreaionDate)\n  (2009-02-02 14:24:31.0)",
+     "correct": null
+    }
+   ],
+   "idx": 67,
+   "difficulty": "easy",
+   "elapsed_sec": 1.37,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "What is the average score of Stephen Turner's posts?",
+   "gold_sql": "SELECT AVG(T2.Score) FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId WHERE T1.DisplayName = 'Stephen Turner'",
+   "final_sql": "SELECT AVG(T2.Score) FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId WHERE T1.DisplayName = 'Stephen Turner'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(T2.Score) FROM users AS T1 INNER JOIN posts AS T2 ON T1.Id = T2.OwnerUserId WHERE T1.DisplayName = 'Stephen Turner'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(T2.Score)\n  (10.413793103448276)",
+     "correct": null
+    }
+   ],
+   "idx": 68,
+   "difficulty": "easy",
+   "elapsed_sec": 1.58,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "Identify the latest badge awarded to the user with the display name Emmett.",
+   "gold_sql": "SELECT T1.Name FROM badges AS T1 INNER JOIN users AS T2 ON T1.UserId = T2.Id WHERE T2.DisplayName = 'Emmett' ORDER BY T1.Date DESC LIMIT 1",
+   "final_sql": "SELECT T2.Name FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId WHERE T1.DisplayName = 'Emmett' ORDER BY T2.Date DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.Name FROM users AS T1 INNER JOIN badges AS T2 ON T1.Id = T2.UserId WHERE T1.DisplayName = 'Emmett' ORDER BY T2.Date DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Name\n  (Quorum)",
+     "correct": null
+    }
+   ],
+   "idx": 69,
+   "difficulty": "easy",
+   "elapsed_sec": 1.81,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "Identify the number of posts that offer a bounty amount over 30.",
+   "gold_sql": "SELECT COUNT(id) FROM votes WHERE BountyAmount >= 30",
+   "final_sql": "SELECT COUNT(PostId) FROM votes WHERE BountyAmount > 30",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(PostId) FROM votes WHERE BountyAmount > 30",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(PostId)\n  (87)",
+     "correct": null
+    }
+   ],
+   "idx": 70,
+   "difficulty": "easy",
+   "elapsed_sec": 0.76,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "codebase_community",
+   "question": "In posts with 1 comment, how many of the comments have 0 score?",
+   "gold_sql": "SELECT COUNT(T1.id) FROM comments AS T1 INNER JOIN posts AS T2 ON T1.PostId = T2.Id WHERE T2.CommentCount = 1 AND T2.Score = 0",
+   "final_sql": "SELECT COUNT(T2.Score) FROM posts AS T1 INNER JOIN comments AS T2 ON T2.PostId = T1.Id WHERE T1.CommentCount = 1 AND T2.Score = 0",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T2.Score) FROM posts AS T1 INNER JOIN comments AS T2 ON T2.PostId = T1.Id WHERE T1.CommentCount = 1 AND T2.Score = 0",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T2.Score)\n  (10997)",
+     "correct": null
+    }
+   ],
+   "idx": 71,
+   "difficulty": "easy",
+   "elapsed_sec": 2.11,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "Please list the full names of all the superheroes with over 15 super powers.",
+   "gold_sql": "SELECT DISTINCT T1.full_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id GROUP BY T1.full_name HAVING COUNT(T2.power_id) > 15",
+   "final_sql": "SELECT T1.full_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id GROUP BY T1.full_name HAVING COUNT(T2.power_id) > 15",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.full_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id GROUP BY T1.full_name HAVING COUNT(T2.power_id) > 15",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 71,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 71 rows.\nColumns: full_name\n  (NULL)\n  (-)\n  (Abraham Sapien)",
+     "correct": null
+    }
+   ],
+   "idx": 72,
+   "difficulty": "easy",
+   "elapsed_sec": 2.45,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "List the superheroes from Marvel Comics who have the super power of 'Super Strength'.",
+   "gold_sql": "SELECT superhero_name FROM superhero AS T1 WHERE EXISTS (SELECT 1 FROM hero_power AS T2 INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Super Strength' AND T1.id = T2.hero_id)AND EXISTS (SELECT 1 FROM publisher AS T4 WHERE T4.publisher_name = 'Marvel Comics' AND T1.publisher_id = T4.id)",
+   "final_sql": "SELECT T1.superhero_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Super Strength' AND T1.publisher_id = ( SELECT T.id FROM publisher AS T WHERE T.publisher_name = 'Marvel Comics' )",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.superhero_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Super Strength' AND T1.publisher_id = ( SELECT T.id FROM publisher AS T WHERE T.publisher_name = 'Marvel Comics' )",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 201,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 201 rows.\nColumns: superhero_name\n  (3-D Man)\n  (A-Bomb)\n  (Abomination)\nValue check: a literal in your query does not exist in the database.\n- `Marvel Comics` is not found in column `publisher_id`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 73,
+   "difficulty": "hard",
+   "elapsed_sec": 3.03,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "How many female superheroes have a strength value of 100?",
+   "gold_sql": "SELECT COUNT(T1.id) FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id INNER JOIN gender AS T4 ON T1.gender_id = T4.id WHERE T3.attribute_name = 'Strength' AND T2.attribute_value = 100 AND T4.gender = 'Female'",
+   "final_sql": "SELECT COUNT(T1.id) FROM superhero AS T1 INNER JOIN gender AS T2 ON T1.gender_id = T2.id INNER JOIN hero_attribute AS T3 ON T1.id = T3.hero_id INNER JOIN attribute AS T4 ON T3.attribute_id = T4.id WHERE T2.gender = 'Female' AND T4.attribute_name = 'Strength' AND T3.attribute_value = 100",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.id) FROM superhero AS T1 INNER JOIN gender AS T2 ON T1.gender_id = T2.id INNER JOIN hero_attribute AS T3 ON T1.id = T3.hero_id INNER JOIN attribute AS T4 ON T3.attribute_id = T4.id WHERE T2.gender = 'Female' AND T4.attribute_name = 'Strength' AND T3.attribute_value = 100",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.id)\n  (12)",
+     "correct": null
+    }
+   ],
+   "idx": 74,
+   "difficulty": "medium",
+   "elapsed_sec": 3.89,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "What is the average weight of all female superheroes?",
+   "gold_sql": "SELECT AVG(T1.weight_kg) FROM superhero AS T1 INNER JOIN gender AS T2 ON T1.gender_id = T2.id WHERE T2.gender = 'Female'",
+   "final_sql": "SELECT AVG(T1.weight_kg) FROM superhero AS T1 INNER JOIN gender AS T2 ON T1.gender_id = T2.id WHERE T2.gender = 'Female'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(T1.weight_kg) FROM superhero AS T1 INNER JOIN gender AS T2 ON T1.gender_id = T2.id WHERE T2.gender = 'Female'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(T1.weight_kg)\n  (60.77956989247312)",
+     "correct": null
+    }
+   ],
+   "idx": 75,
+   "difficulty": "easy",
+   "elapsed_sec": 2.23,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "In superheroes with height between 150 to 180, what is the percentage of heroes published by Marvel Comics?",
+   "gold_sql": "SELECT CAST(COUNT(CASE WHEN T2.publisher_name = 'Marvel Comics' THEN 1 ELSE NULL END) AS REAL) * 100 / COUNT(T1.id) FROM superhero AS T1 INNER JOIN publisher AS T2 ON T1.publisher_id = T2.id WHERE T1.height_cm BETWEEN 150 AND 180",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN T2.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.id) FROM superhero AS T1 INNER JOIN publisher AS T2 ON T1.publisher_id = T2.id WHERE T1.height_cm BETWEEN 150 AND 180",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN T2.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.id) FROM superhero AS T1 INNER JOIN publisher AS T2 ON T1.publisher_id = T2.id WHERE T1.height_cm BETWEEN 150 AND 180",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN T2.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.id)\n  (60.869565217391305)",
+     "correct": null
+    }
+   ],
+   "idx": 76,
+   "difficulty": "hard",
+   "elapsed_sec": 3.07,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "What is the eyes colour of Abraham Sapien?",
+   "gold_sql": "SELECT T2.colour FROM superhero AS T1 INNER JOIN colour AS T2 ON T1.eye_colour_id = T2.id WHERE T1.full_name = 'Abraham Sapien'",
+   "final_sql": "SELECT T2.colour FROM superhero AS T1 INNER JOIN colour AS T2 ON T1.eye_colour_id = T2.id WHERE T1.full_name = 'Abraham Sapien'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.colour FROM superhero AS T1 INNER JOIN colour AS T2 ON T1.eye_colour_id = T2.id WHERE T1.full_name = 'Abraham Sapien'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: colour\n  (Blue)",
+     "correct": null
+    }
+   ],
+   "idx": 77,
+   "difficulty": "easy",
+   "elapsed_sec": 1.68,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "List the powers of Hunter Zolomon.",
+   "gold_sql": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.full_name = 'Hunter Zolomon'",
+   "final_sql": "SELECT T2.power_name FROM superhero AS T1 INNER JOIN hero_power AS T3 ON T1.id = T3.hero_id INNER JOIN superpower AS T2 ON T3.power_id = T2.id WHERE T1.full_name = 'Hunter Zolomon'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.power_name FROM superhero AS T1 INNER JOIN hero_power AS T3 ON T1.id = T3.hero_id INNER JOIN superpower AS T2 ON T3.power_id = T2.id WHERE T1.full_name = 'Hunter Zolomon'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 4,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 4 rows.\nColumns: power_name\n  (Super Speed)\n  (Intangibility)\n  (Time Travel)",
+     "correct": null
+    }
+   ],
+   "idx": 78,
+   "difficulty": "easy",
+   "elapsed_sec": 2.29,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "Calculate the difference between Emil Blonsky's weight and Charles Chandler's weight.",
+   "gold_sql": "SELECT ( SELECT weight_kg FROM superhero WHERE full_name LIKE 'Emil Blonsky' ) - ( SELECT weight_kg FROM superhero WHERE full_name LIKE 'Charles Chandler' ) AS CALCULATE",
+   "final_sql": "SELECT SUM(CASE WHEN T1.full_name = 'Emil Blonsky' THEN T2.weight_kg ELSE 0 END) - SUM(CASE WHEN T1.full_name = 'Charles Chandler' THEN T2.weight_kg ELSE 0 END) FROM superhero AS T1 INNER JOIN superhero AS T2 ON T1.id = T2.id",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT SUM(CASE WHEN T1.full_name = 'Emil Blonsky' THEN T2.weight_kg ELSE 0 END) - SUM(CASE WHEN T1.full_name = 'Charles Chandler' THEN T2.weight_kg ELSE 0 END) FROM superhero AS T1 INNER JOIN superhero AS T2 ON T1.id = T2.id",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: SUM(CASE WHEN T1.full_name = 'Emil Blonsky' THEN T2.weight_kg ELSE 0 END) - SUM(CASE WHEN T1.full_name = 'Charles Chandler' THEN T2.weight_kg ELSE 0 END)\n  (351)",
+     "correct": null
+    }
+   ],
+   "idx": 79,
+   "difficulty": "medium",
+   "elapsed_sec": 2.92,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "Calculate the percentage of superheroes with blue eyes.",
+   "gold_sql": "SELECT CAST(COUNT(CASE WHEN T2.colour = 'Blue' THEN 1 ELSE NULL END) AS REAL) * 100 / COUNT(T1.id) FROM superhero AS T1 INNER JOIN colour AS T2 ON T1.eye_colour_id = T2.id",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN T1.eye_colour_id = 7 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.eye_colour_id) FROM superhero AS T1 INNER JOIN colour AS T2 ON T1.eye_colour_id = T2.id",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN T1.eye_colour_id = 7 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.eye_colour_id) FROM superhero AS T1 INNER JOIN colour AS T2 ON T1.eye_colour_id = T2.id",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN T1.eye_colour_id = 7 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.eye_colour_id)\n  (31.2)",
+     "correct": null
+    }
+   ],
+   "idx": 80,
+   "difficulty": "medium",
+   "elapsed_sec": 2.47,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "What is the race of the superhero with maximum attribute value?",
+   "gold_sql": "SELECT T3.race FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN race AS T3 ON T1.race_id = T3.id ORDER BY T2.attribute_value DESC LIMIT 1",
+   "final_sql": "SELECT T3.race FROM hero_attribute AS T1 INNER JOIN superhero AS T2 ON T1.hero_id = T2.id INNER JOIN race AS T3 ON T2.race_id = T3.id ORDER BY T1.attribute_value DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T3.race FROM hero_attribute AS T1 INNER JOIN superhero AS T2 ON T1.hero_id = T2.id INNER JOIN race AS T3 ON T2.race_id = T3.id ORDER BY T1.attribute_value DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: race\n  (Cosmic Entity)",
+     "correct": null
+    }
+   ],
+   "idx": 81,
+   "difficulty": "easy",
+   "elapsed_sec": 2.15,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "How strong is the Hulk?",
+   "gold_sql": "SELECT T2.attribute_value FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id WHERE T1.superhero_name = 'Hulk' AND T3.attribute_name = 'Strength'",
+   "final_sql": "SELECT T3.attribute_value FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id WHERE T3.attribute_name = 'Strength' AND T1.superhero_name = 'Hulk'",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T3.attribute_value FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id WHERE T3.attribute_name = 'Strength' AND T1.superhero_name = 'Hulk'",
+     "success": false,
+     "error_class": "db_error",
+     "error_message": "no such column: T3.attribute_value",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Database says: no such column: T3.attribute_value\nAvailable columns: alignment.id, alignment.alignment, attribute.id, attribute.attribute_name, colour.id, colour.colour, gender.id, gender.gender, hero_attribute.hero_id, hero_attribute.attribute_id, hero_attribute.attribute_value, hero_power.hero_id, hero_power.power_id, publisher.id, publisher.publisher_name, race.id, race.race, superhero.id, superhero.superhero_name, superhero.full_name, ... (+11 more)\nUse the exact column names (case-sensitive",
+     "correct": null
+    }
+   ],
+   "idx": 82,
+   "difficulty": "medium",
+   "elapsed_sec": 2.52,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "db_error"
+  },
+  {
+   "db_id": "superhero",
+   "question": "Identify the weakest attribute of the Black Panther.",
+   "gold_sql": "SELECT T3.attribute_name FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id WHERE T1.superhero_name = 'Black Panther' ORDER BY T2.attribute_value ASC LIMIT 1",
+   "final_sql": "SELECT T3.attribute_name FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id WHERE T1.superhero_name = 'Black Panther' ORDER BY T2.attribute_value ASC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T3.attribute_name FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id WHERE T1.superhero_name = 'Black Panther' ORDER BY T2.attribute_value ASC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: attribute_name\n  (Strength)",
+     "correct": null
+    }
+   ],
+   "idx": 83,
+   "difficulty": "medium",
+   "elapsed_sec": 2.54,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "superhero",
+   "question": "List the attribute value of the superhero named Aquababy.",
+   "gold_sql": "SELECT T2.attribute_value FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id WHERE T1.superhero_name = 'Aquababy'",
+   "final_sql": "SELECT T3.attribute_value FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id WHERE T1.superhero_name = 'Aquababy'",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T3.attribute_value FROM superhero AS T1 INNER JOIN hero_attribute AS T2 ON T1.id = T2.hero_id INNER JOIN attribute AS T3 ON T2.attribute_id = T3.id WHERE T1.superhero_name = 'Aquababy'",
+     "success": false,
+     "error_class": "db_error",
+     "error_message": "no such column: T3.attribute_value",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Database says: no such column: T3.attribute_value\nAvailable columns: alignment.id, alignment.alignment, attribute.id, attribute.attribute_name, colour.id, colour.colour, gender.id, gender.gender, hero_attribute.hero_id, hero_attribute.attribute_id, hero_attribute.attribute_value, hero_power.hero_id, hero_power.power_id, publisher.id, publisher.publisher_name, race.id, race.race, superhero.id, superhero.superhero_name, superhero.full_name, ... (+11 more)\nUse the exact column names (case-sensitive",
+     "correct": null
+    }
+   ],
+   "idx": 84,
+   "difficulty": "easy",
+   "elapsed_sec": 2.17,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "db_error"
+  },
+  {
+   "db_id": "formula_1",
+   "question": "Please give the name of the race held on the circuits in Germany.",
+   "gold_sql": "SELECT DISTINCT T2.name FROM circuits AS T1 INNER JOIN races AS T2 ON T2.circuitID = T1.circuitId WHERE T1.country = 'Germany'",
+   "final_sql": "SELECT T2.name FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId WHERE T1.country = 'Germany'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.name FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId WHERE T1.country = 'Germany'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 76,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 76 rows.\nColumns: name\n  (German Grand Prix)\n  (German Grand Prix)\n  (European Grand Prix)",
+     "correct": null
+    }
+   ],
+   "idx": 85,
+   "difficulty": "easy",
+   "elapsed_sec": 1.53,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "For the driver who had the Q2 time as 0:01:40 in the qualifying race No. 355, what is his nationality?",
+   "gold_sql": "SELECT DISTINCT T2.nationality FROM qualifying AS T1 INNER JOIN drivers AS T2 ON T2.driverId = T1.driverId WHERE T1.raceId = 355 AND T1.q2 LIKE '1:40%'",
+   "final_sql": "SELECT T2.nationality FROM qualifying AS T1 INNER JOIN drivers AS T2 ON T1.driverId = T2.driverId WHERE T1.raceId = 355 AND T1.q2 = '0:01:40'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.nationality FROM qualifying AS T1 INNER JOIN drivers AS T2 ON T1.driverId = T2.driverId WHERE T1.raceId = 355 AND T1.q2 = '0:01:40'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `0:01:40` is not found in column `q2`. Closest existing values: '1:47.018', '1:46.804', '1:46.088'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 86,
+   "difficulty": "easy",
+   "elapsed_sec": 2.19,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "What's Lucas di Grassi's Q1 result in the race No. 345?",
+   "gold_sql": "SELECT T1.q1 FROM qualifying AS T1 INNER JOIN drivers AS T2 ON T2.driverId = T1.driverId WHERE T1.raceId = 345 AND T2.forename = 'Lucas' AND T2.surname = 'di Grassi'",
+   "final_sql": "SELECT T2.q1 FROM drivers AS T1 INNER JOIN qualifying AS T2 ON T1.driverId = T2.driverId WHERE T1.forename = 'Lucas' AND T1.surname = 'di Grassi' AND T2.raceId = 345",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.q1 FROM drivers AS T1 INNER JOIN qualifying AS T2 ON T1.driverId = T2.driverId WHERE T1.forename = 'Lucas' AND T1.surname = 'di Grassi' AND T2.raceId = 345",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: q1\n  (1:42.086)",
+     "correct": null
+    }
+   ],
+   "idx": 87,
+   "difficulty": "easy",
+   "elapsed_sec": 2.34,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "Paul di Resta was in the No. 853 race, what percent faster did he finish in the 853rd race than the next race for the fastest lap speed?",
+   "gold_sql": "SELECT (SUM(IIF(T2.raceId = 853, T2.fastestLapSpeed, 0)) - SUM(IIF(T2.raceId = 854, T2.fastestLapSpeed, 0))) * 100 / SUM(IIF(T2.raceId = 853, T2.fastestLapSpeed, 0)) FROM drivers AS T1 INNER JOIN results AS T2 ON T2.driverId = T1.driverId WHERE T1.forename = 'Paul' AND T1.surname = 'di Resta'",
+   "final_sql": "SELECT CAST((T1.fastestLapSpeed - T2.fastestLapSpeed) AS REAL) * 100 / T1.fastestLapSpeed FROM results AS T1 INNER JOIN results AS T2 ON T2.raceId = T1.raceId + 1 WHERE T1.driverId = ( SELECT driverId FROM drivers WHERE forename = 'Paul' AND surname = 'di Resta' ) AND T1.raceId = 853",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST((T1.fastestLapSpeed - T2.fastestLapSpeed) AS REAL) * 100 / T1.fastestLapSpeed FROM results AS T1 INNER JOIN results AS T2 ON T2.raceId = T1.raceId + 1 WHERE T1.driverId = ( SELECT driverId FROM drivers WHERE forename = 'Paul' AND surname = 'di Resta' ) AND T1.raceId = 853",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 24,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 24 rows.\nColumns: CAST((T1.fastestLapSpeed - T2.fastestLapSpeed) AS REAL) * 100 / T1.fastestLapSpeed\n  (35.961678932279455)\n  (35.2367199935822)\n  (35.054741366570816)\nValue check: a literal in your query does not exist in the database.\n- `Paul` is not found in column `driverId`\n- `di Resta` is not found in column `driverId`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 88,
+   "difficulty": "hard",
+   "elapsed_sec": 4.06,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "How many seasons has Silverstone Circuit hosted the United Kindom grand prix?",
+   "gold_sql": "SELECT COUNT(T2.circuitid) FROM circuits AS T1 INNER JOIN races AS T2 ON T2.circuitID = T1.circuitId WHERE T1.name = 'Silverstone Circuit' AND T2.name = 'British Grand Prix'",
+   "final_sql": "SELECT COUNT(T1.year) FROM seasons AS T1 INNER JOIN races AS T2 ON T1.year = T2.year INNER JOIN circuits AS T3 ON T2.circuitId = T3.circuitId WHERE T3.name = 'Silverstone' AND T3.country = 'United Kingdom'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.year) FROM seasons AS T1 INNER JOIN races AS T2 ON T1.year = T2.year INNER JOIN circuits AS T3 ON T2.circuitId = T3.circuitId WHERE T3.name = 'Silverstone' AND T3.country = 'United Kingdom'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.year)\n  (0)\nValue check: a literal in your query does not exist in the database.\n- `Silverstone` is not found in column `name`. Closest existing values: 'Ferguson', 'Emeryson', 'Olson'\n- `United Kingdom` is not found in column `country`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 89,
+   "difficulty": "easy",
+   "elapsed_sec": 2.45,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "List circuits in USA which hosted f1 races in 2006. State the name and location of circuit and the name of the race it hosted.",
+   "gold_sql": "SELECT T1.name, T1.location, T2.name FROM circuits AS T1 INNER JOIN races AS T2 ON T2.circuitID = T1.circuitId WHERE T1.country = 'USA' AND T2.year = 2006",
+   "final_sql": "SELECT T1.name, T1.location, T2.name FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId WHERE T2.year = 2006 AND T1.country = 'USA'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.name, T1.location, T2.name FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId WHERE T2.year = 2006 AND T1.country = 'USA'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: name, location, name\n  (Indianapolis Motor Speedway, Indianapolis, United States Grand Prix)",
+     "correct": null
+    }
+   ],
+   "idx": 90,
+   "difficulty": "easy",
+   "elapsed_sec": 2.18,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "What's the location coordinates of Silverstone Circuit?",
+   "gold_sql": "SELECT lat, lng FROM circuits WHERE name = 'Silverstone Circuit'",
+   "final_sql": "SELECT lat, lng FROM circuits WHERE name = 'Silverstone Circuit'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT lat, lng FROM circuits WHERE name = 'Silverstone Circuit'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: lat, lng\n  (52.0786, -1.01694)",
+     "correct": null
+    }
+   ],
+   "idx": 91,
+   "difficulty": "easy",
+   "elapsed_sec": 0.73,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "Please list all the years that Silverstone Circuit was used in a Formula_1 race.",
+   "gold_sql": "SELECT DISTINCT T2.year FROM circuits AS T1 INNER JOIN races AS T2 ON T2.circuitID = T1.circuitId WHERE T1.name = 'Silverstone Circuit'",
+   "final_sql": "SELECT DISTINCT T2.year FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId WHERE T1.name = 'Silverstone'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT T2.year FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId WHERE T1.name = 'Silverstone'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `Silverstone` is not found in column `name`. Closest existing values: 'Ferguson', 'Emeryson', 'Olson'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 92,
+   "difficulty": "easy",
+   "elapsed_sec": 1.57,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "In which Formula_1 race did Lewis Hamilton rank the highest?",
+   "gold_sql": "SELECT name FROM races WHERE raceId IN ( SELECT raceId FROM results WHERE rank = 1 AND driverId = ( SELECT driverId FROM drivers WHERE forename = 'Lewis' AND surname = 'Hamilton' ) )",
+   "final_sql": "SELECT T2.name FROM drivers AS T1 INNER JOIN results AS T2 ON T1.driverId = T2.driverId WHERE T1.forename = 'Lewis' AND T1.surname = 'Hamilton' ORDER BY T2.rank ASC LIMIT 1",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.name FROM drivers AS T1 INNER JOIN results AS T2 ON T1.driverId = T2.driverId WHERE T1.forename = 'Lewis' AND T1.surname = 'Hamilton' ORDER BY T2.rank ASC LIMIT 1",
+     "success": false,
+     "error_class": "db_error",
+     "error_message": "no such column: T2.name",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Database says: no such column: T2.name\nAvailable columns: circuits.circuitId, circuits.circuitRef, circuits.name, circuits.location, circuits.country, circuits.lat, circuits.lng, circuits.alt, circuits.url, constructorResults.constructorResultsId, constructorResults.raceId, constructorResults.constructorId, constructorResults.points, constructorResults.status, constructorStandings.constructorStandingsId, constructorStandings.raceId, constructorStandings.constructorId, constructorStandings.points",
+     "correct": null
+    }
+   ],
+   "idx": 93,
+   "difficulty": "easy",
+   "elapsed_sec": 2.11,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "db_error"
+  },
+  {
+   "db_id": "formula_1",
+   "question": "Among the drivers that finished the race in the 2008 Chinese Grand Prix, how many of them have participated in Formula_1 races?",
+   "gold_sql": "SELECT COUNT(*) FROM ( SELECT T1.driverId FROM results AS T1 INNER JOIN races AS T2 on T1.raceId = T2.raceId WHERE T2.name = 'Chinese Grand Prix' AND T2.year = 2008 AND T1.time IS NOT NULL GROUP BY T1.driverId HAVING COUNT(T2.raceId) > 0 )",
+   "final_sql": "SELECT COUNT(T1.driverId) FROM results AS T1 INNER JOIN races AS T2 ON T1.raceId = T2.raceId WHERE T2.name = 'Chinese Grand Prix' AND T2.year = 2008 AND T1.time IS NOT NULL",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.driverId) FROM results AS T1 INNER JOIN races AS T2 ON T1.raceId = T2.raceId WHERE T2.name = 'Chinese Grand Prix' AND T2.year = 2008 AND T1.time IS NOT NULL",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.driverId)\n  (14)",
+     "correct": null
+    }
+   ],
+   "idx": 94,
+   "difficulty": "medium",
+   "elapsed_sec": 2.34,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "Please list the constructor names with 0 points at race 291.",
+   "gold_sql": "SELECT T2.name FROM constructorStandings AS T1 INNER JOIN constructors AS T2 on T1.constructorId = T2.constructorId WHERE T1.points = 0 AND T1.raceId = 291",
+   "final_sql": "SELECT T2.name FROM constructorStandings AS T1 INNER JOIN constructors AS T2 ON T1.constructorId = T2.constructorId WHERE T1.raceId = 291 AND T1.points = 0",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.name FROM constructorStandings AS T1 INNER JOIN constructors AS T2 ON T1.constructorId = T2.constructorId WHERE T1.raceId = 291 AND T1.points = 0",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 6,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 6 rows.\nColumns: name\n  (Ligier)\n  (Jordan)\n  (Larrousse)",
+     "correct": null
+    }
+   ],
+   "idx": 95,
+   "difficulty": "easy",
+   "elapsed_sec": 1.89,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "What is the average of fastest lap speed in the 2009 Spanish Grand Prix race?",
+   "gold_sql": "SELECT AVG(T1.fastestLapSpeed) FROM results AS T1 INNER JOIN races AS T2 on T1.raceId = T2.raceId WHERE T2.year = 2009 AND T2.name = 'Spanish Grand Prix'",
+   "final_sql": "SELECT AVG(T2.fastestLapSpeed) FROM races AS T1 INNER JOIN results AS T2 ON T1.raceId = T2.raceId WHERE T1.name = 'Spanish Grand Prix' AND T1.year = 2009",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(T2.fastestLapSpeed) FROM races AS T1 INNER JOIN results AS T2 ON T1.raceId = T2.raceId WHERE T1.name = 'Spanish Grand Prix' AND T1.year = 2009",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(T2.fastestLapSpeed)\n  (199.6415625)",
+     "correct": null
+    }
+   ],
+   "idx": 96,
+   "difficulty": "medium",
+   "elapsed_sec": 2.2,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "List out top 3 German drivers who were born from 1980-1990 and have the earliest lap time.",
+   "gold_sql": "SELECT T2.driverId FROM pitStops AS T1 INNER JOIN drivers AS T2 on T1.driverId = T2.driverId WHERE T2.nationality = 'German' AND STRFTIME('%Y', T2.dob) BETWEEN '1980' AND '1990' ORDER BY T1.time LIMIT 3",
+   "final_sql": "SELECT T1.forename, T1.surname FROM drivers AS T1 INNER JOIN results AS T2 ON T1.driverId = T2.driverId WHERE T1.nationality = 'Germany' AND T1.dob BETWEEN '1980-01-01' AND '1990-12-31' ORDER BY T2.time ASC LIMIT 3",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.forename, T1.surname FROM drivers AS T1 INNER JOIN results AS T2 ON T1.driverId = T2.driverId WHERE T1.nationality = 'Germany' AND T1.dob BETWEEN '1980-01-01' AND '1990-12-31' ORDER BY T2.time ASC LIMIT 3",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `Germany` is not found in column `nationality`. Closest existing values: 'German', 'East German', 'American'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 97,
+   "difficulty": "medium",
+   "elapsed_sec": 3.22,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "List the reference name of the drivers who passed the second qualifying lap during race no. 23. Indicate their nationality and birthday.",
+   "gold_sql": "SELECT T2.driverRef, T2.nationality, T2.dob FROM qualifying AS T1 INNER JOIN drivers AS T2 on T1.driverId = T2.driverId WHERE T1.raceId = 23 AND T1.q2 IS NOT NULL",
+   "final_sql": "SELECT T1.driverRef, T1.nationality, T1.dob FROM drivers AS T1 INNER JOIN qualifying AS T2 ON T1.driverId = T2.driverId WHERE T2.raceId = 23 AND T2.q2 IS NOT NULL",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.driverRef, T1.nationality, T1.dob FROM drivers AS T1 INNER JOIN qualifying AS T2 ON T1.driverId = T2.driverId WHERE T2.raceId = 23 AND T2.q2 IS NOT NULL",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 15,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 15 rows.\nColumns: driverRef, nationality, dob\n  (massa, Brazilian, 1981-04-25)\n  (raikkonen, Finnish, 1979-10-17)\n  (hamilton, British, 1985-01-07)",
+     "correct": null
+    }
+   ],
+   "idx": 98,
+   "difficulty": "medium",
+   "elapsed_sec": 2.28,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "What is the constructor reference name of the champion in the 2009 Singapore Grand Prix? Please give its website.",
+   "gold_sql": "SELECT T3.constructorRef, T3.url FROM results AS T1 INNER JOIN races AS T2 on T1.raceId = T2.raceId INNER JOIN constructors AS T3 on T1.constructorId = T3.constructorId WHERE T2.name = 'Singapore Grand Prix' AND T2.year = 2009 AND T1.time LIKE '_:%:__.___'",
+   "final_sql": "SELECT T2.constructorRef, T2.url FROM results AS T1 INNER JOIN constructors AS T2 ON T1.constructorId = T2.constructorId WHERE T1.raceId = ( SELECT raceId FROM races WHERE name = 'Singapore Grand Prix' AND year = 2009 ' ORDER BY time DESC LIMIT 1 )",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.constructorRef, T2.url FROM results AS T1 INNER JOIN constructors AS T2 ON T1.constructorId = T2.constructorId WHERE T1.raceId = ( SELECT raceId FROM races WHERE name = 'Singapore Grand Prix' AND year = 2009 ' ORDER BY time DESC LIMIT 1 )",
+     "success": false,
+     "error_class": "invalid_sql",
+     "error_message": "incomplete_sql: 语句不完整（引号或括号未闭合）",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Your answer was rejected before execution.\nReason: 语句不完整（引号或括号未闭合）\nYou must reply with exactly one SELECT (or WITH ... SELECT) statement inside a ```sql code block. No INSERT/UPDATE/DELETE/PRAGMA, no multiple statements.",
+     "correct": null
+    }
+   ],
+   "idx": 99,
+   "difficulty": "hard",
+   "elapsed_sec": 2.73,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "invalid_sql"
+  },
+  {
+   "db_id": "formula_1",
+   "question": "Which racetrack hosted the most recent race? Indicate the full location.",
+   "gold_sql": "SELECT T1.location FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId ORDER BY T2.date DESC LIMIT 1",
+   "final_sql": "SELECT T1.location, T1.country FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId ORDER BY T2.date DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.location, T1.country FROM circuits AS T1 INNER JOIN races AS T2 ON T1.circuitId = T2.circuitId ORDER BY T2.date DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: location, country\n  (Abu Dhabi, UAE)",
+     "correct": null
+    }
+   ],
+   "idx": 100,
+   "difficulty": "easy",
+   "elapsed_sec": 1.74,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "formula_1",
+   "question": "What is the lap record set by Lewis Hamilton in a Formula_1 race?",
+   "gold_sql": "SELECT T1.time FROM lapTimes AS T1 INNER JOIN drivers AS T2 on T1.driverId = T2.driverId WHERE T2.forename = 'Lewis' AND T2.surname = 'Hamilton'",
+   "final_sql": "SELECT T1.lap FROM lapTimes AS T1 INNER JOIN drivers AS T2 ON T1.driverId = T2.driverId WHERE T2.forename = 'Lewis' AND T2.surname = 'Hamilton' ORDER BY T1.milliseconds ASC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.lap FROM lapTimes AS T1 INNER JOIN drivers AS T2 ON T1.driverId = T2.driverId WHERE T2.forename = 'Lewis' AND T2.surname = 'Hamilton' ORDER BY T1.milliseconds ASC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: lap\n  (69)",
+     "correct": null
+    }
+   ],
+   "idx": 101,
+   "difficulty": "easy",
+   "elapsed_sec": 2.39,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "Which player has the highest overall rating? Indicate the player's api id.",
+   "gold_sql": "SELECT player_api_id FROM Player_Attributes ORDER BY overall_rating DESC LIMIT 1",
+   "final_sql": "SELECT player_api_id FROM Player_Attributes ORDER BY overall_rating DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT player_api_id FROM Player_Attributes ORDER BY overall_rating DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: player_api_id\n  (30981)",
+     "correct": null
+    }
+   ],
+   "idx": 102,
+   "difficulty": "easy",
+   "elapsed_sec": 0.99,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "Give the name of the league had the most matches end as draw in the 2016 season?",
+   "gold_sql": "SELECT t2.name FROM Match AS t1 INNER JOIN League AS t2 ON t1.league_id = t2.id WHERE t1.season = '2015/2016' AND t1.home_team_goal = t1.away_team_goal GROUP BY t2.name ORDER BY COUNT(t1.id) DESC LIMIT 1",
+   "final_sql": "SELECT T2.name FROM Match AS T1 INNER JOIN League AS T2 ON T1.league_id = T2.id WHERE T1.season = '2015/2016' GROUP BY T2.name ORDER BY SUM(CASE WHEN T1.home_team_goal = T1.away_team_goal THEN 1 ELSE 0 END) DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.name FROM Match AS T1 INNER JOIN League AS T2 ON T1.league_id = T2.id WHERE T1.season = '2015/2016' GROUP BY T2.name ORDER BY SUM(CASE WHEN T1.home_team_goal = T1.away_team_goal THEN 1 ELSE 0 END) DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: name\n  (France Ligue 1)",
+     "correct": null
+    }
+   ],
+   "idx": 103,
+   "difficulty": "medium",
+   "elapsed_sec": 3.89,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "List the top 10 players' names whose heights are above 180 in descending order of average heading accuracy.",
+   "gold_sql": "SELECT t1.player_name FROM Player AS t1 INNER JOIN Player_Attributes AS t2 ON t1.player_api_id = t2.player_api_id WHERE t1.height > 180 GROUP BY t1.id ORDER BY CAST(SUM(t2.heading_accuracy) AS REAL) / COUNT(t2.`player_fifa_api_id`) DESC LIMIT 10",
+   "final_sql": "SELECT T1.player_name FROM Player AS T1 INNER JOIN Player_Attributes AS T2 ON T1.player_api_id = T2.player_api_id WHERE T1.height > 180 GROUP BY T1.player_name ORDER BY AVG(T2.heading_accuracy) DESC LIMIT 10",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.player_name FROM Player AS T1 INNER JOIN Player_Attributes AS T2 ON T1.player_api_id = T2.player_api_id WHERE T1.height > 180 GROUP BY T1.player_name ORDER BY AVG(T2.heading_accuracy) DESC LIMIT 10",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 10,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 10 rows.\nColumns: player_name\n  (Michael Ballack)\n  (Fernando Llorente)\n  (John Terry)",
+     "correct": null
+    }
+   ],
+   "idx": 104,
+   "difficulty": "medium",
+   "elapsed_sec": 2.56,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "What is the preferred foot when attacking of the youngest football player?",
+   "gold_sql": "SELECT t2.preferred_foot FROM Player AS t1 INNER JOIN Player_Attributes AS t2 ON t1.player_api_id = t2.player_api_id ORDER BY t1.birthday DESC LIMIT 1",
+   "final_sql": "SELECT preferred_foot FROM Player_Attributes WHERE player_api_id = ( SELECT player_api_id FROM Player ORDER BY birthday DESC LIMIT 1 )",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT preferred_foot FROM Player_Attributes WHERE player_api_id = ( SELECT player_api_id FROM Player ORDER BY birthday DESC LIMIT 1 )",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 3,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 3 rows.\nColumns: preferred_foot\n  (right)\n  (right)\n  (right)",
+     "correct": null
+    }
+   ],
+   "idx": 105,
+   "difficulty": "easy",
+   "elapsed_sec": 1.34,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "How many players were born after 1990?",
+   "gold_sql": "SELECT COUNT(id) FROM Player WHERE STRFTIME('%Y', birthday) > '1990'",
+   "final_sql": "SELECT COUNT(player_name) FROM Player WHERE strftime('%Y', birthday) > '1990'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(player_name) FROM Player WHERE strftime('%Y', birthday) > '1990'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(player_name)\n  (3028)",
+     "correct": null
+    }
+   ],
+   "idx": 106,
+   "difficulty": "easy",
+   "elapsed_sec": 1.07,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "Which country is the league Italy Serie A from?",
+   "gold_sql": "SELECT t1.name FROM Country AS t1 INNER JOIN League AS t2 ON t1.id = t2.country_id WHERE t2.name = 'Italy Serie A'",
+   "final_sql": "SELECT T1.name FROM Country AS T1 INNER JOIN League AS T2 ON T1.id = T2.country_id WHERE T2.name = 'Italy Serie A'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.name FROM Country AS T1 INNER JOIN League AS T2 ON T1.id = T2.country_id WHERE T2.name = 'Italy Serie A'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: name\n  (Italy)",
+     "correct": null
+    }
+   ],
+   "idx": 107,
+   "difficulty": "easy",
+   "elapsed_sec": 1.55,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "Among the players whose preferred foot was the left foot when attacking, how many of them would remain in his position when the team attacked?",
+   "gold_sql": "SELECT COUNT(player_api_id) FROM Player_Attributes WHERE preferred_foot = 'left' AND attacking_work_rate = 'low'",
+   "final_sql": "SELECT COUNT(player_api_id) FROM Player_Attributes WHERE preferred_foot = 'left' AND attacking_work_rate = 'low'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(player_api_id) FROM Player_Attributes WHERE preferred_foot = 'left' AND attacking_work_rate = 'low'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(player_api_id)\n  (1569)",
+     "correct": null
+    }
+   ],
+   "idx": 108,
+   "difficulty": "medium",
+   "elapsed_sec": 1.25,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "What is the long passing score of the oldest player?",
+   "gold_sql": "SELECT t2.long_passing FROM Player AS t1 INNER JOIN Player_Attributes AS t2 ON t1.player_api_id = t2.player_api_id ORDER BY t1.birthday ASC LIMIT 1",
+   "final_sql": "SELECT T2.long_passing FROM Player AS T1 INNER JOIN Player_Attributes AS T2 ON T1.player_api_id = T2.player_api_id ORDER BY T1.birthday DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.long_passing FROM Player AS T1 INNER JOIN Player_Attributes AS T2 ON T1.player_api_id = T2.player_api_id ORDER BY T1.birthday DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: long_passing\n  (41)",
+     "correct": null
+    }
+   ],
+   "idx": 109,
+   "difficulty": "easy",
+   "elapsed_sec": 1.9,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "What is the highest overall rating received by Dorlan Pabon?",
+   "gold_sql": "SELECT MAX(t2.overall_rating) FROM Player AS t1 INNER JOIN Player_Attributes AS t2 ON t1.player_api_id = t2.player_api_id WHERE t1.player_name = 'Dorlan Pabon'",
+   "final_sql": "SELECT T2.overall_rating FROM Player AS T1 INNER JOIN Player_Attributes AS T2 ON T1.player_api_id = T2.player_api_id WHERE T1.player_name = 'Dorlan Pabon' ORDER BY T2.overall_rating DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.overall_rating FROM Player AS T1 INNER JOIN Player_Attributes AS T2 ON T1.player_api_id = T2.player_api_id WHERE T1.player_name = 'Dorlan Pabon' ORDER BY T2.overall_rating DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: overall_rating\n  (76)",
+     "correct": null
+    }
+   ],
+   "idx": 110,
+   "difficulty": "easy",
+   "elapsed_sec": 2.45,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "Tell the build Up play passing class for \"FC Lorient\" on 2010/2/22.",
+   "gold_sql": "SELECT t2.buildUpPlayPassingClass FROM Team AS t1 INNER JOIN Team_Attributes AS t2 ON t1.team_api_id = t2.team_api_id WHERE t1.team_long_name = 'FC Lorient' AND t2.`date` LIKE '2010-02-22%'",
+   "final_sql": "SELECT T2.buildUpPlayPassingClass FROM Team AS T1 INNER JOIN Team_Attributes AS T2 ON T1.team_api_id = T2.team_api_id WHERE T1.team_long_name = 'FC Lorient' AND T2.date LIKE '2010-02-22%'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.buildUpPlayPassingClass FROM Team AS T1 INNER JOIN Team_Attributes AS T2 ON T1.team_api_id = T2.team_api_id WHERE T1.team_long_name = 'FC Lorient' AND T2.date LIKE '2010-02-22%'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: buildUpPlayPassingClass\n  (Long)",
+     "correct": null
+    }
+   ],
+   "idx": 111,
+   "difficulty": "medium",
+   "elapsed_sec": 2.61,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "Sum up the away team goal scored by both Daan Smith and Filipe Ferreira.",
+   "gold_sql": "SELECT SUM(t2.away_team_goal) FROM Player AS t1 INNER JOIN match AS t2 ON t1.player_api_id = t2.away_player_5 WHERE t1.player_name IN ('Daan Smith', 'Filipe Ferreira')",
+   "final_sql": "SELECT SUM(T2.away_team_goal) FROM Player AS T1 INNER JOIN Match AS T2 ON T1.player_api_id = T2.away_player_1 OR T1.player_api_id = T2.away_player_2 OR T1.player_api_id = T2.away_player_3 OR T1.player_api_id = T2.away_player_4 OR T1.player_api_id = T2.away_player_5 OR T1.player_api_id = T2.away_player_6 OR T1.player_api_id = T2.away_player_7 OR T1.player_api_id = T2.away_player_8 OR T1.player_api_id = T2.away_player_9 OR T1.player_api_id = T2.away_player_10 OR T1.player_api_id = T2.away_player_11 WHERE T1.player_name = 'Daan Smith' OR T1.player_name = 'Filipe Ferreira'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT SUM(T2.away_team_goal) FROM Player AS T1 INNER JOIN Match AS T2 ON T1.player_api_id = T2.away_player_1 OR T1.player_api_id = T2.away_player_2 OR T1.player_api_id = T2.away_player_3 OR T1.player_api_id = T2.away_player_4 OR T1.player_api_id = T2.away_player_5 OR T1.player_api_id = T2.away_player_6 OR T1.player_api_id = T2.away_player_7 OR T1.player_api_id = T2.away_player_8 OR T1.player_api_id = T2.away_player_9 OR T1.player_api_id = T2.away_player_10 OR T1.player_api_id = T2.away_player_11 WHERE T1.player_name = 'Daan Smith' OR T1.player_name = 'Filipe Ferreira'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: SUM(T2.away_team_goal)\n  (35)",
+     "correct": null
+    }
+   ],
+   "idx": 112,
+   "difficulty": "medium",
+   "elapsed_sec": 7.97,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "What are the short name of team who played safe while creating chance of passing?",
+   "gold_sql": "SELECT DISTINCT t1.team_short_name FROM Team AS t1 INNER JOIN Team_Attributes AS t2 ON t1.team_api_id = t2.team_api_id WHERE t2.chanceCreationPassingClass = 'Safe'",
+   "final_sql": "SELECT T2.team_short_name FROM Team_Attributes AS T1 INNER JOIN Team AS T2 ON T1.team_api_id = T2.team_api_id WHERE T1.chanceCreationPassingClass = 'Safe'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.team_short_name FROM Team_Attributes AS T1 INNER JOIN Team AS T2 ON T1.team_api_id = T2.team_api_id WHERE T1.chanceCreationPassingClass = 'Safe'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 56,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 56 rows.\nColumns: team_short_name\n  (HAA)\n  (ARK)\n  (ARL)",
+     "correct": null
+    }
+   ],
+   "idx": 113,
+   "difficulty": "medium",
+   "elapsed_sec": 2.68,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "european_football_2",
+   "question": "What are Alexis Blin's sprint speed, agility, and acceleration scores?",
+   "gold_sql": "SELECT sprint_speed, agility, acceleration FROM Player_Attributes WHERE player_api_id IN ( SELECT player_api_id FROM Player WHERE player_name = 'Alexis Blin' )",
+   "final_sql": "SELECT T2.sprint_speed, T2.agility, T2.acceleration FROM Player AS T1 INNER JOIN Player_Attributes AS T2 ON T1.player_api_id = T2.player_api_id WHERE T1.player_name = 'Alexis Blin'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.sprint_speed, T2.agility, T2.acceleration FROM Player AS T1 INNER JOIN Player_Attributes AS T2 ON T1.player_api_id = T2.player_api_id WHERE T1.player_name = 'Alexis Blin'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 9,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 9 rows.\nColumns: sprint_speed, agility, acceleration\n  (60, 61, 56)\n  (60, 61, 56)\n  (60, 61, 56)",
+     "correct": null
+    }
+   ],
+   "idx": 114,
+   "difficulty": "easy",
+   "elapsed_sec": 2.36,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "What is the percentage of female patient were born after 1930?",
+   "gold_sql": "SELECT CAST(SUM(CASE WHEN STRFTIME('%Y', Birthday) > '1930' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) FROM Patient WHERE SEX = 'F'",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN SUBSTR(Birthday, 1, 4) > '1930' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID) FROM Patient WHERE SEX = 'F'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN SUBSTR(Birthday, 1, 4) > '1930' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID) FROM Patient WHERE SEX = 'F'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN SUBSTR(Birthday, 1, 4) > '1930' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID)\n  (94.03714565004887)",
+     "correct": null
+    }
+   ],
+   "idx": 115,
+   "difficulty": "medium",
+   "elapsed_sec": 2.17,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "What is the percentage of female patient had total protein not within the normal range?",
+   "gold_sql": "SELECT CAST(SUM(CASE WHEN T1.SEX = 'F' AND (T2.TP < 6.0 OR T2.TP > 8.5) THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.SEX = 'F'",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN T1.SEX = 'F' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.TP < 6.0 OR T2.TP > 8.5",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN T1.SEX = 'F' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.TP < 6.0 OR T2.TP > 8.5",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN T1.SEX = 'F' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.ID)\n  (84.36363636363636)",
+     "correct": null
+    }
+   ],
+   "idx": 116,
+   "difficulty": "medium",
+   "elapsed_sec": 3.07,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "How many patients hadn't undergone a medical examination until at least a year following their initial hospital visit?",
+   "gold_sql": "SELECT COUNT(DISTINCT T1.ID) FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE T1.Admission = '+' AND STRFTIME('%Y', T2.`Examination Date`) - STRFTIME('%Y', T1.`First Date`) >= 1",
+   "final_sql": "SELECT COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE strftime('%Y', T2.`Examination Date`) - strftime('%Y', T1.`First Date`) >= 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE strftime('%Y', T2.`Examination Date`) - strftime('%Y', T1.`First Date`) >= 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.ID)\n  (21)",
+     "correct": null
+    }
+   ],
+   "idx": 117,
+   "difficulty": "medium",
+   "elapsed_sec": 2.15,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "Was the patient a man or a women whose ALT glutamic pylvic transaminase status got 9 on 1992-6-12?",
+   "gold_sql": "SELECT T1.SEX FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.GPT = 9.0 AND T2.Date = '1992-06-12'",
+   "final_sql": "SELECT T1.SEX FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.Date = '1992-06-12' AND T2.GOT = 9",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.SEX FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.Date = '1992-06-12' AND T2.GOT = 9",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.",
+     "correct": null
+    }
+   ],
+   "idx": 118,
+   "difficulty": "medium",
+   "elapsed_sec": 2.05,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "What percentage of patients with a proteinuria level within the normal range have a uric acid level below the normal range?",
+   "gold_sql": "SELECT CAST(SUM(CASE WHEN UA <= 6.5 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID) FROM Laboratory WHERE `U-PRO` > 0 AND `U-PRO` < 30",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN UA <= 6.5 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID) FROM Laboratory WHERE `U-PRO` > 0 AND `U-PRO` < 30",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN UA <= 6.5 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID) FROM Laboratory WHERE `U-PRO` > 0 AND `U-PRO` < 30",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN UA <= 6.5 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID)\n  (61.00217864923747)",
+     "correct": null
+    }
+   ],
+   "idx": 119,
+   "difficulty": "hard",
+   "elapsed_sec": 2.2,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "What proportion of patients who had signs of thrombocytopenia had SLE diagnosed?",
+   "gold_sql": "SELECT CAST(SUM(CASE WHEN Diagnosis = 'SLE' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID) FROM Examination WHERE Symptoms = 'thrombocytopenia'",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN Diagnosis LIKE '%ITP%' THEN 1 ELSE 0 END) AS REAL) * 100 / SUM(CASE WHEN Diagnosis LIKE '%SLE%' THEN 1 ELSE 0 END) FROM Patient",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN Diagnosis LIKE '%ITP%' THEN 1 ELSE 0 END) AS REAL) * 100 / SUM(CASE WHEN Diagnosis LIKE '%SLE%' THEN 1 ELSE 0 END) FROM Patient",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN Diagnosis LIKE '%ITP%' THEN 1 ELSE 0 END) AS REAL) * 100 / SUM(CASE WHEN Diagnosis LIKE '%SLE%' THEN 1 ELSE 0 END)\n  (0.970873786407767)",
+     "correct": null
+    }
+   ],
+   "idx": 120,
+   "difficulty": "medium",
+   "elapsed_sec": 2.04,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "What is the average index of the lactate dehydrogenase (LDH) for all patients with lactate dehydrogenase (LDH) within the normal range.",
+   "gold_sql": "SELECT AVG(LDH) FROM Laboratory WHERE LDH < 500",
+   "final_sql": "SELECT AVG(LDH) FROM Laboratory WHERE LDH < 500",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(LDH) FROM Laboratory WHERE LDH < 500",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(LDH)\n  (262.36002396166134)",
+     "correct": null
+    }
+   ],
+   "idx": 121,
+   "difficulty": "easy",
+   "elapsed_sec": 0.79,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "Provide all ID, sex and birthday of patients whose urea nitrogen (UN) just within the borderline of passing?",
+   "gold_sql": "SELECT DISTINCT T1.ID, T1.SEX, T1.Birthday FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.UN = 29",
+   "final_sql": "SELECT T1.ID, T1.SEX, T1.Birthday FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.UN = 29",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.ID, T1.SEX, T1.Birthday FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.UN = 29",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 44,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 44 rows.\nColumns: ID, SEX, Birthday\n  (27654, F, 1936-03-25)\n  (27654, F, 1936-03-25)\n  (444499, M, 1954-01-24)",
+     "correct": null
+    }
+   ],
+   "idx": 122,
+   "difficulty": "easy",
+   "elapsed_sec": 1.7,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "List all outpatient within normal range of creatinine phosphokinase. Give me the distinct ids.",
+   "gold_sql": "SELECT DISTINCT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.CPK < 250 AND T1.Admission = '-'",
+   "final_sql": "SELECT DISTINCT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.CPK < 250 AND T1.Admission = '-'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.CPK < 250 AND T1.Admission = '-'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 154,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 154 rows.\nColumns: ID\n  (30609)\n  (43003)\n  (52199)",
+     "correct": null
+    }
+   ],
+   "idx": 123,
+   "difficulty": "easy",
+   "elapsed_sec": 1.74,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "From laboratory examinations in 1991, what is the average hematoclit level that is lower than the normal range.",
+   "gold_sql": "SELECT AVG(T2.HCT) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.HCT < 29 AND STRFTIME('%Y', T2.Date) = '1991'",
+   "final_sql": "SELECT AVG(HCT) FROM Laboratory WHERE HCT < 29 AND Date LIKE '1991%'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(HCT) FROM Laboratory WHERE HCT < 29 AND Date LIKE '1991%'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(HCT)\n  (26.06417910447761)",
+     "correct": null
+    }
+   ],
+   "idx": 124,
+   "difficulty": "medium",
+   "elapsed_sec": 1.04,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "Which patient has a normal proteinuria level and is diagnosed with SLE? Please give his or her patient ID.",
+   "gold_sql": "SELECT DISTINCT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.`U-PRO` > 0 AND T2.`U-PRO` < 30 AND T1.Diagnosis = 'SLE'",
+   "final_sql": "SELECT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.`U-PRO` BETWEEN 0 AND 30 AND T1.Diagnosis = 'SLE'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.`U-PRO` BETWEEN 0 AND 30 AND T1.Diagnosis = 'SLE'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1419,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1419 rows.\nColumns: ID\n  (48473)\n  (48473)\n  (48473)",
+     "correct": null
+    }
+   ],
+   "idx": 125,
+   "difficulty": "medium",
+   "elapsed_sec": 1.93,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "Please list the ID of the patient whose RF is normal and who is older than 60.",
+   "gold_sql": "SELECT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.RF < 20 AND STRFTIME('%Y', DATE('now')) - STRFTIME('%Y', T1.Birthday) > 60",
+   "final_sql": "SELECT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.RF < 20 AND strftime('%Y', 'now') - strftime('%Y', T1.Birthday) > 60",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.RF < 20 AND strftime('%Y', 'now') - strftime('%Y', T1.Birthday) > 60",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 280,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 280 rows.\nColumns: ID\n  (57266)\n  (57266)\n  (130312)",
+     "correct": null
+    }
+   ],
+   "idx": 126,
+   "difficulty": "easy",
+   "elapsed_sec": 2.21,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "Among the patients who has a normal anti-scl70, how many of them are female and does not have any symptom?",
+   "gold_sql": "SELECT COUNT(DISTINCT T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID INNER JOIN Examination AS T3 ON T3.ID = T2.ID WHERE (T2.SC170 = 'negative' OR T2.SC170 = '0') AND T1.SEX = 'F' AND T3.Symptoms IS NULL",
+   "final_sql": "SELECT COUNT(DISTINCT T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.SC170 IN ('negative', '0') AND T1.SEX = 'F' AND T1.Description IS NULL",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(DISTINCT T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.SC170 IN ('negative', '0') AND T1.SEX = 'F' AND T1.Description IS NULL",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(DISTINCT T1.ID)\n  (2)",
+     "correct": null
+    }
+   ],
+   "idx": 127,
+   "difficulty": "hard",
+   "elapsed_sec": 2.32,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "How many male patients have their glutamic oxaloacetic transaminase in the normal range?",
+   "gold_sql": "SELECT COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.GOT < 60 AND T1.SEX = 'M'",
+   "final_sql": "SELECT COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.SEX = 'M' AND T2.GOT < 60",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.SEX = 'M' AND T2.GOT < 60",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.ID)\n  (1924)",
+     "correct": null
+    }
+   ],
+   "idx": 128,
+   "difficulty": "easy",
+   "elapsed_sec": 1.79,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "What is the examination date of the patient whose albumin is the highest in the normal range?",
+   "gold_sql": "SELECT Date FROM Laboratory WHERE ALB > 3.5 AND ALB < 5.5 ORDER BY ALB DESC LIMIT 1",
+   "final_sql": "SELECT T2.`Examination Date` FROM Laboratory AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE T1.ALB = 5.5",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.`Examination Date` FROM Laboratory AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE T1.ALB = 5.5",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Examination Date\n  (1993-09-30)",
+     "correct": null
+    }
+   ],
+   "idx": 129,
+   "difficulty": "easy",
+   "elapsed_sec": 1.61,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "What is the disease name of the patient who has the highest level of triglyceride within the normal range?",
+   "gold_sql": "SELECT T1.Diagnosis FROM Examination AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.TG < 200 ORDER BY T2.TG DESC LIMIT 1",
+   "final_sql": "SELECT T1.Diagnosis FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.TG < 200 ORDER BY T2.TG DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.Diagnosis FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.TG < 200 ORDER BY T2.TG DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Diagnosis\n  (SLE, MCTD)",
+     "correct": null
+    }
+   ],
+   "idx": 130,
+   "difficulty": "medium",
+   "elapsed_sec": 1.84,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "thrombosis_prediction",
+   "question": "For the male patients that have a normal prothrombin time, what is their average prothrombin time?",
+   "gold_sql": "SELECT AVG(T2.PT) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.PT < 14 AND T1.SEX = 'M'",
+   "final_sql": "SELECT AVG(T2.PT) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.SEX = 'M' AND T2.PT < 14",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(T2.PT) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.SEX = 'M' AND T2.PT < 14",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(T2.PT)\n  (12.320454545454545)",
+     "correct": null
+    }
+   ],
+   "idx": 131,
+   "difficulty": "easy",
+   "elapsed_sec": 1.84,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "Please list the event names of all the events attended by Maya Mclean.",
+   "gold_sql": "SELECT T1.event_name FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T3.first_name = 'Maya' AND T3.last_name = 'Mclean'",
+   "final_sql": "SELECT T1.event_name FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T3.first_name = 'Maya' AND T3.last_name = 'Mclean'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.event_name FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T3.first_name = 'Maya' AND T3.last_name = 'Mclean'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 14,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 14 rows.\nColumns: event_name\n  (Women's Soccer)\n  (Laugh Out Loud)\n  (October Speaker)",
+     "correct": null
+    }
+   ],
+   "idx": 132,
+   "difficulty": "easy",
+   "elapsed_sec": 2.52,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "What college offers the major that Tyler Hewitt took?",
+   "gold_sql": "SELECT T2.college FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.first_name = 'Tyler' AND T1.last_name = 'Hewitt'",
+   "final_sql": "SELECT T2.college FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.first_name = 'Tyler' AND T1.last_name = 'Hewitt'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.college FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.first_name = 'Tyler' AND T1.last_name = 'Hewitt'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: college\n  (College of Engineering)",
+     "correct": null
+    }
+   ],
+   "idx": 133,
+   "difficulty": "easy",
+   "elapsed_sec": 1.92,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "Calculate the difference of the total amount spent in all events by the Student_Club in year 2019 and 2020.",
+   "gold_sql": "SELECT SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2019' THEN T2.spent ELSE 0 END) - SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2020' THEN T2.spent ELSE 0 END) AS num FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event",
+   "final_sql": "SELECT SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2019' THEN T2.spent ELSE 0 END) - SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2020' THEN T2.spent ELSE 0 END) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2019' THEN T2.spent ELSE 0 END) - SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2020' THEN T2.spent ELSE 0 END) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2019' THEN T2.spent ELSE 0 END) - SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2020' THEN T2.spent ELSE 0 END)\n  (2086.05)",
+     "correct": null
+    }
+   ],
+   "idx": 134,
+   "difficulty": "medium",
+   "elapsed_sec": 3.56,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "What is the status of the event which bought \"Post Cards, Posters\" on 2019/8/20?",
+   "gold_sql": "SELECT T1.event_status FROM budget AS T1 INNER JOIN expense AS T2 ON T1.budget_id = T2.link_to_budget WHERE T2.expense_description = 'Post Cards, Posters' AND T2.expense_date = '2019-08-20'",
+   "final_sql": "SELECT T2.event_status FROM expense AS T1 INNER JOIN budget AS T2 ON T1.link_to_budget = T2.budget_id WHERE T1.expense_description = 'Post Cards, Posters' AND T1.expense_date = '2019-08-20'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.event_status FROM expense AS T1 INNER JOIN budget AS T2 ON T1.link_to_budget = T2.budget_id WHERE T1.expense_description = 'Post Cards, Posters' AND T1.expense_date = '2019-08-20'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: event_status\n  (Closed)",
+     "correct": null
+    }
+   ],
+   "idx": 135,
+   "difficulty": "medium",
+   "elapsed_sec": 2.45,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "What percentage was the budget for Parking to the total budget for the \"November Speaker\"?",
+   "gold_sql": "SELECT CAST(SUM(CASE WHEN T1.category = 'Parking' THEN T1.amount ELSE 0 END) AS REAL) * 100 / SUM(T1.amount) FROM budget AS T1 INNER JOIN event AS T2 ON T1.link_to_event = T2.event_id WHERE T2.event_name = 'November Speaker'",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN T1.category = 'Parking' THEN T1.amount ELSE 0 END) AS REAL) * 100 / SUM(T1.amount) FROM budget AS T1 INNER JOIN event AS T2 ON T1.link_to_event = T2.event_id WHERE T2.event_name = 'November Speaker'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN T1.category = 'Parking' THEN T1.amount ELSE 0 END) AS REAL) * 100 / SUM(T1.amount) FROM budget AS T1 INNER JOIN event AS T2 ON T1.link_to_event = T2.event_id WHERE T2.event_name = 'November Speaker'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN T1.category = 'Parking' THEN T1.amount ELSE 0 END) AS REAL) * 100 / SUM(T1.amount)\n  (3.8461538461538463)",
+     "correct": null
+    }
+   ],
+   "idx": 136,
+   "difficulty": "medium",
+   "elapsed_sec": 2.75,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "List all the expenses incurred by the vice president.",
+   "gold_sql": "SELECT T2.expense_id, T2.expense_description FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.position = 'Vice President'",
+   "final_sql": "SELECT T2.expense_description FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.position = 'Vice President'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.expense_description FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.position = 'Vice President'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 11,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 11 rows.\nColumns: expense_description\n  (Pizza)\n  (Pizza)\n  (Pizza)",
+     "correct": null
+    }
+   ],
+   "idx": 137,
+   "difficulty": "easy",
+   "elapsed_sec": 1.61,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "What is the total amount of money spent for food?",
+   "gold_sql": "SELECT SUM(spent) FROM budget WHERE category = 'Food'",
+   "final_sql": "SELECT SUM(spent) FROM budget WHERE category = 'Food'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT SUM(spent) FROM budget WHERE category = 'Food'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: SUM(spent)\n  (1234.73)",
+     "correct": null
+    }
+   ],
+   "idx": 138,
+   "difficulty": "easy",
+   "elapsed_sec": 0.68,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "Based on the total cost for all event, what is the percentage of cost for Yearly Kickoff event?",
+   "gold_sql": "SELECT CAST(SUM(CASE WHEN T1.event_name = 'Yearly Kickoff' THEN T3.cost ELSE 0 END) AS REAL) * 100 / SUM(T3.cost) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN T1.event_name = 'Yearly Kickoff' THEN T2.cost ELSE 0 END) AS REAL) * 100 / SUM(T2.cost) FROM event AS T1 INNER JOIN expense AS T2 ON T1.event_id = T2.link_to_budget",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN T1.event_name = 'Yearly Kickoff' THEN T2.cost ELSE 0 END) AS REAL) * 100 / SUM(T2.cost) FROM event AS T1 INNER JOIN expense AS T2 ON T1.event_id = T2.link_to_budget",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN T1.event_name = 'Yearly Kickoff' THEN T2.cost ELSE 0 END) AS REAL) * 100 / SUM(T2.cost)\n  (NULL)",
+     "correct": null
+    }
+   ],
+   "idx": 139,
+   "difficulty": "medium",
+   "elapsed_sec": 2.56,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "Among all events hold by the Student_Club in 2019, find the percentage share of events related to 'Community Service'",
+   "gold_sql": "SELECT CAST(SUM(CASE WHEN type = 'Community Service' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(type) FROM event WHERE SUBSTR(event_date, 1, 4) = '2019'",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN type = 'Community Service' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(event_id) FROM event WHERE event_date LIKE '2019%'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN type = 'Community Service' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(event_id) FROM event WHERE event_date LIKE '2019%'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: CAST(SUM(CASE WHEN type = 'Community Service' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(event_id)\n  (10.0)",
+     "correct": null
+    }
+   ],
+   "idx": 140,
+   "difficulty": "medium",
+   "elapsed_sec": 1.86,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "List out the full name and total cost that member id \"rec4BLdZHS2Blfp4v\" incurred?",
+   "gold_sql": "SELECT T1.first_name, T1.last_name, SUM(T2.cost) FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.member_id = 'rec4BLdZHS2Blfp4v'",
+   "final_sql": "SELECT T1.first_name, T1.last_name, SUM(T2.cost) FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.member_id = 'rec4BLdZHS2Blfp4v'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.first_name, T1.last_name, SUM(T2.cost) FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.member_id = 'rec4BLdZHS2Blfp4v'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: first_name, last_name, SUM(T2.cost)\n  (Sacha, Harrison, 866.25)",
+     "correct": null
+    }
+   ],
+   "idx": 141,
+   "difficulty": "easy",
+   "elapsed_sec": 2.26,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "State the name of major that Vice President has joined.",
+   "gold_sql": "SELECT T1.major_name FROM major AS T1 INNER JOIN member AS T2 ON T1.major_id = T2.link_to_major WHERE T2.position = 'Vice President'",
+   "final_sql": "SELECT T2.major_name FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.position = 'Vice President'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.major_name FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.position = 'Vice President'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: major_name\n  (Communication Studies)",
+     "correct": null
+    }
+   ],
+   "idx": 142,
+   "difficulty": "easy",
+   "elapsed_sec": 1.56,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "What is the last name and position of the student that bought pizza on 09/10/2019?",
+   "gold_sql": "SELECT T1.last_name, T1.position FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T2.expense_date = '2019-09-10' AND T2.expense_description = 'Pizza'",
+   "final_sql": "SELECT T2.last_name, T2.position FROM expense AS T1 INNER JOIN member AS T2 ON T1.link_to_member = T2.member_id WHERE T1.expense_description = 'Pizza' AND T1.expense_date = '2019-09-10'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.last_name, T2.position FROM expense AS T1 INNER JOIN member AS T2 ON T1.link_to_member = T2.member_id WHERE T1.expense_description = 'Pizza' AND T1.expense_date = '2019-09-10'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: last_name, position\n  (Cullen, Vice President)",
+     "correct": null
+    }
+   ],
+   "idx": 143,
+   "difficulty": "medium",
+   "elapsed_sec": 2.4,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "List emails of people who paid more than 20 dollars from 9/10/2019 to 11/19/2019.",
+   "gold_sql": "SELECT DISTINCT T1.email FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE date(SUBSTR(T2.expense_date, 1, 10)) BETWEEN '2019-09-10' AND '2019-11-19' AND T2.cost > 20",
+   "final_sql": "SELECT T1.email FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T2.expense_date BETWEEN '2019-09-10' AND '2019-11-19' AND T2.cost > 20",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.email FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T2.expense_date BETWEEN '2019-09-10' AND '2019-11-19' AND T2.cost > 20",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 20,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 20 rows.\nColumns: email\n  (elijah.allen@lpu.edu)\n  (phillip.cullen@lpu.edu)\n  (sacha.harrison@lpu.edu)",
+     "correct": null
+    }
+   ],
+   "idx": 144,
+   "difficulty": "medium",
+   "elapsed_sec": 2.7,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_club",
+   "question": "In the events with more than forty incomes, list the city and country in which the event is happening.",
+   "gold_sql": "SELECT DISTINCT T3.city, T3.county FROM income AS T1 INNER JOIN member AS T2 ON T1.link_to_member = T2.member_id INNER JOIN zip_code AS T3 ON T3.zip_code = T2.zip WHERE T1.amount > 40",
+   "final_sql": "SELECT DISTINCT T1.city, T1.county FROM zip_code AS T1 INNER JOIN member AS T2 ON T1.zip_code = T2.zip INNER JOIN income AS T3 ON T2.member_id = T3.link_to_member INNER JOIN budget AS T4 ON T3.link_to_budget = T4.budget_id INNER JOIN event AS T5 ON T4.link_to_event = T5.event_id WHERE T3.amount > 40",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT T1.city, T1.county FROM zip_code AS T1 INNER JOIN member AS T2 ON T1.zip_code = T2.zip INNER JOIN income AS T3 ON T2.member_id = T3.link_to_member INNER JOIN budget AS T4 ON T3.link_to_budget = T4.budget_id INNER JOIN event AS T5 ON T4.link_to_event = T5.event_id WHERE T3.amount > 40",
+     "success": false,
+     "error_class": "db_error",
+     "error_message": "no such column: T3.link_to_budget",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Database says: no such column: T3.link_to_budget\nAvailable columns: attendance.link_to_event, attendance.link_to_member, budget.budget_id, budget.category, budget.spent, budget.remaining, budget.amount, budget.event_status, budget.link_to_event, event.event_id, event.event_name, event.event_date, event.type, event.notes, event.location, event.status, expense.expense_id, expense.expense_description, expense.expense_date, expense.cost, ... (+28 more)\nUse the exact column names (case-sensitive name",
+     "correct": null
+    }
+   ],
+   "idx": 145,
+   "difficulty": "easy",
+   "elapsed_sec": 3.63,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "db_error"
+  },
+  {
+   "db_id": "student_club",
+   "question": "Write the full name of the member who spent money for water, veggie tray and supplies and include the cost of it.",
+   "gold_sql": "SELECT T2.first_name, T2.last_name, T1.cost FROM expense AS T1 INNER JOIN member AS T2 ON T1.link_to_member = T2.member_id WHERE T1.expense_description = 'Water, Veggie tray, supplies'",
+   "final_sql": "SELECT T1.first_name, T1.last_name, T2.cost FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T2.expense_description = 'Water, Veggie tray, supplies'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T1.first_name, T1.last_name, T2.cost FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T2.expense_description = 'Water, Veggie tray, supplies'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: first_name, last_name, cost\n  (Elijah, Allen, 28.15)",
+     "correct": null
+    }
+   ],
+   "idx": 146,
+   "difficulty": "hard",
+   "elapsed_sec": 2.13,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "debit_card_specializing",
+   "question": "How many gas stations in CZE has Premium gas?",
+   "gold_sql": "SELECT COUNT(GasStationID) FROM gasstations WHERE Country = 'CZE' AND Segment = 'Premium'",
+   "final_sql": "SELECT COUNT(T1.GasStationID) FROM gasstations AS T1 INNER JOIN transactions_1k AS T2 ON T1.GasStationID = T2.GasStationID WHERE T1.Country = 'CZE' AND T2.ProductID = 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(T1.GasStationID) FROM gasstations AS T1 INNER JOIN transactions_1k AS T2 ON T1.GasStationID = T2.GasStationID WHERE T1.Country = 'CZE' AND T2.ProductID = 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(T1.GasStationID)\n  (0)",
+     "correct": null
+    }
+   ],
+   "idx": 147,
+   "difficulty": "easy",
+   "elapsed_sec": 2.26,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "debit_card_specializing",
+   "question": "What was the gas consumption peak month for SME customers in 2013?",
+   "gold_sql": "SELECT SUBSTR(T2.Date, 5, 2) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2013' AND T1.Segment = 'SME' GROUP BY SUBSTR(T2.Date, 5, 2) ORDER BY SUM(T2.Consumption) DESC LIMIT 1",
+   "final_sql": "SELECT SUBSTR(Date, 5, 2) AS month FROM yearmonth WHERE CustomerID IN ( SELECT CustomerID FROM customers WHERE Segment = 'SME' ) AND Date LIKE '2013%' ORDER BY Consumption DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT SUBSTR(Date, 5, 2) AS month FROM yearmonth WHERE CustomerID IN ( SELECT CustomerID FROM customers WHERE Segment = 'SME' ) AND Date LIKE '2013%' ORDER BY Consumption DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: month\n  (04)\nValue check: a literal in your query does not exist in the database.\n- `SME` is not found in column `CustomerID`\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 148,
+   "difficulty": "medium",
+   "elapsed_sec": 2.34,
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "debit_card_specializing",
+   "question": "How many percent of LAM customer consumed more than 46.73?",
+   "gold_sql": "SELECT CAST(SUM(IIF(T2.Consumption > 46.73, 1, 0)) AS FLOAT) * 100 / COUNT(T1.CustomerID) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Segment = 'LAM'",
+   "final_sql": "SELECT CAST(SUM(CASE WHEN Consumption > 46.73 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(CustomerID) FROM yearmonth WHERE Segment = 'LAM'",
+   "stopped_reason": "max_turns",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT CAST(SUM(CASE WHEN Consumption > 46.73 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(CustomerID) FROM yearmonth WHERE Segment = 'LAM'",
+     "success": false,
+     "error_class": "db_error",
+     "error_message": "no such column: Segment",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Database says: no such column: Segment\nAvailable columns: customers.CustomerID, customers.Segment, customers.Currency, gasstations.GasStationID, gasstations.ChainID, gasstations.Country, gasstations.Segment, products.ProductID, products.Description, transactions_1k.TransactionID, transactions_1k.Date, transactions_1k.Time, transactions_1k.CustomerID, transactions_1k.CardID, transactions_1k.GasStationID, transactions_1k.ProductID, transactions_1k.Amount, transactions_1k.Price, yearmonth.CustomerI",
+     "correct": null
+    }
+   ],
+   "idx": 149,
+   "difficulty": "medium",
+   "elapsed_sec": 1.91,
+   "correct": false,
+   "reason": "pred_error",
+   "pred_error_class": "db_error"
+  },
+  {
+   "db_id": "debit_card_specializing",
+   "question": "Please list the product description of the products consumed in September, 2013.",
+   "gold_sql": "SELECT T3.Description FROM transactions_1k AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID INNER JOIN products AS T3 ON T1.ProductID = T3.ProductID WHERE T2.Date = '201309'",
+   "final_sql": "SELECT DISTINCT T2.Description FROM transactions_1k AS T1 INNER JOIN products AS T2 ON T1.ProductID = T2.ProductID WHERE T1.Date LIKE '2013-09%'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT T2.Description FROM transactions_1k AS T1 INNER JOIN products AS T2 ON T1.ProductID = T2.ProductID WHERE T1.Date LIKE '2013-09%'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `2013-09%` is not found in column `Date` (as a LIKE pattern). Closest existing values: '201309', '201310', '201308'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 150,
+   "difficulty": "easy",
+   "elapsed_sec": 1.8,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "debit_card_specializing",
+   "question": "What is the average total price of the transactions taken place in gas stations in the Czech Republic?",
+   "gold_sql": "SELECT AVG(T1.Price) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T2.Country = 'CZE'",
+   "final_sql": "SELECT AVG(T1.Amount) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T2.Country = 'CZE'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(T1.Amount) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T2.Country = 'CZE'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(T1.Amount)\n  (19.519828510182208)",
+     "correct": null
+    }
+   ],
+   "idx": 151,
+   "difficulty": "easy",
+   "elapsed_sec": 1.79,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "debit_card_specializing",
+   "question": "For the customer who paid 124.05 in 2012/8/24, how much did he/she spend during the January of 2012? And what is the date and expenses exactly?",
+   "gold_sql": "SELECT T1.CustomerID, T2.Date, T2.Consumption FROM transactions_1k AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Date = '2012-08-24' AND T1.Price = 124.05 AND T2.Date = '201201'",
+   "final_sql": "SELECT T2.Consumption, T2.Date FROM transactions_1k AS T1 INNER JOIN yearmonth AS T2 ON T2.CustomerID = T1.CustomerID WHERE T1.Date = '2012-08-24' AND T2.Date LIKE '2012-01%'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.Consumption, T2.Date FROM transactions_1k AS T1 INNER JOIN yearmonth AS T2 ON T2.CustomerID = T1.CustomerID WHERE T1.Date = '2012-08-24' AND T2.Date LIKE '2012-01%'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions.\nValue check: a literal in your query does not exist in the database.\n- `2012-01%` is not found in column `Date` (as a LIKE pattern). Closest existing values: '201201', '201301', '201209'\nCheck spelling / the right column for this value before changing the logic.",
+     "correct": null
+    }
+   ],
+   "idx": 152,
+   "difficulty": "medium",
+   "elapsed_sec": 2.71,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "debit_card_specializing",
+   "question": "Which are the top five best selling products? Please state the full name of them.",
+   "gold_sql": "SELECT T2.Description FROM transactions_1k AS T1 INNER JOIN products AS T2 ON T1.ProductID = T2.ProductID ORDER BY T1.Amount DESC LIMIT 5",
+   "final_sql": "SELECT T2.Description FROM transactions_1k AS T1 INNER JOIN products AS T2 ON T1.ProductID = T2.ProductID GROUP BY T2.ProductID ORDER BY COUNT(T2.ProductID) DESC LIMIT 5",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT T2.Description FROM transactions_1k AS T1 INNER JOIN products AS T2 ON T1.ProductID = T2.ProductID GROUP BY T2.ProductID ORDER BY COUNT(T2.ProductID) DESC LIMIT 5",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: Description\n  (Nafta)\n  (Natural)\n  (Diesel)",
+     "correct": null
+    }
+   ],
+   "idx": 153,
+   "difficulty": "easy",
+   "elapsed_sec": 1.93,
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  }
+ ]
+}

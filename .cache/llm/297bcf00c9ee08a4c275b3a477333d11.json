@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT MIN(grade) FROM Highschooler WHERE ID NOT IN (SELECT student_id FROM Friend);\n```", "model": "deepseek-chat"}

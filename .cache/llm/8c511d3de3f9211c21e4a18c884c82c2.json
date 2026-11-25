@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Record_Company\nFROM orchestra\nGROUP BY Record_Company\nORDER BY COUNT(*) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT COUNT(*) FROM concert WHERE Year IN (2014, 2015);\n```", "model": "deepseek-chat"}

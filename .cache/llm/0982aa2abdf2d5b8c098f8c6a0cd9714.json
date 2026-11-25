@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT a.address_id, a.line_1, a.line_2\nFROM Addresses a\nJOIN Students s ON s.current_address_id = a.address_id\nGROUP BY a.address_id, a.line_1, a.line_2\nORDER BY COUNT(s.student_id) DESC\nLIMIT 1\n```", "model": "deepseek-chat"}

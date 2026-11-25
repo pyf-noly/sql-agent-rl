@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT TV_series.Episode\nFROM TV_series\nJOIN TV_Channel ON TV_series.Channel = TV_Channel.id\nWHERE TV_Channel.series_name = 'Sky Radio'\n```", "model": "deepseek-chat"}

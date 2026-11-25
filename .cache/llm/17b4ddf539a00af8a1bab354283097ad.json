@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT first_name || ' ' || last_name AS full_name\nFROM players\nWHERE hand = 'L'\nORDER BY birth_date;\n```", "model": "deepseek-chat"}

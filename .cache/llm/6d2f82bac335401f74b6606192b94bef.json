@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT City\nFROM employee\nWHERE Age < 30\nGROUP BY City\nHAVING COUNT(*) > 1;\n```", "model": "deepseek-chat"}

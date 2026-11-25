@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT country.Region\nFROM city\nJOIN country ON city.CountryCode = country.Code\nWHERE city.Name = 'Kabul'\n```", "model": "deepseek-chat"}

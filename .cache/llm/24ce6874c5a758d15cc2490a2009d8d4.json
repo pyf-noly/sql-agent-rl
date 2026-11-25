@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT e.Name\nFROM employee e\nJOIN evaluation ev ON e.Employee_ID = ev.Employee_ID\nORDER BY ev.Bonus DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

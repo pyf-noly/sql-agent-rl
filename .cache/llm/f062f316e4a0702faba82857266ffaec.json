@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT SUM(Bonus) AS Total_Bonus FROM evaluation;\n```", "model": "deepseek-chat"}

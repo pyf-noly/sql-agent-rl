@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT h.name\nFROM Highschooler h\nJOIN Friend f ON h.ID = f.student_id\nGROUP BY h.ID, h.name\nORDER BY COUNT(f.friend_id) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

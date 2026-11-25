@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Model\nFROM car_names\nGROUP BY Model\nORDER BY COUNT(*) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

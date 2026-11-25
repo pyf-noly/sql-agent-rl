@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT AVG(GNP) AS AverageGNP, SUM(Population) AS TotalPopulation\nFROM country\nWHERE GovernmentForm = 'US Territory';\n```", "model": "deepseek-chat"}

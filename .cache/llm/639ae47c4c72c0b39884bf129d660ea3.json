@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT c.Name\nFROM conductor c\nJOIN orchestra o ON o.Conductor_ID = c.Conductor_ID\nGROUP BY c.Conductor_ID, c.Name\nORDER BY COUNT(o.Orchestra_ID) DESC\nLIMIT 1\n```", "model": "deepseek-chat"}

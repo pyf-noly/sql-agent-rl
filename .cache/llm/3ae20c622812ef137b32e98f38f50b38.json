@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT winner_name, loser_name\nFROM matches\nORDER BY minutes DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

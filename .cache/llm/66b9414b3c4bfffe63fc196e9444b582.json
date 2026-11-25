@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT SUM(Population) FROM city WHERE District = 'Gelderland';\n```", "model": "deepseek-chat"}

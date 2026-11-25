@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT COUNT(*) FROM Templates WHERE Template_Type_Code = 'CV';\n```", "model": "deepseek-chat"}

@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT c.Name\nFROM conductor c\nJOIN orchestra o ON c.Conductor_ID = o.Conductor_ID\nGROUP BY c.Conductor_ID, c.Name\nHAVING COUNT(DISTINCT o.Orchestra_ID) > 1;\n```", "model": "deepseek-chat"}

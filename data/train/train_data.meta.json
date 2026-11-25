@@ -1,0 +1,54 @@
+{
+ "created_at": "2026-11-04T09:10:28",
+ "source": {
+  "sft": "data/processed/sft_final.jsonl",
+  "rl": "data/processed/rl_prompts.json",
+  "spider_train": "data/raw/spider/train_spider.json"
+ },
+ "n_sft_train": 2369,
+ "n_sft_val": 205,
+ "n_rl": 1500,
+ "sft_turns": {
+  "1": 2217,
+  "3": 40,
+  "2": 112
+ },
+ "sft_difficulty": {
+  "medium": 1157,
+  "hard": 319,
+  "easy": 660,
+  "extra": 233
+ },
+ "rl_difficulty": {
+  "medium": 714,
+  "easy": 390,
+  "hard": 242,
+  "extra": 154
+ },
+ "n_db_sft": 140,
+ "n_db_rl": 140,
+ "n_db_dev": 20,
+ "rl_dev_db_overlap": 0,
+ "rl_multi_gold": 2,
+ "feedback_truncation_suspicious": 14,
+ "length_sft_train": {
+  "n": 2369,
+  "chars_mean": 1295.2,
+  "chars_p95": 2218,
+  "chars_max": 3994,
+  "est_tokens_mean": 370.1,
+  "est_tokens_p95": 633.7
+ },
+ "length_rl_prompt": {
+  "n": 1500,
+  "chars_mean": 1204.4,
+  "chars_p95": 2127,
+  "chars_max": 2507,
+  "est_tokens_mean": 344.1,
+  "est_tokens_p95": 607.7
+ },
+ "checks": {
+  "ok": true,
+  "failures": []
+ }
+}

@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT id FROM TV_Channel GROUP BY id HAVING COUNT(*) > 2;\n```", "model": "deepseek-chat"}

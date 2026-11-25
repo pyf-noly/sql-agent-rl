@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT MAX(Final_Table_Made) FROM poker_player WHERE Earnings < 200000\n```", "model": "deepseek-chat"}

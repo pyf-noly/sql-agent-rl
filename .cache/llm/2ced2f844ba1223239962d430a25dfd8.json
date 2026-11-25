@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Citizenship\nFROM singer\nGROUP BY Citizenship\nORDER BY COUNT(*) DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

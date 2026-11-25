@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT first_name, birth_date FROM players WHERE country_code = 'USA';\n```", "model": "deepseek-chat"}

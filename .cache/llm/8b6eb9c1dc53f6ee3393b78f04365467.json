@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT email_address FROM Professionals WHERE state IN ('Hawaii', 'Wisconsin');\n```", "model": "deepseek-chat"}

@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT tt.treatment_type_description\nFROM Treatments t\nJOIN Treatment_Types tt ON t.treatment_type_code = tt.treatment_type_code\nGROUP BY tt.treatment_type_code, tt.treatment_type_description\nORDER BY SUM(t.cost_of_treatment) ASC\nLIMIT 1;\n```", "model": "deepseek-chat"}

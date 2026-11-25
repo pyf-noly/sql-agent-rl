@@ -1,0 +1,23 @@
+{
+ "model": {
+  "name": "Qwen/Qwen3-4B-Instruct-2507",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "grad_checkpointing": true
+ },
+ "data_dir": "data/train",
+ "out_dir": "runs/sft_qwen3_4b",
+ "epochs": 2.0,
+ "lr": 0.0002,
+ "batch_size": 2,
+ "grad_accum": 8,
+ "warmup_ratio": 0.03,
+ "max_len": 2048,
+ "repeat_multiturn": 3,
+ "eval_every": 100,
+ "logging_steps": 5,
+ "seed": 42
+}

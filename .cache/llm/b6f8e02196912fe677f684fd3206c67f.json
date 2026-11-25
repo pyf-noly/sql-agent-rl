@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT COUNT(*) FROM Likes JOIN Highschooler ON Likes.student_id = Highschooler.ID WHERE Highschooler.name = 'Kyle';\n```", "model": "deepseek-chat"}

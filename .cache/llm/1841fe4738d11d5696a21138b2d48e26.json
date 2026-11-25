@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT o.Orchestra\nFROM orchestra o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM performance p\n    WHERE p.Orchestra_ID = o.Orchestra_ID\n);\n```", "model": "deepseek-chat"}

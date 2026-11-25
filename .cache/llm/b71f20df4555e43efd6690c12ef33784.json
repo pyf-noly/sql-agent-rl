@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT p.professional_id, p.cell_number\nFROM Professionals p\nWHERE p.professional_id IN (\n    SELECT t.professional_id\n    FROM Treatments t\n    GROUP BY t.professional_id\n    HAVING COUNT(DISTINCT t.treatment_type_code) >= 2\n)\n```", "model": "deepseek-chat"}

@@ -18,6 +18,16 @@
 能抓到 `WHERE col = 'x'` 这类值敏感的错误）。所以它**偏宽松**：
 对 gold 数据上恰好结果相同的错误 SQL 会判对。P2 先用它跑通，P7 前可换官方
 test-suite 复核主表——那时再报一次差距。
+
+与 BIRD 官方口径的关系（2026-11 补充）
+-------------------------------------
+BIRD 官方 EX 也是"单库执行等价"：``set(pred_rows) == set(gold_rows)``。差别有三处：
+
+1. 官方**列顺序敏感**（元组整体比较），我们把每行内部排序后再比 → 我们偏宽松；
+2. 官方**不做值规范化**（``1`` 与 ``1.0`` 不等），我们做 → 我们偏宽松；
+3. 官方超时 30s 且不截断行数，我们默认 2s / 1000 行（BIRD 评测时把 max_rows 放大）。
+
+前两条会让我们比官方 EX 高一点点（实测同批数据差 1pp 量级），做跨论文对比时要写清楚。
 """
 
 from __future__ import annotations
@@ -142,8 +152,23 @@ def _canonical(rows: list[tuple]) -> list[tuple[str, ...]]:
     return sorted(normed)
 
 
-def results_equal(gold: QueryResult, pred: QueryResult, *, gold_has_order: bool) -> tuple[bool, str]:
-    """比较两个执行结果。返回 (是否等价, 原因)。"""
+def results_equal(gold: QueryResult, pred: QueryResult, *, gold_has_order: bool,
+                  mode: str = "rows") -> tuple[bool, str]:
+    """比较两个执行结果。返回 (是否等价, 原因)。
+
+    ``mode`` 有两种口径：
+
+    - ``rows``（默认，Spider/P2~P5 一直在用）：先比行数，再按"行内排序 + 整体排序"
+      比较，数值做归一化。对重复行、多一列少一行都敏感。
+    - ``bird``：BIRD 官方口径 ``set(pred_rows) == set(gold_rows)``，原始元组、
+      列顺序敏感、不归一化、忽略行序与重复行。做跨论文对比时必须用这个口径。
+    """
+    if mode == "bird":
+        g = {tuple(r) for r in gold.rows}
+        p = {tuple(r) for r in pred.rows}
+        ok = g == p
+        return ok, ("match" if ok else "value_mismatch")
+
     if gold.row_count != pred.row_count:
         return False, "row_mismatch"
 
@@ -167,18 +192,28 @@ def results_equal(gold: QueryResult, pred: QueryResult, *, gold_has_order: bool)
 
 
 class Evaluator:
-    """对一条样本做执行等价判定。带 gold 结果缓存（同一 db+sql 只算一次）。"""
+    """对一条样本做执行等价判定。带 gold 结果缓存（同一 db+sql 只算一次）。
+
+    ``max_rows`` 默认 1000（Spider 够用）。BIRD 有 55 条 gold 会查出 >1000 行，
+    此时必须放大到 20000：否则两边都被截断到同样的前缀，"截断后相同"会被误判成
+    等价——这是**假阳性**，比假阴性更危险。
+    """
 
     def __init__(self, registry: DatabaseRegistry, *, timeout: float = 2.0,
-                 sandbox_factory: type[SqlSandbox] = SqlSandbox):
+                 sandbox_factory: type[SqlSandbox] = SqlSandbox,
+                 max_rows: int = 1000, compare: str = "rows"):
+        if compare not in ("rows", "bird"):
+            raise ValueError(f"compare 只能是 rows / bird，收到 {compare}")
         self.registry = registry
         self.timeout = timeout
         self._sandbox_factory = sandbox_factory
+        self.max_rows = max_rows
+        self.compare = compare
         self._gold_cache: dict[tuple[str, str], QueryResult] = {}
 
     def _run(self, db_id: str, sql: str) -> QueryResult:
         path = self.registry.db_path(db_id)
-        sb = self._sandbox_factory(path, timeout=self.timeout)
+        sb = self._sandbox_factory(path, timeout=self.timeout, max_rows=self.max_rows)
         return sb.run(sql)
 
     def gold_result(self, db_id: str, gold_sql: str) -> QueryResult:
@@ -202,5 +237,6 @@ class Evaluator:
                               pred_error_class=pred.error_class or "unknown")
 
         ok, reason = results_equal(gold, pred,
-                                   gold_has_order=bool(_ORDER_BY_RE.search(gold_sql)))
+                                   gold_has_order=bool(_ORDER_BY_RE.search(gold_sql)),
+                                   mode=self.compare)
         return EvalResult(ok, reason, gold_rows=gold.row_count, pred_rows=pred.row_count)

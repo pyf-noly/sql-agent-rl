@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT COUNT(*) FROM car_makers WHERE Country LIKE '%france%';\n```", "model": "deepseek-chat"}

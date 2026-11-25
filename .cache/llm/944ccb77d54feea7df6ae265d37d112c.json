@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Template_ID\nFROM Documents\nWHERE Template_ID IS NOT NULL\nGROUP BY Template_ID\nHAVING COUNT(DISTINCT Document_ID) > 1;\n```", "model": "deepseek-chat"}

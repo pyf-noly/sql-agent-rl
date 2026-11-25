@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT ranking_date, COUNT(tours) AS total_tours\nFROM rankings\nGROUP BY ranking_date;\n```", "model": "deepseek-chat"}

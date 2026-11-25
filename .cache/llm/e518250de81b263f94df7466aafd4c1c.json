@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT year, COUNT(*) AS match_count\nFROM matches\nGROUP BY year\nORDER BY year;\n```", "model": "deepseek-chat"}

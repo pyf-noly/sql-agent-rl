@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Document_ID, Document_Name, Document_Description FROM Documents;\n```", "model": "deepseek-chat"}

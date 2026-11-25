@@ -1,0 +1,38 @@
+{
+ "stage": "sft",
+ "model": "/root/autodl-tmp/qwen3-4b",
+ "lora": {
+  "r": 16,
+  "alpha": 32
+ },
+ "n_train": 3918,
+ "n_val": 80,
+ "steps": 732,
+ "epochs": 2.0,
+ "final_val_loss": 0.1564,
+ "elapsed_s": 4194.2,
+ "vram": {
+  "peak_alloc_gb": 19.78,
+  "peak_reserved_gb": 22.94,
+  "device": "NVIDIA GeForce RTX 4090 D",
+  "total_gb": 23.5
+ },
+ "config": {
+  "data_dir": "data/bird_p6",
+  "out_dir": "runs/sft_bird_p6v3",
+  "seed": 42,
+  "max_len": 2560,
+  "logging_steps": 5,
+  "save_every": 200,
+  "epochs": 2.0,
+  "lr": 0.0002,
+  "batch_size": 2,
+  "grad_accum": 8,
+  "warmup_ratio": 0.03,
+  "weight_decay": 0.0,
+  "eval_every": 100,
+  "repeat_multiturn": 2,
+  "limit": 0
+ },
+ "adapter": "runs/sft_bird_p6v3/adapter"
+}

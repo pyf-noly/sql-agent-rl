@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT DISTINCT s1.District\nFROM shop s1\nWHERE s1.Number_products < 3000\n  AND EXISTS (\n    SELECT 1\n    FROM shop s2\n    WHERE s2.District = s1.District\n      AND s2.Number_products > 10000\n  )\n```", "model": "deepseek-chat"}

@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Name FROM shop WHERE Number_products > (SELECT AVG(Number_products) FROM shop)\n```", "model": "deepseek-chat"}

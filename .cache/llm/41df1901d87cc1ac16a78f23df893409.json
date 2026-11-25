@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT name FROM Highschooler WHERE grade = 10;\n```", "model": "deepseek-chat"}

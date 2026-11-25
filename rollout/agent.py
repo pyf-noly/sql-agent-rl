@@ -14,9 +14,10 @@ from envs.db_registry import DatabaseRegistry, DbSchema
 from envs.error_taxonomy import classify_result
 from envs.feedback import FeedbackFormatter
 from envs.sql_sandbox import SqlSandbox
+from envs.value_check import check_literals, format_hints
 from rollout.llm_client import LLMClient
 from rollout.parse_sql import parse_sql
-from rollout.prompt import build_feedback_message, build_messages
+from rollout.prompt import PromptConfig, build_feedback_message, build_messages
 
 if TYPE_CHECKING:
     from rollout.evaluator import Evaluator
@@ -33,6 +34,12 @@ class Turn:
     raw_output: str = ""
     parse_source: str = ""
     feedback: str = ""
+    feedback_message: dict[str, Any] | None = None
+    """下一轮真正发给模型的那条 user 消息（原样保存）。
+
+    训练时必须用它重建序列：如果训练时自己再拼一遍反馈模板，一旦模板改了，
+    训练分布就和推理分布悄悄分叉——这类 bug 不会报错，只会让效果莫名其妙变差。
+    """
     correct: bool | None = None
     """仅当 ``stop_on_correct=True`` 时填写：这一轮的答案是否符合 gold。"""
 
@@ -46,6 +53,9 @@ class Episode:
     final_sql: str = ""
     stopped_reason: str = ""   # success / max_turns / exec_error / parse_error / api_error
     api_error: str = ""
+    evidence: str = ""
+    """BIRD 的外部知识提示。必须随 Episode 带走：训练时要靠它重建**同一条** prompt，
+    否则 rollout 用了 evidence、训练序列却没用 → 训练/推理静默分叉。"""
 
     @property
     def n_turns(self) -> int:
@@ -113,6 +123,9 @@ class SqlAgent:
         formatter: FeedbackFormatter | None = None,
         verifier: "Evaluator | None" = None,
         stop_on_correct: bool = False,
+        prompt_cfg: PromptConfig | None = None,
+        max_rows: int = 1000,
+        value_check: bool = False,
     ):
         """Parameters
         ----------
@@ -125,6 +138,16 @@ class SqlAgent:
             否则就是给模型开卷考试，测出来的不是多轮能力，是作弊能力。
         stop_on_correct:
             True 时"答案判对才停"，用于测多轮自修复的**上限**（B2）。
+        prompt_cfg:
+            提示词配置。默认 ``None`` 等价于 Spider 的旧行为（不带类型/外键）；
+            BIRD 传 :data:`rollout.prompt.BIRD_PROMPT`。
+        max_rows:
+            执行结果的最大行数（超过即截断）。BIRD 有 55 条 gold 会查出 >1000 行，
+            评测时要放大，否则"截断后的前缀相同"会掩盖差异。
+        value_check:
+            是否在"执行成功"时额外检查 WHERE 里的字符串字面量是否真的存在于库中。
+            这是唯一能**不泄漏答案**地把"语义错误"变成可检测信号的手段（见
+            ``envs/value_check.py``）。默认 False，保证 P4/P5 的历史结果可复现。
         """
         self.client = client
         self.registry = registry
@@ -134,6 +157,9 @@ class SqlAgent:
         self.formatter = formatter or FeedbackFormatter()
         self.verifier = verifier
         self.stop_on_correct = stop_on_correct
+        self.prompt_cfg = prompt_cfg
+        self.max_rows = max_rows
+        self.value_check = value_check
         if stop_on_correct and verifier is None:
             raise ValueError("stop_on_correct=True 需要传入 verifier")
 
@@ -145,11 +171,16 @@ class SqlAgent:
         question = sample["question"]
         gold = sample.get("query", "")
 
-        ep = Episode(db_id=db_id, question=question, gold_sql=gold)
+        ep = Episode(db_id=db_id, question=question, gold_sql=gold,
+                     evidence=sample.get("evidence") or "")
 
         schema = self._schema(db_id)
-        messages = build_messages(question, schema)
-        sandbox = SqlSandbox(self.registry.db_path(db_id), timeout=self.timeout)
+        # BIRD 的样本会带 evidence（外部知识提示）；Spider 没有这个字段，
+        # 传 None 时 prompt 与旧版逐字一致。
+        messages = build_messages(question, schema, self.prompt_cfg,
+                                  evidence=sample.get("evidence"))
+        sandbox = SqlSandbox(self.registry.db_path(db_id), timeout=self.timeout,
+                             max_rows=self.max_rows)
 
         for t in range(1, self.max_turns + 1):
             try:
@@ -161,20 +192,19 @@ class SqlAgent:
 
             parsed = parse_sql(raw)
             if not parsed.ok:
+                fb_msg = build_feedback_message(
+                    "(no SQL found)",
+                    "Your reply did not contain a ```sql code block with a SELECT "
+                    "statement. Reply with only the SQL inside a ```sql block.",
+                )
                 turn = Turn(turn=t, sql="", success=False, error_class="parse_error",
-                            raw_output=raw, parse_source=parsed.source)
+                            raw_output=raw, parse_source=parsed.source,
+                            feedback_message=fb_msg)
                 ep.turns.append(turn)
                 ep.final_sql = ""
                 ep.stopped_reason = "parse_error"
                 # 给模型一次"没抽出 SQL"的反馈，再试
-                messages = messages + [
-                    {"role": "assistant", "content": raw},
-                    build_feedback_message(
-                        "(no SQL found)",
-                        "Your reply did not contain a ```sql code block with a SELECT "
-                        "statement. Reply with only the SQL inside a ```sql block.",
-                    ),
-                ]
+                messages = messages + [{"role": "assistant", "content": raw}, fb_msg]
                 continue
 
             result = sandbox.run(parsed.sql)
@@ -183,6 +213,16 @@ class SqlAgent:
 
             if result.success:
                 feedback = self.formatter.render_success(result)
+                if self.value_check:
+                    # 只在"执行成功"时补值检查：执行报错本身信息量已经够了。
+                    # 它不改变判定，只给模型"这个取值在库里不存在"的依据。
+                    try:
+                        hints = format_hints(check_literals(parsed.sql, schema,
+                                                            timeout=self.timeout))
+                        if hints:
+                            feedback = feedback + "\n" + hints
+                    except Exception as e:  # noqa: BLE001  值检查失败不该影响主流程
+                        feedback = feedback + f"\n(value check skipped: {type(e).__name__})"
             else:
                 feedback = self.formatter.render(
                     result, cls,
@@ -215,10 +255,9 @@ class SqlAgent:
                 if t == self.max_turns:
                     ep.stopped_reason = "max_turns"
                     break
-                messages = messages + [
-                    {"role": "assistant", "content": raw},
-                    build_feedback_message(parsed.sql, feedback),
-                ]
+                fb_msg = build_feedback_message(parsed.sql, feedback)
+                turn.feedback_message = fb_msg
+                messages = messages + [{"role": "assistant", "content": raw}, fb_msg]
                 continue
 
             if result.success and self.stop_on_success:
@@ -228,9 +267,8 @@ class SqlAgent:
                 ep.stopped_reason = "max_turns" if not result.success else "success"
                 break
 
-            messages = messages + [
-                {"role": "assistant", "content": raw},
-                build_feedback_message(parsed.sql, feedback),
-            ]
+            fb_msg = build_feedback_message(parsed.sql, feedback)
+            turn.feedback_message = fb_msg
+            messages = messages + [{"role": "assistant", "content": raw}, fb_msg]
 
         return ep

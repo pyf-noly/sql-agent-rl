@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Name, Country FROM singer WHERE Song_Name LIKE '%Hey%';\n```", "model": "deepseek-chat"}

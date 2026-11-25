@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT cost_of_treatment\nFROM Treatments\nORDER BY date_of_treatment DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

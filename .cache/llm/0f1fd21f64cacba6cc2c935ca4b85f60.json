@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT DISTINCT cm.Maker\nFROM car_makers cm\nJOIN model_list ml ON ml.Maker = cm.Id\nJOIN car_names cn ON cn.Model = ml.Model\nJOIN cars_data cd ON cd.Id = cn.MakeId\nWHERE cd.Year = 1970\n```", "model": "deepseek-chat"}

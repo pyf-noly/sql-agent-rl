@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT SUM(Population) FROM country WHERE Code NOT IN (SELECT CountryCode FROM countrylanguage WHERE Language = 'English');\n```", "model": "deepseek-chat"}

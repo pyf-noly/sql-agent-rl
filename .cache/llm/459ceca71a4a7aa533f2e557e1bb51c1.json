@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT first_name FROM Professionals\nUNION\nSELECT first_name FROM Owners\nEXCEPT\nSELECT name FROM Dogs\n```", "model": "deepseek-chat"}

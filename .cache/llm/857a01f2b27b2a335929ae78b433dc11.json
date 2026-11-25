@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT s.student_id, s.first_name, s.middle_name, s.last_name, COUNT(se.student_enrolment_id) AS enrollment_count, s.student_id\nFROM Students s\nJOIN Student_Enrolment se ON s.student_id = se.student_id\nGROUP BY s.student_id, s.first_name, s.middle_name, s.last_name\nORDER BY enrollment_count DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

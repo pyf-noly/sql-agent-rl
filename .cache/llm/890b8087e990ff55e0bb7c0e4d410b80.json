@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT pp.Money_Rank\nFROM poker_player pp\nJOIN people p ON pp.People_ID = p.People_ID\nORDER BY p.Height DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

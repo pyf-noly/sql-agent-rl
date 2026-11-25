@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT s.Name, COUNT(c.concert_ID) AS concert_count\nFROM stadium s\nJOIN concert c ON s.Stadium_ID = c.Stadium_ID\nGROUP BY s.Stadium_ID, s.Name;\n```", "model": "deepseek-chat"}

@@ -1,0 +1,24 @@
+{
+ "mode": "hf_sync",
+ "dataset": "bird",
+ "prompts": 25,
+ "group": 4,
+ "concurrency": 1,
+ "turns_max": 3,
+ "wall_s": 193.81,
+ "episodes": 100,
+ "episodes_per_s": 0.516,
+ "samples_per_s": 0.516,
+ "group_p50": 5.3,
+ "group_p95": 18.86,
+ "group_mean": 7.75,
+ "lat_p50": 1.35,
+ "lat_p95": 4.99,
+ "turns_mean": 1.82,
+ "usage": {
+  "prompt_tokens": 154000,
+  "completion_tokens": 7604,
+  "calls": 182,
+  "cost_cny": 0.0
+ }
+}

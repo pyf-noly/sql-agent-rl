@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT COUNT(DISTINCT Language) FROM countrylanguage;\n```", "model": "deepseek-chat"}

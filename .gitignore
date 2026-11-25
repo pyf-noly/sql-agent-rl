@@ -1,29 +1,50 @@
-# ===== 数据与产物（不进版本库）=====
+# ===== 数据与产物 =====
+# 原始数据集 42GB，绝对不能进库（GitHub 单文件上限 100MB）
 data/raw/
 data/synthetic/
-runs/
-results/*.json
 *.sqlite
 *.db
 
+# 训练产物：只保留 summary/metrics，adapter 权重太大
+runs/*/adapter/
+runs/*/sync_tmp/
+runs/*/checkpoint-*/
+
+# 打包给租卡机器的 zip（8~60MB，属于构建产物）
+dist/
+*.part
+
+# ---- data/train/：P4 训练数据，可由 build_p4_data.py 一分钟重建 ----
+data/train/*.jsonl
+data/train/**/*.jsonl
+!data/train/train_data.meta.json
+# P5 校准的统计（几 KB，是"为什么这么筛"的证据）
+!data/train/rl_p5_train.meta.json
+
+# ---- data/bird/：BIRD 装配产物 ----
+data/bird/*
+# 证据文件（几 KB）：切分方案与统计必须可复现
+!data/bird/db_split.json
+!data/bird/meta.json
+# RL prompt（5.5MB，只有问题没有答案，是训练输入契约）
+!data/bird/rl_train.jsonl
+
 # ---- data/processed/ 按白名单收 ----
-# 先全部忽略，再逐个放行。这样新增数据文件默认不进库，
-# 必须显式加一条 ! 才会被提交——避免再出现"几千个缓存文件混进来"。
 data/processed/*
-# 可复现的证据（几 KB）
 !data/processed/sft_stats.json
 !data/processed/p3_data.meta.json
 !data/processed/dev_sample.meta.json
 !data/processed/dev_sample.json
 !data/processed/excluded.json
-# RL 阶段的输入契约（216 KB，不含答案，下游直接要用）
 !data/processed/rl_prompts.json
-# 注意：sft_final.jsonl / sft_coldstart.jsonl / sft_seeds.json 故意不放开，
-#      它们可由 prep_p3_data.py + synthesize_sft.py 重生成（见 docs/p3_summary.md）
+# 注意：sft_final.jsonl / sft_coldstart.jsonl / sft_seeds.json 故意不放开
+
+# ===== 实验记录 =====
+# results 里的 JSON 是全部结论的原始证据（约 10MB），必须进库
+# （历史上的 results/*.json 忽略规则已删除）
+runs/*/sync_tmp/
 
 # ===== LLM 调用缓存 =====
-# 这是按 prompt 哈希缓存的 API 响应，几千个小文件，只对本地省钱有用，
-# 对别人没有任何价值。绝对不要提交。
 .cache/
 
 # ===== 密钥（最重要，绝对不能提交）=====
@@ -41,6 +62,17 @@ __pycache__/
 venv/
 .pytest_cache/
 .ipynb_checkpoints/
+
+# ===== 本机工具 / 测试临时目录（Windows 沙箱会建不可读目录）=====
+.tools/
+.pytest-run/
+.pytest_tmp/
+.pytest_tmp*/
+p1check-*/
+pytest-cache-files-*/
+_p1verify/
+.p4_*/
+*.log
 
 # ===== 编辑器 / 系统 =====
 .vscode/

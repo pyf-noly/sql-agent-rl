@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT COUNT(*) FROM battle WHERE id NOT IN (SELECT lost_in_battle FROM ship WHERE tonnage = '225' AND lost_in_battle IS NOT NULL);\n```", "model": "deepseek-chat"}

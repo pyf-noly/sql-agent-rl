@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Country, COUNT(*) AS channel_count\nFROM TV_Channel\nGROUP BY Country\nORDER BY channel_count DESC\nLIMIT 1;\n```", "model": "deepseek-chat"}

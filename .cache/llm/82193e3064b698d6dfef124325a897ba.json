@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT grade, COUNT(*) AS count\nFROM Highschooler\nGROUP BY grade;\n```", "model": "deepseek-chat"}

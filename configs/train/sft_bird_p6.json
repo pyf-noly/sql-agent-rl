@@ -1,0 +1,23 @@
+{
+ "model": {
+  "name": "/root/autodl-tmp/qwen3-4b",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "grad_checkpointing": true
+ },
+ "data_dir": "data/bird_p6",
+ "out_dir": "runs/sft_bird_p6",
+ "epochs": 2.0,
+ "lr": 0.0002,
+ "batch_size": 2,
+ "grad_accum": 8,
+ "warmup_ratio": 0.03,
+ "max_len": 2560,
+ "repeat_multiturn": 2,
+ "eval_every": 100,
+ "save_every": 200,
+ "logging_steps": 5,
+ "seed": 42
+}

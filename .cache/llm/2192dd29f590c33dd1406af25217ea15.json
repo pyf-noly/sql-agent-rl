@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Name\nFROM conductor\nORDER BY Year_of_Work DESC;\n```", "model": "deepseek-chat"}

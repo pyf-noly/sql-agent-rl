@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Song_Name, Song_release_year\nFROM singer\nORDER BY Age ASC\nLIMIT 1;\n```", "model": "deepseek-chat"}

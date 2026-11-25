@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT MAX(Capacity) AS max_capacity, AVG(Capacity) AS avg_capacity FROM stadium;\n```", "model": "deepseek-chat"}

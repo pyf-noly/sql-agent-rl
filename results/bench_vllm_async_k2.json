@@ -1,0 +1,26 @@
+{
+ "mode": "vllm_async",
+ "dataset": "bird",
+ "prompts": 25,
+ "group": 4,
+ "concurrency": 4,
+ "turns_max": 3,
+ "wall_s": 36.68,
+ "episodes": 100,
+ "episodes_per_s": 2.726,
+ "samples_per_s": 2.726,
+ "group_p50": 1.28,
+ "group_p95": 6.09,
+ "group_mean": 1.47,
+ "lat_p50": 1.0,
+ "lat_p95": 3.83,
+ "turns_mean": 1.84,
+ "usage": {
+  "prompt_tokens": 164158,
+  "completion_tokens": 9409,
+  "calls": 182,
+  "cache_hits": 2,
+  "retries": 0,
+  "cost_cny": 0.4036
+ }
+}

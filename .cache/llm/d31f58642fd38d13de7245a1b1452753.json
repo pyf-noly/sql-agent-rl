@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT Name\nFROM country\nWHERE Continent = 'Asia'\n  AND Population > (\n    SELECT MAX(Population)\n    FROM country\n    WHERE Continent = 'Africa'\n  );\n```", "model": "deepseek-chat"}

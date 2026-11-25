@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT MAX(area_code) AS max_area_code, MIN(area_code) AS min_area_code FROM AREA_CODE_STATE;\n```", "model": "deepseek-chat"}

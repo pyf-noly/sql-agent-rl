@@ -1,0 +1,1622 @@
+{
+ "config": {
+  "split": "smoke60",
+  "n": 60,
+  "max_turns": 1,
+  "temperature": 0.0,
+  "workers": 6,
+  "model": "deepseek-chat",
+  "base_url": "https://api.deepseek.com/v1",
+  "tag": "smoke60_t1",
+  "finished_at": "2026-11-03T15:25:32",
+  "elapsed_sec": 10.2
+ },
+ "usage": {
+  "prompt_tokens": 15965,
+  "completion_tokens": 1923,
+  "calls": 60,
+  "cache_hits": 0,
+  "retries": 0,
+  "cost_cny": 0.0473
+ },
+ "metrics": {
+  "total": 60,
+  "correct": 52,
+  "accuracy": 0.8667,
+  "gold_error": 0,
+  "pred_error": 3,
+  "row_mismatch": 5,
+  "value_mismatch": 3,
+  "by_difficulty": {
+   "easy": {
+    "total": 11,
+    "correct": 10,
+    "accuracy": 0.9091
+   },
+   "extra": {
+    "total": 6,
+    "correct": 4,
+    "accuracy": 0.6667
+   },
+   "hard": {
+    "total": 13,
+    "correct": 9,
+    "accuracy": 0.6923
+   },
+   "medium": {
+    "total": 30,
+    "correct": 29,
+    "accuracy": 0.9667
+   }
+  },
+  "by_turns": {
+   "1": {
+    "total": 60,
+    "correct": 52,
+    "accuracy": 0.8667
+   }
+  }
+ },
+ "episodes": [
+  {
+   "db_id": "wta_1",
+   "question": "What are the names of players who won in both 2013 and 2016?",
+   "gold_sql": "SELECT winner_name FROM matches WHERE YEAR  =  2013 INTERSECT SELECT winner_name FROM matches WHERE YEAR  =  2016",
+   "final_sql": "SELECT DISTINCT winner_name\nFROM matches\nWHERE year IN (2013, 2016)\nGROUP BY winner_name\nHAVING COUNT(DISTINCT year) = 2",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT winner_name\nFROM matches\nWHERE year IN (2013, 2016)\nGROUP BY winner_name\nHAVING COUNT(DISTINCT year) = 2",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: winner_name\n  (Angelique Kerber)\n  (Petra Kvitova)\n  (Sara Errani)"
+    }
+   ],
+   "idx": 0,
+   "difficulty": "extra",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "orchestra",
+   "question": "List the name of the conductor with the most years of work.",
+   "gold_sql": "SELECT Name FROM conductor ORDER BY Year_of_Work DESC LIMIT 1",
+   "final_sql": "SELECT Name FROM conductor ORDER BY Year_of_Work DESC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Name FROM conductor ORDER BY Year_of_Work DESC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Name\n  (Robert Craft)"
+    }
+   ],
+   "idx": 1,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "flight_2",
+   "question": "What airline serves the most flights?",
+   "gold_sql": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) DESC LIMIT 1",
+   "final_sql": "SELECT Airline\nFROM flights\nGROUP BY Airline\nORDER BY COUNT(*) DESC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Airline\nFROM flights\nGROUP BY Airline\nORDER BY COUNT(*) DESC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Airline\n  (1)"
+    }
+   ],
+   "idx": 2,
+   "difficulty": "hard",
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_transcripts_tracking",
+   "question": "How many different degree names are offered?",
+   "gold_sql": "SELECT count(DISTINCT degree_summary_name) FROM Degree_Programs",
+   "final_sql": "SELECT COUNT(DISTINCT degree_summary_name) FROM Degree_Programs",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(DISTINCT degree_summary_name) FROM Degree_Programs",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(DISTINCT degree_summary_name)\n  (3)"
+    }
+   ],
+   "idx": 3,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "singer",
+   "question": "How many singers are there?",
+   "gold_sql": "SELECT count(*) FROM singer",
+   "final_sql": "SELECT COUNT(*) FROM singer",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM singer",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (8)"
+    }
+   ],
+   "idx": 4,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "concert_singer",
+   "question": "Show the stadium name and the number of concerts in each stadium.",
+   "gold_sql": "SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id",
+   "final_sql": "SELECT s.Name, COUNT(c.concert_ID) AS concert_count\nFROM stadium s\nLEFT JOIN concert c ON s.Stadium_ID = c.Stadium_ID\nGROUP BY s.Stadium_ID, s.Name",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT s.Name, COUNT(c.concert_ID) AS concert_count\nFROM stadium s\nLEFT JOIN concert c ON s.Stadium_ID = c.Stadium_ID\nGROUP BY s.Stadium_ID, s.Name",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 9,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 9 rows.\nColumns: Name, concert_count\n  (Stark's Park, 1)\n  (Somerset Park, 2)\n  (Bayview Stadium, 0)"
+    }
+   ],
+   "idx": 5,
+   "difficulty": "hard",
+   "correct": false,
+   "reason": "row_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "network_1",
+   "question": "Count the number of friends Kyle has.",
+   "gold_sql": "SELECT count(*) FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.name  =  \"Kyle\"",
+   "final_sql": "SELECT COUNT(*) FROM Friend JOIN Highschooler ON Friend.student_id = Highschooler.ID WHERE Highschooler.name = 'Kyle'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM Friend JOIN Highschooler ON Friend.student_id = Highschooler.ID WHERE Highschooler.name = 'Kyle'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (1)"
+    }
+   ],
+   "idx": 6,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "network_1",
+   "question": "Which grade has the most high schoolers?",
+   "gold_sql": "SELECT grade FROM Highschooler GROUP BY grade ORDER BY count(*) DESC LIMIT 1",
+   "final_sql": "SELECT grade\nFROM Highschooler\nGROUP BY grade\nORDER BY COUNT(*) DESC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT grade\nFROM Highschooler\nGROUP BY grade\nORDER BY COUNT(*) DESC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: grade\n  (12)"
+    }
+   ],
+   "idx": 7,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "poker_player",
+   "question": "Return the average earnings across all poker players.",
+   "gold_sql": "SELECT avg(Earnings) FROM poker_player",
+   "final_sql": "SELECT AVG(Earnings) FROM poker_player",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(Earnings) FROM poker_player",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(Earnings)\n  (301891.2)"
+    }
+   ],
+   "idx": 8,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "car_1",
+   "question": "How many countries exist?",
+   "gold_sql": "SELECT count(*) FROM COUNTRIES;",
+   "final_sql": "SELECT COUNT(*) FROM countries",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM countries",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (15)"
+    }
+   ],
+   "idx": 9,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "orchestra",
+   "question": "Count the number of different nationalities of conductors.",
+   "gold_sql": "SELECT count(DISTINCT Nationality) FROM conductor",
+   "final_sql": "SELECT COUNT(DISTINCT Nationality) FROM conductor",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(DISTINCT Nationality) FROM conductor",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(DISTINCT Nationality)\n  (3)"
+    }
+   ],
+   "idx": 10,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "pets_1",
+   "question": "What is the id of the pet owned by the student whose last name is 'Smith'?",
+   "gold_sql": "SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith'",
+   "final_sql": "SELECT hp.PetID\nFROM Has_Pet hp\nJOIN Student s ON hp.StuID = s.StuID\nWHERE s.LName = 'Smith'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT hp.PetID\nFROM Has_Pet hp\nJOIN Student s ON hp.StuID = s.StuID\nWHERE s.LName = 'Smith'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: PetID\n  (2001)"
+    }
+   ],
+   "idx": 11,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "world_1",
+   "question": "Return the names of the 3 most populated countries.",
+   "gold_sql": "SELECT Name FROM country ORDER BY Population DESC LIMIT 3",
+   "final_sql": "SELECT Name FROM country ORDER BY Population DESC LIMIT 3",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Name FROM country ORDER BY Population DESC LIMIT 3",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 3,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 3 rows.\nColumns: Name\n  (China)\n  (India)\n  (United States)"
+    }
+   ],
+   "idx": 12,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "car_1",
+   "question": "Find the name of the makers that produced some cars in the year of 1970?",
+   "gold_sql": "SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970';",
+   "final_sql": "SELECT DISTINCT cm.Maker\nFROM car_makers cm\nJOIN model_list ml ON ml.Maker = cm.Id\nJOIN car_names cn ON cn.Model = ml.Model\nJOIN cars_data cd ON cd.Id = cn.MakeId\nWHERE cd.Year = 1970",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT cm.Maker\nFROM car_makers cm\nJOIN model_list ml ON ml.Maker = cm.Id\nJOIN car_names cn ON cn.Model = ml.Model\nJOIN cars_data cd ON cd.Id = cn.MakeId\nWHERE cd.Year = 1970",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 11,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 11 rows.\nColumns: Maker\n  (gm)\n  (chrysler)\n  (amc)"
+    }
+   ],
+   "idx": 13,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "poker_player",
+   "question": "List the names of people that are not poker players.",
+   "gold_sql": "SELECT Name FROM people WHERE People_ID NOT IN (SELECT People_ID FROM poker_player)",
+   "final_sql": "SELECT Name FROM people WHERE People_ID NOT IN (SELECT People_ID FROM poker_player)",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Name FROM people WHERE People_ID NOT IN (SELECT People_ID FROM poker_player)",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 2,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 2 rows.\nColumns: Name\n  (Roman Bragin)\n  (Sergey Grankin)"
+    }
+   ],
+   "idx": 14,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "network_1",
+   "question": "Show the names of students who have a grade higher than 5 and have at least 2 friends.",
+   "gold_sql": "SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.grade  >  5 GROUP BY T1.student_id HAVING count(*)  >=  2",
+   "final_sql": "SELECT h.name\nFROM Highschooler h\nJOIN Friend f ON h.ID = f.student_id\nWHERE h.grade > 5\nGROUP BY h.ID, h.name\nHAVING COUNT(f.friend_id) >= 2",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT h.name\nFROM Highschooler h\nJOIN Friend f ON h.ID = f.student_id\nWHERE h.grade > 5\nGROUP BY h.ID, h.name\nHAVING COUNT(f.friend_id) >= 2",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: name\n  (Alexis)\n  (Kris)\n  (Jordan)"
+    }
+   ],
+   "idx": 15,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "world_1",
+   "question": "How much surface area do the countires in the Carribean cover together?",
+   "gold_sql": "SELECT sum(SurfaceArea) FROM country WHERE Region  =  \"Caribbean\"",
+   "final_sql": "SELECT SUM(SurfaceArea) AS TotalSurfaceArea\nFROM country\nWHERE Region = 'Caribbean'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT SUM(SurfaceArea) AS TotalSurfaceArea\nFROM country\nWHERE Region = 'Caribbean'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: TotalSurfaceArea\n  (234423.0)"
+    }
+   ],
+   "idx": 16,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "dog_kennels",
+   "question": "What is the average age of all the dogs?",
+   "gold_sql": "SELECT avg(age) FROM Dogs",
+   "final_sql": "SELECT AVG(age) AS average_age FROM Dogs",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(age) AS average_age FROM Dogs",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: average_age\n  (5.066666666666666)"
+    }
+   ],
+   "idx": 17,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "poker_player",
+   "question": "What are the names of poker players, ordered ascending by the number of final tables they have made?",
+   "gold_sql": "SELECT T1.Name FROM people AS T1 JOIN poker_player AS T2 ON T1.People_ID  =  T2.People_ID ORDER BY T2.Final_Table_Made",
+   "final_sql": "SELECT p.Name\nFROM people AS p\nJOIN poker_player AS pp ON p.People_ID = pp.People_ID\nORDER BY pp.Final_Table_Made ASC",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT p.Name\nFROM people AS p\nJOIN poker_player AS pp ON p.People_ID = pp.People_ID\nORDER BY pp.Final_Table_Made ASC",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: Name\n  (Teodor Salparov)\n  (Maksim Botin)\n  (Yevgeni Sivozhelez)"
+    }
+   ],
+   "idx": 18,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "orchestra",
+   "question": "List the names of orchestras that have no performance.",
+   "gold_sql": "SELECT Orchestra FROM orchestra WHERE Orchestra_ID NOT IN (SELECT Orchestra_ID FROM performance)",
+   "final_sql": "SELECT o.Orchestra\nFROM orchestra o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM performance p\n    WHERE p.Orchestra_ID = o.Orchestra_ID\n)",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT o.Orchestra\nFROM orchestra o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM performance p\n    WHERE p.Orchestra_ID = o.Orchestra_ID\n)",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Orchestra\n  (San Francisco Symphony Orch...)"
+    }
+   ],
+   "idx": 19,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "wta_1",
+   "question": "What are the names of the winner and loser who played in the longest match?",
+   "gold_sql": "SELECT winner_name ,  loser_name FROM matches ORDER BY minutes DESC LIMIT 1",
+   "final_sql": "SELECT winner_name, loser_name\nFROM matches\nORDER BY minutes DESC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT winner_name, loser_name\nFROM matches\nORDER BY minutes DESC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: winner_name, loser_name\n  (Petra Kvitova, Angelique Kerber)"
+    }
+   ],
+   "idx": 20,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "cre_Doc_Template_Mgt",
+   "question": "Return the id of the document with the fewest paragraphs.",
+   "gold_sql": "SELECT document_id FROM Paragraphs GROUP BY document_id ORDER BY count(*) ASC LIMIT 1",
+   "final_sql": "SELECT Document_ID\nFROM Paragraphs\nGROUP BY Document_ID\nORDER BY COUNT(*) ASC, Document_ID ASC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Document_ID\nFROM Paragraphs\nGROUP BY Document_ID\nORDER BY COUNT(*) ASC, Document_ID ASC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Document_ID\n  (3)"
+    }
+   ],
+   "idx": 21,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_transcripts_tracking",
+   "question": "What is the first name of the student whose permanent address is different from his or her current one?",
+   "gold_sql": "SELECT first_name FROM Students WHERE current_address_id != permanent_address_id",
+   "final_sql": "SELECT first_name FROM Students WHERE permanent_address_id <> current_address_id",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT first_name FROM Students WHERE permanent_address_id <> current_address_id",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 14,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 14 rows.\nColumns: first_name\n  (Timmothy)\n  (Hobart)\n  (Warren)"
+    }
+   ],
+   "idx": 22,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_transcripts_tracking",
+   "question": "What are the first, middle, and last names for everybody enrolled in a Bachelors program?",
+   "gold_sql": "SELECT DISTINCT T1.first_name ,  T1.middle_name ,  T1.last_name FROM Students AS T1 JOIN Student_Enrolment AS T2 ON T1.student_id  =  T2.student_id JOIN Degree_Programs AS T3 ON T2.degree_program_id  =  T3.degree_program_id WHERE T3.degree_summary_name  =  'Bachelor'",
+   "final_sql": "SELECT s.first_name, s.middle_name, s.last_name\nFROM Students s\nJOIN Student_Enrolment se ON s.student_id = se.student_id\nJOIN Degree_Programs dp ON se.degree_program_id = dp.degree_program_id\nWHERE dp.degree_summary_name = 'Bachelors'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT s.first_name, s.middle_name, s.last_name\nFROM Students s\nJOIN Student_Enrolment se ON s.student_id = se.student_id\nJOIN Degree_Programs dp ON se.degree_program_id = dp.degree_program_id\nWHERE dp.degree_summary_name = 'Bachelors'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions."
+    }
+   ],
+   "idx": 23,
+   "difficulty": "medium",
+   "correct": false,
+   "reason": "row_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "world_1",
+   "question": "Count the number of countries in Asia.",
+   "gold_sql": "SELECT count(*) FROM country WHERE continent  =  \"Asia\"",
+   "final_sql": "SELECT COUNT(*) FROM country WHERE Continent = 'Asia'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM country WHERE Continent = 'Asia'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (51)"
+    }
+   ],
+   "idx": 24,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "flight_2",
+   "question": "How many flights have destination ATO?",
+   "gold_sql": "SELECT count(*) FROM FLIGHTS WHERE DestAirport  =  \"ATO\"",
+   "final_sql": "SELECT COUNT(*) FROM flights WHERE DestAirport = 'ATO'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM flights WHERE DestAirport = 'ATO'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (0)"
+    }
+   ],
+   "idx": 25,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "flight_2",
+   "question": "Return the number of flights.",
+   "gold_sql": "SELECT count(*) FROM FLIGHTS",
+   "final_sql": "SELECT COUNT(*) FROM flights",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM flights",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (1200)"
+    }
+   ],
+   "idx": 26,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "poker_player",
+   "question": "What are the names of people who are not from Russia?",
+   "gold_sql": "SELECT Name FROM people WHERE Nationality != \"Russia\"",
+   "final_sql": "SELECT Name FROM people WHERE Nationality <> 'Russia'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Name FROM people WHERE Nationality <> 'Russia'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Name\n  (Teodor Salparov)"
+    }
+   ],
+   "idx": 27,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "flight_2",
+   "question": "What are airlines that have flights arriving at airport 'AHD'?",
+   "gold_sql": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.DestAirport  =  \"AHD\"",
+   "final_sql": "SELECT DISTINCT a.Airline\nFROM airlines AS a\nJOIN flights AS f ON f.Airline = a.Abbreviation\nWHERE f.DestAirport = 'AHD'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT a.Airline\nFROM airlines AS a\nJOIN flights AS f ON f.Airline = a.Abbreviation\nWHERE f.DestAirport = 'AHD'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions."
+    }
+   ],
+   "idx": 28,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "empty_vs_empty",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "cre_Doc_Template_Mgt",
+   "question": "Show all distinct template type codes for all templates.",
+   "gold_sql": "SELECT DISTINCT template_type_code FROM Templates",
+   "final_sql": "SELECT DISTINCT Template_Type_Code FROM Templates",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT Template_Type_Code FROM Templates",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: Template_Type_Code\n  (PP)\n  (BK)\n  (PPT)"
+    }
+   ],
+   "idx": 29,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "flight_2",
+   "question": "Return the number of flights arriving in Aberdeen.",
+   "gold_sql": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+   "final_sql": "SELECT COUNT(*) FROM flights WHERE DestAirport = 'ABZ'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM flights WHERE DestAirport = 'ABZ'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (0)"
+    }
+   ],
+   "idx": 30,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "wta_1",
+   "question": "Find the average rank of winners in all matches.",
+   "gold_sql": "SELECT avg(winner_rank) FROM matches",
+   "final_sql": "SELECT AVG(winner_rank) AS avg_winner_rank FROM matches",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(winner_rank) AS avg_winner_rank FROM matches",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: avg_winner_rank\n  (13.715827338129497)"
+    }
+   ],
+   "idx": 31,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "car_1",
+   "question": "How many car models were produced by the maker with full name American Motor Company?",
+   "gold_sql": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker WHERE T1.FullName  =  'American Motor Company';",
+   "final_sql": "SELECT COUNT(*) FROM model_list WHERE Maker = (SELECT Id FROM car_makers WHERE FullName = 'American Motor Company')",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM model_list WHERE Maker = (SELECT Id FROM car_makers WHERE FullName = 'American Motor Company')",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (1)"
+    }
+   ],
+   "idx": 32,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "orchestra",
+   "question": "Please show the name of the conductor that has conducted orchestras founded after 2008.",
+   "gold_sql": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID WHERE Year_of_Founded  >  2008",
+   "final_sql": "SELECT DISTINCT c.Name\nFROM conductor c\nJOIN orchestra o ON c.Conductor_ID = o.Conductor_ID\nWHERE o.Year_of_Founded > 2008",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT c.Name\nFROM conductor c\nJOIN orchestra o ON c.Conductor_ID = o.Conductor_ID\nWHERE o.Year_of_Founded > 2008",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Name\n  (Igor Stravinsky)"
+    }
+   ],
+   "idx": 33,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "flight_2",
+   "question": "What are flight numbers of flights departing from City \"Aberdeen \"?",
+   "gold_sql": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+   "final_sql": "SELECT f.FlightNo\nFROM flights f\nJOIN airports a ON f.SourceAirport = a.AirportCode\nWHERE a.City = 'Aberdeen '",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT f.FlightNo\nFROM flights f\nJOIN airports a ON f.SourceAirport = a.AirportCode\nWHERE a.City = 'Aberdeen '",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions."
+    }
+   ],
+   "idx": 34,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "empty_vs_empty",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "network_1",
+   "question": "How many high schoolers are in each grade?",
+   "gold_sql": "SELECT grade ,  count(*) FROM Highschooler GROUP BY grade",
+   "final_sql": "SELECT grade, COUNT(*) AS count\nFROM Highschooler\nGROUP BY grade",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT grade, COUNT(*) AS count\nFROM Highschooler\nGROUP BY grade",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 4,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 4 rows.\nColumns: grade, count\n  (9, 4)\n  (10, 4)\n  (11, 4)"
+    }
+   ],
+   "idx": 35,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "flight_2",
+   "question": "Give the flight numbers of flights leaving from Aberdeen.",
+   "gold_sql": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+   "final_sql": "SELECT FlightNo FROM flights WHERE SourceAirport = 'Aberdeen'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT FlightNo FROM flights WHERE SourceAirport = 'Aberdeen'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions."
+    }
+   ],
+   "idx": 36,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "empty_vs_empty",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "dog_kennels",
+   "question": "Which first names are used for professionals or owners but are not used as dog names?",
+   "gold_sql": "SELECT first_name FROM Professionals UNION SELECT first_name FROM Owners EXCEPT SELECT name FROM Dogs",
+   "final_sql": "SELECT first_name FROM Professionals\nUNION\nSELECT first_name FROM Owners\nEXCEPT\nSELECT name FROM Dogs",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT first_name FROM Professionals\nUNION\nSELECT first_name FROM Owners\nEXCEPT\nSELECT name FROM Dogs",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 30,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 30 rows.\nColumns: first_name\n  (Adelle)\n  (Brady)\n  (Cindy)"
+    }
+   ],
+   "idx": 37,
+   "difficulty": "extra",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "dog_kennels",
+   "question": "Who owns the youngest dog? Give me his or her last name.",
+   "gold_sql": "SELECT T1.last_name FROM Owners AS T1 JOIN Dogs AS T2 ON T1.owner_id  =  T2.owner_id WHERE T2.age  =  ( SELECT max(age) FROM Dogs )",
+   "final_sql": "SELECT o.last_name\nFROM Owners o\nJOIN Dogs d ON o.owner_id = d.owner_id\nORDER BY d.age ASC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT o.last_name\nFROM Owners o\nJOIN Dogs d ON o.owner_id = d.owner_id\nORDER BY d.age ASC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: last_name\n  (Nicolas)"
+    }
+   ],
+   "idx": 38,
+   "difficulty": "extra",
+   "correct": false,
+   "reason": "row_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "museum_visit",
+   "question": "What is the average age of the visitors whose membership level is not higher than 4?",
+   "gold_sql": "SELECT avg(age) FROM visitor WHERE Level_of_membership  <=  4",
+   "final_sql": "SELECT AVG(Age) FROM visitor WHERE Level_of_membership <= 4",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT AVG(Age) FROM visitor WHERE Level_of_membership <= 4",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: AVG(Age)\n  (36.0)"
+    }
+   ],
+   "idx": 39,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "pets_1",
+   "question": "Find the weight of the youngest dog.",
+   "gold_sql": "SELECT weight FROM pets ORDER BY pet_age LIMIT 1",
+   "final_sql": "SELECT weight FROM Pets WHERE PetType = 'Dog' ORDER BY pet_age ASC LIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT weight FROM Pets WHERE PetType = 'Dog' ORDER BY pet_age ASC LIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions."
+    }
+   ],
+   "idx": 40,
+   "difficulty": "easy",
+   "correct": false,
+   "reason": "row_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "employee_hire_evaluation",
+   "question": "Find the names of employees who never won any award in the evaluation.",
+   "gold_sql": "SELECT name FROM employee WHERE Employee_ID NOT IN (SELECT Employee_ID FROM evaluation)",
+   "final_sql": "SELECT e.Name\nFROM employee e\nWHERE e.Employee_ID NOT IN (SELECT Employee_ID FROM evaluation)",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT e.Name\nFROM employee e\nWHERE e.Employee_ID NOT IN (SELECT Employee_ID FROM evaluation)",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 5,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 5 rows.\nColumns: Name\n  (Mark Regan)\n  (Tim Payne)\n  (Andrew Sheridan)"
+    }
+   ],
+   "idx": 41,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "world_1",
+   "question": "Give the names of countries with English and French as official languages.",
+   "gold_sql": "SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND T2.IsOfficial  =  \"T\" INTERSECT SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"French\" AND T2.IsOfficial  =  \"T\"",
+   "final_sql": "SELECT c.Name\nFROM country c\nJOIN countrylanguage cl1 ON cl1.CountryCode = c.Code\nJOIN countrylanguage cl2 ON cl2.CountryCode = c.Code\nWHERE cl1.Language = 'English' AND cl1.IsOfficial = 'T'\n  AND cl2.Language = 'French' AND cl2.IsOfficial = 'T'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT c.Name\nFROM country c\nJOIN countrylanguage cl1 ON cl1.CountryCode = c.Code\nJOIN countrylanguage cl2 ON cl2.CountryCode = c.Code\nWHERE cl1.Language = 'English' AND cl1.IsOfficial = 'T'\n  AND cl2.Language = 'French' AND cl2.IsOfficial = 'T'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 3,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 3 rows.\nColumns: Name\n  (Canada)\n  (Seychelles)\n  (Vanuatu)"
+    }
+   ],
+   "idx": 42,
+   "difficulty": "extra",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "cre_Doc_Template_Mgt",
+   "question": "Show ids for all templates that are used by more than one document.",
+   "gold_sql": "SELECT template_id FROM Documents GROUP BY template_id HAVING count(*)  >  1",
+   "final_sql": "SELECT Template_ID\nFROM Documents\nWHERE Template_ID IS NOT NULL\nGROUP BY Template_ID\nHAVING COUNT(DISTINCT Document_ID) > 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Template_ID\nFROM Documents\nWHERE Template_ID IS NOT NULL\nGROUP BY Template_ID\nHAVING COUNT(DISTINCT Document_ID) > 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 3,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 3 rows.\nColumns: Template_ID\n  (11)\n  (14)\n  (25)"
+    }
+   ],
+   "idx": 43,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "wta_1",
+   "question": "What are the first names of all players, and their average rankings?",
+   "gold_sql": "SELECT avg(ranking) ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id GROUP BY T1.first_name",
+   "final_sql": "SELECT p.first_name, AVG(r.ranking) AS avg_ranking\nFROM players p\nJOIN rankings r ON p.player_id = r.player_id\nGROUP BY p.player_id, p.first_name",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT p.first_name, AVG(r.ranking) AS avg_ranking\nFROM players p\nJOIN rankings r ON p.player_id = r.player_id\nGROUP BY p.player_id, p.first_name",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1000,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1000 rows (truncated at 3 for preview).\nColumns: first_name, avg_ranking\n  (Mirjana, 186.76587795765877)\n  (Tamarine, 121.82273948075202)\n  (Katarina, 196.02280912364947)"
+    }
+   ],
+   "idx": 44,
+   "difficulty": "hard",
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "world_1",
+   "question": "For the countries founded before 1930, what is the total number of distinct official languages?",
+   "gold_sql": "SELECT count(DISTINCT T2.Language) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE  IndepYear  <  1930 AND T2.IsOfficial  =  \"T\"",
+   "final_sql": "SELECT COUNT(DISTINCT cl.Language)\nFROM country c\nJOIN countrylanguage cl ON cl.CountryCode = c.Code\nWHERE c.IndepYear < 1930\n  AND cl.IsOfficial = 'T'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(DISTINCT cl.Language)\nFROM country c\nJOIN countrylanguage cl ON cl.CountryCode = c.Code\nWHERE c.IndepYear < 1930\n  AND cl.IsOfficial = 'T'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(DISTINCT cl.Language)\n  (40)"
+    }
+   ],
+   "idx": 45,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "dog_kennels",
+   "question": "Return the owner id, first name and last name of the owner who has the most dogs.",
+   "gold_sql": "SELECT T1.owner_id ,  T2.first_name ,  T2.last_name FROM Dogs AS T1 JOIN Owners AS T2 ON T1.owner_id  =  T2.owner_id GROUP BY T1.owner_id ORDER BY count(*) DESC LIMIT 1",
+   "final_sql": "SELECT o.owner_id, o.first_name, o.last_name\nFROM Owners o\nJOIN Dogs d ON o.owner_id = d.owner_id\nGROUP BY o.owner_id, o.first_name, o.last_name\nORDER BY COUNT(d.dog_id) DESC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT o.owner_id, o.first_name, o.last_name\nFROM Owners o\nJOIN Dogs d ON o.owner_id = d.owner_id\nGROUP BY o.owner_id, o.first_name, o.last_name\nORDER BY COUNT(d.dog_id) DESC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: owner_id, first_name, last_name\n  (14, Rachelle, Funk)"
+    }
+   ],
+   "idx": 46,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "poker_player",
+   "question": "Return the nationalities for which there are two or more people.",
+   "gold_sql": "SELECT Nationality FROM people GROUP BY Nationality HAVING COUNT(*)  >=  2",
+   "final_sql": "SELECT Nationality\nFROM people\nGROUP BY Nationality\nHAVING COUNT(*) >= 2",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Nationality\nFROM people\nGROUP BY Nationality\nHAVING COUNT(*) >= 2",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Nationality\n  (Russia)"
+    }
+   ],
+   "idx": 47,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "orchestra",
+   "question": "Show the record companies shared by orchestras founded before 2003 and after 2003.",
+   "gold_sql": "SELECT Record_Company FROM orchestra WHERE Year_of_Founded  <  2003 INTERSECT SELECT Record_Company FROM orchestra WHERE Year_of_Founded  >  2003",
+   "final_sql": "SELECT Record_Company\nFROM orchestra\nWHERE Year_of_Founded < 2003\nINTERSECT\nSELECT Record_Company\nFROM orchestra\nWHERE Year_of_Founded > 2003",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Record_Company\nFROM orchestra\nWHERE Year_of_Founded < 2003\nINTERSECT\nSELECT Record_Company\nFROM orchestra\nWHERE Year_of_Founded > 2003",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Record_Company\n  (Decca Records)"
+    }
+   ],
+   "idx": 48,
+   "difficulty": "extra",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "car_1",
+   "question": "Which makers designed more than 3 car models? List full name and the id.",
+   "gold_sql": "SELECT T1.FullName ,  T1.Id FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id HAVING count(*)  >  3;",
+   "final_sql": "SELECT cm.FullName, cm.Id\nFROM car_makers cm\nJOIN model_list ml ON ml.Maker = cm.Id\nGROUP BY cm.Id, cm.FullName\nHAVING COUNT(ml.ModelId) > 3",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT cm.FullName, cm.Id\nFROM car_makers cm\nJOIN model_list ml ON ml.Maker = cm.Id\nGROUP BY cm.Id, cm.FullName\nHAVING COUNT(ml.ModelId) > 3",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 2,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 2 rows.\nColumns: FullName, Id\n  (General Motors, 4)\n  (Chrysler, 6)"
+    }
+   ],
+   "idx": 49,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_transcripts_tracking",
+   "question": "What is the first, middle, and last name of the earliest school graduate?",
+   "gold_sql": "SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1",
+   "final_sql": "SELECT first_name, middle_name, last_name\nFROM Students\nWHERE date_left IS NOT NULL\nORDER BY date_left ASC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT first_name, middle_name, last_name\nFROM Students\nWHERE date_left IS NOT NULL\nORDER BY date_left ASC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: first_name, middle_name, last_name\n  (Timmothy, Anna, Ward)"
+    }
+   ],
+   "idx": 50,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "world_1",
+   "question": "How many people live in Gelderland district?",
+   "gold_sql": "SELECT sum(Population) FROM city WHERE District  =  \"Gelderland\"",
+   "final_sql": "SELECT SUM(Population) FROM city WHERE District = 'Gelderland'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT SUM(Population) FROM city WHERE District = 'Gelderland'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: SUM(Population)\n  (545548)"
+    }
+   ],
+   "idx": 51,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "tvshow",
+   "question": "Find the series name and country of the tv channel that is playing some cartoons directed by Ben Jones and Michael Chang?",
+   "gold_sql": "SELECT T1.series_name ,  T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.directed_by  =  'Michael Chang' INTERSECT SELECT T1.series_name ,  T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.directed_by  =  'Ben Jones'",
+   "final_sql": "SELECT DISTINCT TV_Channel.series_name, TV_Channel.Country\nFROM TV_Channel\nJOIN Cartoon ON Cartoon.Channel = TV_Channel.series_name\nWHERE Cartoon.Directed_by IN ('Ben Jones', 'Michael Chang')",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT DISTINCT TV_Channel.series_name, TV_Channel.Country\nFROM TV_Channel\nJOIN Cartoon ON Cartoon.Channel = TV_Channel.series_name\nWHERE Cartoon.Directed_by IN ('Ben Jones', 'Michael Chang')",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 0,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 0 rows. The result is EMPTY — double-check your WHERE / JOIN conditions."
+    }
+   ],
+   "idx": 52,
+   "difficulty": "extra",
+   "correct": false,
+   "reason": "row_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "orchestra",
+   "question": "What is the name of the conductor who has conducted the most orchestras?",
+   "gold_sql": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID ORDER BY COUNT(*) DESC LIMIT 1",
+   "final_sql": "SELECT c.Name\nFROM conductor c\nJOIN orchestra o ON o.Conductor_ID = c.Conductor_ID\nGROUP BY c.Conductor_ID, c.Name\nORDER BY COUNT(DISTINCT o.Orchestra_ID) DESC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT c.Name\nFROM conductor c\nJOIN orchestra o ON o.Conductor_ID = c.Conductor_ID\nGROUP BY c.Conductor_ID, c.Name\nORDER BY COUNT(DISTINCT o.Orchestra_ID) DESC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Name\n  (Antal Doráti)"
+    }
+   ],
+   "idx": 53,
+   "difficulty": "hard",
+   "correct": false,
+   "reason": "value_mismatch",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "employee_hire_evaluation",
+   "question": "List the names of employees and sort in ascending order of age.",
+   "gold_sql": "SELECT name FROM employee ORDER BY age",
+   "final_sql": "SELECT Name FROM employee ORDER BY Age ASC",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Name FROM employee ORDER BY Age ASC",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 10,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 10 rows.\nColumns: Name\n  (George Chuter)\n  (Andrew Sheridan)\n  (Lee Mears)"
+    }
+   ],
+   "idx": 54,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_transcripts_tracking",
+   "question": "How many degrees does the engineering department have?",
+   "gold_sql": "SELECT count(*) FROM Departments AS T1 JOIN Degree_Programs AS T2 ON T1.department_id  =  T2.department_id WHERE T1.department_name  =  'engineer'",
+   "final_sql": "SELECT COUNT(*) FROM Degree_Programs dp JOIN Departments d ON dp.department_id = d.department_id WHERE d.department_name = 'engineering'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(*) FROM Degree_Programs dp JOIN Departments d ON dp.department_id = d.department_id WHERE d.department_name = 'engineering'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(*)\n  (0)"
+    }
+   ],
+   "idx": 55,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "concert_singer",
+   "question": "what is the name and nation of the singer who have a song having 'Hey' in its name?",
+   "gold_sql": "SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'",
+   "final_sql": "SELECT Name, Country FROM singer WHERE Song_Name LIKE '%Hey%'",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT Name, Country FROM singer WHERE Song_Name LIKE '%Hey%'",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Name, Country\n  (Justin Brown, France)"
+    }
+   ],
+   "idx": 56,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "employee_hire_evaluation",
+   "question": "How many different store locations are there?",
+   "gold_sql": "SELECT count(DISTINCT LOCATION) FROM shop",
+   "final_sql": "SELECT COUNT(DISTINCT Location) FROM shop",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT COUNT(DISTINCT Location) FROM shop",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: COUNT(DISTINCT Location)\n  (9)"
+    }
+   ],
+   "idx": 57,
+   "difficulty": "medium",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "student_transcripts_tracking",
+   "question": "Who is the first student to register? List the first name, middle name and last name.",
+   "gold_sql": "SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_first_registered ASC LIMIT 1",
+   "final_sql": "SELECT first_name, middle_name, last_name\nFROM Students\nORDER BY date_first_registered ASC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT first_name, middle_name, last_name\nFROM Students\nORDER BY date_first_registered ASC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: first_name, middle_name, last_name\n  (Timmothy, Anna, Ward)"
+    }
+   ],
+   "idx": 58,
+   "difficulty": "easy",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  },
+  {
+   "db_id": "museum_visit",
+   "question": "What are the id and name of the museum visited most times?",
+   "gold_sql": "SELECT t2.Museum_ID ,  t1.name FROM museum AS t1 JOIN visit AS t2 ON t1.Museum_ID  =  t2.Museum_ID GROUP BY t2.Museum_ID ORDER BY count(*) DESC LIMIT 1",
+   "final_sql": "SELECT m.Museum_ID, m.Name\nFROM museum m\nJOIN visit v ON m.Museum_ID = v.Museum_ID\nGROUP BY m.Museum_ID, m.Name\nORDER BY COUNT(*) DESC\nLIMIT 1",
+   "stopped_reason": "success",
+   "api_error": "",
+   "n_turns": 1,
+   "turns": [
+    {
+     "turn": 1,
+     "sql": "SELECT m.Museum_ID, m.Name\nFROM museum m\nJOIN visit v ON m.Museum_ID = v.Museum_ID\nGROUP BY m.Museum_ID, m.Name\nORDER BY COUNT(*) DESC\nLIMIT 1",
+     "success": true,
+     "error_class": null,
+     "error_message": "",
+     "row_count": 1,
+     "parse_source": "fence",
+     "feedback": "Execution succeeded: 1 row.\nColumns: Museum_ID, Name\n  (2, Capital Plaza Museum)"
+    }
+   ],
+   "idx": 59,
+   "difficulty": "hard",
+   "correct": true,
+   "reason": "match",
+   "pred_error_class": null
+  }
+ ]
+}

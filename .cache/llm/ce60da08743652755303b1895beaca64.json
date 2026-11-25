@@ -1,1 +1,0 @@
-{"text": "```sql\nSELECT AVG(Age) AS average_age, MIN(Age) AS minimum_age, MAX(Age) AS maximum_age\nFROM singer\nWHERE Country = 'France';\n```", "model": "deepseek-chat"}
